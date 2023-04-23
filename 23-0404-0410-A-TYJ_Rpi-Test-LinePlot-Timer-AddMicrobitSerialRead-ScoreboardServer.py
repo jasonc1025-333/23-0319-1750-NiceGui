@@ -26,17 +26,10 @@ scoreboard_BotSingle_ArrayList_1D = []
 
 _debug_Show_Priority_Hi_Bool = True
 
-###jwc o line_plot = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
-###jwc o     .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
-
-###jwc every 1 sec
-line_plot = ui.line_plot(n=2, limit=40, figsize=(6, 4), update_every=1) \
-    .with_legend(['Light', 'Temp'], loc='upper center', ncol=2)
-
+line_plot = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
+    .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
 
 def update_line_plot() -> None:
-
-    now,x,y1,y2 = 0, 0, 0, 0
 
     x=ser.readline()
     if x:
@@ -82,61 +75,26 @@ def update_line_plot() -> None:
             index2 = 0
 
             ###jwc o while index2 <= len(scoreboard_BotsAll_ArrayList_2D) - 1:
-            while index2 <= len(scoreboard_BotsAll_ArrayList_2D) - 1:
+            while index2 < len(scoreboard_BotsAll_ArrayList_2D) - 1:
                 scoreboard_BotSingle_ArrayList_1D = scoreboard_BotsAll_ArrayList_2D[index2]
 
                 print("*** DEBUG")
                 print(scoreboard_BotsAll_ArrayList_2D)
                 print(scoreboard_BotSingle_ArrayList_1D)
-                print(scoreboard_DataNumNew_ArrayList)
 
                 if scoreboard_BotSingle_ArrayList_1D[0] == scoreboard_DataNumNew_ArrayList[0]:
                     scoreboard_Bot_Found_Bool = True
-                    ###jwc o index22 = 0
-                    ###jwc o while index22 <= len(scoreboard_BotSingle_ArrayList_1D) - 1:
-                    ###jwc o     _codeComment_AsText = "Skip 0th Index: BotId"
-                    ###jwc o     if index22 != 0:
-                    ###jwc o         if _debug_Show_Priority_Hi_Bool:
-                    ###jwc o             print("* C1: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
-                    ###jwc o         ## Add the two above
-                    ###jwc o         scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
-                    ###jwc o         if _debug_Show_Priority_Hi_Bool:
-                    ###jwc o             print("* C2: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
-                    ###jwc o     index22 += 1
-                    ###jwc o while index22 <= len(scoreboard_BotSingle_ArrayList_1D) - 1:
-                    ###jwc o     if index22 != 0:
+                    index22 = 0
+                    while index22 <= len(scoreboard_BotSingle_ArrayList_1D) - 1:
+                        _codeComment_AsText = "Skip 0th Index: BotId"
+                        if index22 != 0:
+                            if _debug_Show_Priority_Hi_Bool:
+                                print("* C1: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
 
-                    _codeComment_AsText = "Skip 0th Index: BotId"
-                    index22 = 1
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("* L-: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
-                    ## Add the two above
-                    scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("* L+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
-                    
-                    y1 = scoreboard_DataNumNew_ArrayList[index22]
-                    
-                    index22 += 1
-
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("* M-: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
-                    ## Add the two above
-                    scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("* M+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
-
-                    y2 = scoreboard_DataNumNew_ArrayList[index22]
-
-
-                    now = datetime.now()
-                    x = now.timestamp()
-                    ###jwc o y1 = np.sin(x)
-                    ###jwc o y2 = np.cos(x)
-
-                    print("*** ***" + str(y1) +" "+ str(y2))
-                    line_plot.push([now], [[y1], [y2]])                 
-
+                            scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
+                            if _debug_Show_Priority_Hi_Bool:
+                                print("* C2: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
+                        index22 += 1
                 index2 += 1
         if not (scoreboard_Bot_Found_Bool):
             scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
@@ -144,17 +102,13 @@ def update_line_plot() -> None:
                 print("* D:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
     
 
-    ###jwc n prints twice: 2nd 0: now = datetime.now()
-    ###jwc n prints twice: 2nd 0: x = now.timestamp()
-    ###jwc n prints twice: 2nd 0: ###jwc o y1 = np.sin(x)
-    ###jwc n prints twice: 2nd 0: ###jwc o y2 = np.cos(x)
-    ###jwc n prints twice: 2nd 0: 
-    ###jwc n prints twice: 2nd 0: print("*** ***" + str(y1) +" "+ str(y2))
-    ###jwc n prints twice: 2nd 0: line_plot.push([now], [[y1], [y2]])
+    now = datetime.now()
+    x = now.timestamp()
+    y1 = np.sin(x)
+    y2 = np.cos(x)
+    line_plot.push([now], [[y1], [y2]])
 
-###jwc o line_updates = ui.timer(0.1, update_line_plot, active=False)
-###jwc timer x2 speed: 0.1 to 0.05
-line_updates = ui.timer(0.05, update_line_plot, active=False)
+line_updates = ui.timer(0.1, update_line_plot, active=False)
 line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
 
 ##jwc n ser = serial.Serial(
