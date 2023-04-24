@@ -24,15 +24,20 @@ _debug_Show_Priority_Hi_Bool = True
 scoreboard_BotsAll_ArrayList_2D = [[0,0,0]]
 scoreboard_BotSingle_ArrayList_1D = []
 
+y1Value = [0,0,0]
+y2Value = [0,0,0]
+
+###jwc n scoreboard_BotsAll_StringFull_ArrayList_2D =[{'#':0,'l':1,'m':2},{'#':10,'l':11,'m':12},{'#':20,'l':21,'m':22}]
+
 _debug_Show_Priority_Hi_Bool = True
 
 ###jwc o line_plot = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
 ###jwc o     .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
 
 ###jwc every 1 sec
+    ###jwc y .with_legend(['Light', 'Temp'], loc='upper center', ncol=2)
 line_plot = ui.line_plot(n=2, limit=40, figsize=(6, 4), update_every=1) \
-    .with_legend(['Light', 'Temp'], loc='upper center', ncol=2)
-
+    .with_legend(['Light', 'Magnet'], loc='upper center', ncol=2)
 
 def update_line_plot() -> None:
 
@@ -60,18 +65,20 @@ def update_line_plot() -> None:
 
         if _debug_Show_Priority_Hi_Bool:
             ###jwc o print replaced by 'print'
-            print("* A")
+            print("* A: Raw String: ")
             print("> " + str(network_DataNew_Message_Str))
         if True:
             scoreboard_DataNumNew_ArrayList = []
-            scoreboard_DataStrNew_ArrayList = network_DataNew_Message_Str.split("|")
+            ###jwc y scoreboard_DataStrNew_ArrayList = network_DataNew_Message_Str.split("|")
+            scoreboard_DataStrNew_ArrayList = network_DataNew_Message_Str.split(",")
+
             for value in scoreboard_DataStrNew_ArrayList:
                 ###jwc o value22 = value.substr(value.index_of(":") + 1, len(value))
                 ###jwc o value22 = value[value.index_of(":") + 1:len(value)]
                 value22 = value[value.index(":") + 1:len(value)]
                 scoreboard_DataNumNew_ArrayList.append(int(value22))
                 if _debug_Show_Priority_Hi_Bool:
-                    print("* B")
+                    print("* B: Parsed Key:Value:")
                     print(value)
                     print(value22)
                     print("" + str((scoreboard_DataNumNew_ArrayList[len(scoreboard_DataNumNew_ArrayList) - 1])))
@@ -90,7 +97,7 @@ def update_line_plot() -> None:
                 print(scoreboard_BotSingle_ArrayList_1D)
                 print(scoreboard_DataNumNew_ArrayList)
 
-                if scoreboard_BotSingle_ArrayList_1D[0] == scoreboard_DataNumNew_ArrayList[0]:
+                if scoreboard_DataNumNew_ArrayList[0] == scoreboard_BotSingle_ArrayList_1D[0]:
                     scoreboard_Bot_Found_Bool = True
                     ###jwc o index22 = 0
                     ###jwc o while index22 <= len(scoreboard_BotSingle_ArrayList_1D) - 1:
@@ -116,6 +123,7 @@ def update_line_plot() -> None:
                         print("* L+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
                     
                     y1 = scoreboard_DataNumNew_ArrayList[index22]
+                    y1Value[index2] = scoreboard_DataNumNew_ArrayList[index22]
                     
                     index22 += 1
 
@@ -127,30 +135,42 @@ def update_line_plot() -> None:
                         print("* M+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
 
                     y2 = scoreboard_DataNumNew_ArrayList[index22]
+                    y2Value[index2] = scoreboard_DataNumNew_ArrayList[index22]
 
 
                     now = datetime.now()
                     x = now.timestamp()
                     ###jwc o y1 = np.sin(x)
                     ###jwc o y2 = np.cos(x)
-
+                    
                     print("*** ***" + str(y1) +" "+ str(y2))
-                    line_plot.push([now], [[y1], [y2]])                 
+                    line_plot.push([now], [[y1], [y2]])  
+                    
+                ###jwc n scoreboard_BotsAll_StringFull_ArrayList_2D[index2] = x            
 
                 index2 += 1
         if not (scoreboard_Bot_Found_Bool):
             scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
             if _debug_Show_Priority_Hi_Bool:
-                print("* D:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
-    
+                print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
+        
 
-    ###jwc n prints twice: 2nd 0: now = datetime.now()
-    ###jwc n prints twice: 2nd 0: x = now.timestamp()
-    ###jwc n prints twice: 2nd 0: ###jwc o y1 = np.sin(x)
-    ###jwc n prints twice: 2nd 0: ###jwc o y2 = np.cos(x)
-    ###jwc n prints twice: 2nd 0: 
-    ###jwc n prints twice: 2nd 0: print("*** ***" + str(y1) +" "+ str(y2))
-    ###jwc n prints twice: 2nd 0: line_plot.push([now], [[y1], [y2]])
+        ###jwc n prints twice: 2nd 0: now = datetime.now()
+        ###jwc n prints twice: 2nd 0: x = now.timestamp()
+        ###jwc n prints twice: 2nd 0: ###jwc o y1 = np.sin(x)
+        ###jwc n prints twice: 2nd 0: ###jwc o y2 = np.cos(x)
+        ###jwc n prints twice: 2nd 0: 
+        ###jwc n prints twice: 2nd 0: print("*** ***" + str(y1) +" "+ str(y2))
+        ###jwc n prints twice: 2nd 0: line_plot.push([now], [[y1], [y2]])
+
+    ###jwc 23-0423-2050 ? w = datetime.now()
+    ###jwc 23-0423-2050 ? = now.timestamp()
+    ###jwc 23-0423-2050 ? #jwc o y1 = np.sin(x)
+    ###jwc 23-0423-2050 ? #jwc o y2 = np.cos(x)
+
+    ###jwc 23-0423-2050 ? int("*** ***" + str(y1Value[1]) +" "+ str(y1Value[2]))
+    ###jwc 23-0423-2050 ? ne_plot.push([now], [[y1Value[1]], [y1Value[2]]])  
+
 
 ###jwc o line_updates = ui.timer(0.1, update_line_plot, active=False)
 ###jwc timer x2 speed: 0.1 to 0.05
@@ -182,5 +202,38 @@ line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
 ##jwc n     newData = [datestamp, x]
 ##jwc n     print(newData)
 ##jwc n 
+
+
+###jwc n grid = ui.aggrid({
+###jwc n     'columnDefs': [
+###jwc n         {'headerName': 'Name', 'field': 'name'},
+###jwc n         {'headerName': 'Age', 'field': 'age'},
+###jwc n     ],
+###jwc n     ###jwc n 'rowData': [
+###jwc n     ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[0],
+###jwc n     ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[1],
+###jwc n     ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[2],
+###jwc n     ###jwc n ],
+###jwc n     'rowData': [
+###jwc n         {'name': 'Alice', 'age': 18},
+###jwc n         {'name': 'Bob', 'age': 21},
+###jwc n         {'name': 'Carol', 'age': 42},
+###jwc n     ],
+###jwc n     'rowSelection': 'multiple',
+###jwc n }).classes('max-h-40')
+###jwc n 
+###jwc n def updateGrid():
+###jwc n     grid.options[
+###jwc n         'rowData': [
+###jwc n         {'name': 'Alice', 'age': 28},
+###jwc n         {'name': 'Bob', 'age': 31},
+###jwc n         {'name': 'Carol', 'age': 52},
+###jwc n     ]]
+###jwc n 
+###jwc n     grid.update()
+###jwc n 
+###jwc n ui.button('Update', on_click=updateGrid)
+###jwc n ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
+
 
 ui.run()
