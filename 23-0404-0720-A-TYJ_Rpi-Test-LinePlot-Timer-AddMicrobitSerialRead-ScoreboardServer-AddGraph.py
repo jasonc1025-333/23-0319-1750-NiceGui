@@ -1,4 +1,6 @@
 import numpy as np
+from numpy.random import random
+
 from datetime import datetime
 from nicegui import ui
 
@@ -123,8 +125,10 @@ def update_line_plot() -> None:
                         print("* L+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
                     
                     y1 = scoreboard_DataNumNew_ArrayList[index22]
-                    y1Value[index2] = scoreboard_DataNumNew_ArrayList[index22]
+                    y1Value[index2] = scoreboard_BotSingle_ArrayList_1D[index22]
+                    print('>>>  y1Value[index2]:' + str(y1Value[index2]))
                     
+
                     index22 += 1
 
                     if _debug_Show_Priority_Hi_Bool:
@@ -135,7 +139,8 @@ def update_line_plot() -> None:
                         print("* M+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
 
                     y2 = scoreboard_DataNumNew_ArrayList[index22]
-                    y2Value[index2] = scoreboard_DataNumNew_ArrayList[index22]
+                    y2Value[index2] = scoreboard_BotSingle_ArrayList_1D[index22]
+                    print('>>> y2Value[index2]:' + str(y2Value[index2]))
 
 
                     now = datetime.now()
@@ -143,8 +148,8 @@ def update_line_plot() -> None:
                     ###jwc o y1 = np.sin(x)
                     ###jwc o y2 = np.cos(x)
                     
-                    print("*** ***" + str(y1) +" "+ str(y2))
-                    line_plot.push([now], [[y1], [y2]])  
+                    ###jwc y print("*** ***" + str(y1) +" "+ str(y2))
+                    ###jwc y line_plot.push([now], [[y1], [y2]])  
                     
                 ###jwc n scoreboard_BotsAll_StringFull_ArrayList_2D[index2] = x            
 
@@ -172,10 +177,21 @@ def update_line_plot() -> None:
     ###jwc 23-0423-2050 ? ne_plot.push([now], [[y1Value[1]], [y1Value[2]]])  
 
 
+def update_line_plot_02() -> None:
+    now = datetime.now()
+
+    print(">>> >>> " + str(y2Value[1]) +" "+ str(y2Value[2]) +": "+str(y2Value))
+    line_plot.push([now.timestamp()], [[y2Value[1]], [y2Value[2]]])  
+
+
 ###jwc o line_updates = ui.timer(0.1, update_line_plot, active=False)
 ###jwc timer x2 speed: 0.1 to 0.05
-line_updates = ui.timer(0.05, update_line_plot, active=False)
+###jwc o line_updates = ui.timer(0.05, update_line_plot, active=False)
+line_updates = ui.timer(0.05, update_line_plot, active=True)
 line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
+
+line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
+
 
 ##jwc n ser = serial.Serial(
 ##jwc n         ##jwc o port='/dev/ttyACM0',
@@ -234,6 +250,27 @@ line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
 ###jwc n 
 ###jwc n ui.button('Update', on_click=updateGrid)
 ###jwc n ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
+
+###jwc n def update_table():
+###jwc n     rows = [
+###jwc n         {'name': 'Alice', 'age': random(9)},
+###jwc n         {'name': 'Bob', 'age': random(9)},
+###jwc n         {'name': 'Carol'},
+###jwc n     ]
+
+
+###jwc n columns = [
+###jwc n     {'name': 'name', 'label': 'Name', 'field': 'name', 'required': True, 'align': 'left'},
+###jwc n     {'name': 'age', 'label': 'Age', 'field': 'age', 'sortable': True},
+###jwc n ]
+###jwc n rows = [
+###jwc n     {'name': 'Alice', 'age': 18},
+###jwc n     {'name': 'Bob', 'age': 21},
+###jwc n     {'name': 'Carol'},
+###jwc n ]
+###jwc n ###jwc n table_updates = ui.timer(0.05, update_table, active=True)
+###jwc n 
+###jwc n ui.table(columns=columns, rows=rows, row_key='name')
 
 
 ui.run()
