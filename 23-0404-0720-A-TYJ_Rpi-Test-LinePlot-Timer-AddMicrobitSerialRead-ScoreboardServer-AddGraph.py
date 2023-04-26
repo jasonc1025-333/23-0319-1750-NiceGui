@@ -220,36 +220,42 @@ line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
 ##jwc n 
 
 
-###jwc n grid = ui.aggrid({
-###jwc n     'columnDefs': [
-###jwc n         {'headerName': 'Name', 'field': 'name'},
-###jwc n         {'headerName': 'Age', 'field': 'age'},
-###jwc n     ],
-###jwc n     ###jwc n 'rowData': [
-###jwc n     ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[0],
-###jwc n     ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[1],
-###jwc n     ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[2],
-###jwc n     ###jwc n ],
-###jwc n     'rowData': [
-###jwc n         {'name': 'Alice', 'age': 18},
-###jwc n         {'name': 'Bob', 'age': 21},
-###jwc n         {'name': 'Carol', 'age': 42},
-###jwc n     ],
-###jwc n     'rowSelection': 'multiple',
-###jwc n }).classes('max-h-40')
-###jwc n 
-###jwc n def updateGrid():
-###jwc n     grid.options[
-###jwc n         'rowData': [
-###jwc n         {'name': 'Alice', 'age': 28},
-###jwc n         {'name': 'Bob', 'age': 31},
-###jwc n         {'name': 'Carol', 'age': 52},
-###jwc n     ]]
-###jwc n 
-###jwc n     grid.update()
-###jwc n 
-###jwc n ui.button('Update', on_click=updateGrid)
-###jwc n ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
+grid = ui.aggrid({
+    'columnDefs': [
+        {'headerName': 'Name', 'field': 'name'},
+        {'headerName': 'Age', 'field': 'age'},
+        {'headerName': 'Weight', 'field': 'weight'},
+    ],
+    ###jwc n 'rowData': [
+    ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[0],
+    ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[1],
+    ###jwc n     scoreboard_BotsAll_StringFull_ArrayList_2D[2],
+    ###jwc n ],
+    'rowData': [
+        {'name': 'Alice', 'age': 10, 'weight':100},
+        {'name': 'Bob', 'age': 20, 'weight':200},
+        {'name': 'Carol', 'age': 30, 'weight':300},
+    ],
+    'rowSelection': 'multiple',
+}).classes('max-h-40')
+
+def updateGrid():
+    ###jwc n grid.options[
+    ###jwc n     'rowData': [
+    ###jwc n     {'name': 'Alice', 'age': 28},
+    ###jwc n     {'name': 'Bob', 'age': 31},
+    ###jwc n     {'name': 'Carol', 'age': 52},
+    ###jwc n]] 
+    ###jwc y grid.options['rowData'][0]['age'] += 1
+    grid.options['rowData'][1]['age'] += 1
+    ###jwc n grid.options['rowData']['Carol']['age'] = random(9)
+    grid.options['rowData'][2]['weight'] += 2
+
+    grid.update()
+
+ui.button('Update', on_click=updateGrid)
+ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
+
 
 ###jwc n def update_table():
 ###jwc n     rows = [
