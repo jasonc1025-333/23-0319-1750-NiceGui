@@ -193,10 +193,15 @@ def update_line_plot_02() -> None:
 ###jwc o line_updates = ui.timer(0.1, update_line_plot, active=False)
 ###jwc timer x2 speed: 0.1 to 0.05
 ###jwc o line_updates = ui.timer(0.05, update_line_plot, active=False)
-line_updates = ui.timer(0.05, update_line_plot, active=True)
+## '0.05' sec
+###jwc good for slow real-time y line_updates = ui.timer(0.05, update_line_plot, active=True)
+###jwc y no more linegraph real-time to test chart realtime instead, 
+###jwc TYJ LINE GRAPH DID SEEM TO SLOW DOWN TEXTCHART/DISPLAY BY 10-20 SEC :)+
+line_updates = ui.timer(0.05, update_line_plot, active=False)
 line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
 
-line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
+## '0.1' sec
+### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
 
 
 ##jwc n ser = serial.Serial(
@@ -300,7 +305,8 @@ grid = ui.aggrid({
     ###jwc y grid.options['rowData'][2]['weight'] += 2
 
 tenp1 = 5
-temp2 = 10
+temp2 = 1
+
 
 def updateGrid():
     ###jwc n grid.options[
@@ -310,16 +316,20 @@ def updateGrid():
     ###jwc n     {'name': 'Carol', 'age': 52},
     ###jwc n]] 
     ###jwc y grid.options['rowData'][0]['age'] += 1
-    grid.options['rowData'][1]['light_lastdelta'] += tenp1
+    grid.options['rowData'][0]['magnet_lastdelta'] += temp2
+    grid.options['rowData'][0]['magnet_total'] += temp2
+    grid.options['rowData'][1]['light_lastdelta'] += random.randint(1,100)
     ###jwc n grid.options['rowData']['Carol']['age'] = random(9)
-    grid.options['rowData'][2]['light_total'] += temp2
-    grid.options['rowData'][0]['magnet_lastdelta'] = random.randint(1,100)
+    grid.options['rowData'][2]['light_total'] += random.randint(1,100)
 
     grid.update()
 
 ui.button('Update', on_click=updateGrid)
 ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
 
+## '0.05' sec update
+###jwc y update_Grid = ui.timer(0.05, updateGrid, active=True)
+update_Grid = ui.timer(1, updateGrid, active=True)
 
 ###jwc n def update_table():
 ###jwc n     rows = [
