@@ -300,14 +300,77 @@ dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, '
 ###jwc y     {'row#':4, 'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
 ###jwc y )
 
-## dictionary
+###jwc yy ## array of dictionary
+###jwc yy ##
+###jwc yy rowData_List = [
+###jwc yy     {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+###jwc yy     {'row#':2, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+###jwc yy     {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+###jwc yy     {'row#':4, 'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
+###jwc yy ]
+
+## list
+##
+###jwc ? rowData_List = [
+###jwc ?     {
+###jwc ?         0 : {'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+###jwc ?         1 : {'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+###jwc ?         2 : {'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+###jwc ?         3 : {'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},
+###jwc ?     }
+###jwc ? ]
+###jwc yn legal db, but fails for web, blank chart: ## nested dictionary
+###jwc yn legal db, but fails for web, blank chart: ##
+###jwc yn legal db, but fails for web, blank chart: rowData_List = {
+###jwc yn legal db, but fails for web, blank chart:         0 : {'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+###jwc yn legal db, but fails for web, blank chart:         1 : {'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+###jwc yn legal db, but fails for web, blank chart:         2 : {'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+###jwc yn legal db, but fails for web, blank chart:         3 : {'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},
+###jwc yn legal db, but fails for web, blank chart:     }
+###jwc n ##
+###jwc n ##
+###jwc n rowData_List = [
+###jwc n         0 : {'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+###jwc n         1 : {'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+###jwc n         2 : {'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+###jwc n         3 : {'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},
+###jwc n ]
+
+###jwc n ##
+###jwc n ##
+###jwc n rowData_List = [
+###jwc n         {0 : {'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15}},
+###jwc n         {1 : {'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25}},
+###jwc n         {2 : {'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35}},    
+###jwc n         {3 : {'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45}},
+###jwc n ]
+###jwc n ##
+###jwc n ##
+###jwc n rowData_List = {
+###jwc n         {0 : {'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15}},
+###jwc n         {1 : {'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25}},
+###jwc n         {2 : {'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35}},    
+###jwc n         {3 : {'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45}},
+###jwc n     }
+## nested dictionary
+##
+###jwc n rowData_List = (
+###jwc n         {0 : {'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15}},
+###jwc n         {1 : {'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25}},
+###jwc n         {2 : {'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35}},    
+###jwc n         {3 : {'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45}},
+###jwc n )
+
+
+## array of dictionary
 ##
 rowData_List = [
-    {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
-    {'row#':2, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
-    {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
-    {'row#':4, 'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
+    {'row_base0#':0, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+    {'row_base0#':1, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+    {'row_base0#':2, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+    {'row_base0#':3, 'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
 ]
+
 
 ###jwc y }).classes('max-h-40')
 ###jwc y }).classes('max-h-80')
@@ -347,6 +410,7 @@ def updateGrid():
     ###jwc n     {'name': 'Carol', 'age': 52},
     ###jwc n]] 
     ###jwc y grid.options['rowData'][0]['age'] += 1
+    ###jwc yy grid.options['rowData'][0]['magnet_lastdelta'] += temp2
     grid.options['rowData'][0]['magnet_lastdelta'] += temp2
     grid.options['rowData'][0]['magnet_total'] += temp2
     grid.options['rowData'][1]['light_lastdelta'] += random_General.randint(1,100)
