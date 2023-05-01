@@ -10,6 +10,28 @@ from datetime import datetime
 
 import random as random_General
 
+
+## array of dictionary
+##
+rowData_List = [
+    {'row_base0_num':0, 'bot_id':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+    {'row_base0_num':1, 'bot_id':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+    {'row_base0_num':2, 'bot_id':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+    {'row_base0_num':3, 'bot_id':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
+]
+
+rowData_ArrayList_Of_SingleBot_DictionaryPairs = [
+    {'row_base0_num':0, 'bot_id':10, 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
+    {'row_base0_num':1, 'bot_id':11, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
+]
+
+rowData_SingleBot_DictionaryPairs_Empty = {
+    'row_base0_num':0, 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
+    }
+
+
+scoreboard_DataMessage_Recvd_Dict = {}
+
 ser = serial.Serial(
         ##jwc o port='/dev/ttyACM0',
         ##jwc o port='COM3',
@@ -52,8 +74,6 @@ def update_line_plot() -> None:
 
     network_DataMessage_Rcvd_Bytes = ser.readline()
     if network_DataMessage_Rcvd_Bytes:
-        dt = datetime.now()
-        datestamp = str(dt)[:16]
         ###jwc o temp, light = network_DataMessage_Rcvd_Bytes.decode().split(':')
         ###jwc 23-0310-1120 y id, te, li, co = network_DataMessage_Rcvd_Bytes.decode().split(',')
         ###jwc n id, te, li, co, m1, m2, m3, m4 = network_DataMessage_Rcvd_Bytes.decode().split('|')
@@ -61,19 +81,37 @@ def update_line_plot() -> None:
         ###jwc o newData = [datestamp,temp,light]
         ###jwc 23-0310-1120 y newData = [datestamp, id, te, li, co]
         ###jwc n newData = [datestamp, id, te, li, co, m1, m2, m3, m4]
-        newData = [datestamp, network_DataMessage_Rcvd_Bytes]
-    
-        print(newData)
+
+        ###jwc o not neeeded: dt = datetime.now()
+        ###jwc o not neeeded: datestamp = str(dt)[:16]
+        ###jwc o not neeeded: newData = [datestamp, network_DataMessage_Rcvd_Bytes]
+        ###jwc o not neeeded: print(newData)
 
         ###jwc o network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Bytes
         network_DataMessage_Rcvd_Str = str(network_DataMessage_Rcvd_Bytes)
         ##jwc workaround for '\r\n' tail
-        network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[0:len(network_DataMessage_Rcvd_Str)-10]
+        ##jwc y network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[0:len(network_DataMessage_Rcvd_Str)-10]
+        ###jwc n network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[0:network_DataMessage_Rcvd_Str.index("\\r\\n")]
+        ###jwc n network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str.rstrip("\r\n")
+        ###jwc n network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str.strip()
+        ###jwc n network_DataMessage_Rcvd_02_Str = network_DataMessage_Rcvd_Str.strip()
+        ###jwc n network_DataMessage_Rcvd_02_Str = network_DataMessage_Rcvd_Str.rstrip()
+        ###jwc n network_DataMessage_Rcvd_02_Str = network_DataMessage_Rcvd_Str.rstrip("\r\n")
+        ###jwc n network_DataMessage_Rcvd_02_Str = network_DataMessage_Rcvd_Str.rstrip("\\r\\n")
+        ###jwc n network_DataMessage_Rcvd_02_Str = network_DataMessage_Rcvd_Str.rstrip("\\\r\\\n")
+        ###jwc n network_DataMessage_Rcvd_02_Str = network_DataMessage_Rcvd_Str.replace("\r\n","")
+
+        ## ':-5' though only 4 length: '\r\n'
+        network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[:-5]
+        ## Remove trailing spaces from both sides
+        network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str.strip()
+        network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[network_DataMessage_Rcvd_Str.index("#"):]
 
         if _debug_Show_Priority_Hi_Bool:
             ###jwc o print replaced by 'print'
             print("* A: Raw String: ")
-            print("> " + str(network_DataMessage_Rcvd_Str))
+            ###jwc o print("  A1>" + str(network_DataMessage_Rcvd_Str) +"|")
+            print("  1:" + str(network_DataMessage_Rcvd_Str) +"|")
         if True:
             scoreboard_DataNumNew_ArrayList = []
             ###jwc y scoreboard_DataStrNew_ArrayList = network_DataMessage_Rcvd_Str.split("|")
@@ -83,88 +121,132 @@ def update_line_plot() -> None:
                 ###jwc o key_Value_Pair__Value = key_Value_Pair.substr(key_Value_Pair.index_of(":") + 1, len(key_Value_Pair))
                 ###jwc o key_Value_Pair__Value = key_Value_Pair[key_Value_Pair.index_of(":") + 1:len(key_Value_Pair)]
                 ## * Skip past "b'" prefix
-                key_Value_Pair__Key = key_Value_Pair[2 : key_Value_Pair.index(":")-1]
+                ##jwc ? key_Value_Pair__Key = key_Value_Pair[2 : key_Value_Pair.index(":")-1]
+                ##jwc n key_Value_Pair__Key = key_Value_Pair[0:key_Value_Pair.index(":")-1]
+                key_Value_Pair__Key = key_Value_Pair[key_Value_Pair.index(":")-1 : key_Value_Pair.index(":")]
+                ##jwc y key_Value_Pair__Value = key_Value_Pair[key_Value_Pair.index(":") + 1:len(key_Value_Pair)]
                 key_Value_Pair__Value = key_Value_Pair[key_Value_Pair.index(":") + 1:len(key_Value_Pair)]
-                scoreboard_DataNumNew_ArrayList.append(int(key_Value_Pair__Value))
+                ##jwc yy scoreboard_DataNumNew_ArrayList.append(int(key_Value_Pair__Value))
+
+                ##jwc n scoreboard_DataNumNew_ArrayList.append({key_Value_Pair__Key:int(key_Value_Pair__Value)})
+                
+                ### n scoreboard_DataNumNew_ArrayList['A']=int(key_Value_Pair__Value)
+                ### scoreboard_DataNumNew_ArrayList.append(int(key_Value_Pair__Value))
+                scoreboard_DataMessage_Recvd_Dict[key_Value_Pair__Key]=int(key_Value_Pair__Value)
+
                 if _debug_Show_Priority_Hi_Bool:
                     print("* B: Parsed Key:key_Value_Pair:")
-                    print(key_Value_Pair, key_Value_Pair__Key, key_Value_Pair__Value)
-                    print("" + str((scoreboard_DataNumNew_ArrayList[len(scoreboard_DataNumNew_ArrayList) - 1])))
-                    print(scoreboard_DataNumNew_ArrayList)
+                    print("  1:key_Value_Pair|key_Value_Pair__Key|key_Value_Pair__Value: " + key_Value_Pair +"|"+ key_Value_Pair__Key +"|"+ key_Value_Pair__Value +"|")
+                    
+                    ###jwc o print("  2:"+ str((scoreboard_DataNumNew_ArrayList[len(scoreboard_DataNumNew_ArrayList) - 1])) +"|")
+                    ###jwc o print("  3:"+ str(scoreboard_DataNumNew_ArrayList)
+                          
+                    print("  2:scoreboard_DataMessage_Recvd_Dict: "+ str(scoreboard_DataMessage_Recvd_Dict) +"|")
+                   
 
         if True:
             scoreboard_Bot_Found_Bool = False
-            index2 = 0
+            print("* C")
+            print("  C1:" + str(rowData_ArrayList_Of_SingleBot_DictionaryPairs))
+
+            for bot_dictionary in rowData_ArrayList_Of_SingleBot_DictionaryPairs:
+                print("  C2:" + str(bot_dictionary))
+                if scoreboard_DataMessage_Recvd_Dict['#'] in bot_dictionary.values():
+                    scoreboard_Bot_Found_Bool = True    
+                    
+                    print("  C3a:bot_dictionary: " + str(bot_dictionary))
+                    bot_dictionary['magnet_lastdelta']=scoreboard_DataMessage_Recvd_Dict['M']
+                    bot_dictionary['magnet_total']+=scoreboard_DataMessage_Recvd_Dict['M']
+                    print("  C3b:bot_dictionary: " + str(bot_dictionary))
+                    
+
+            ###jwc o index2 = 0
 
             ###jwc o while index2 <= len(scoreboard_BotsAll_ArrayList_2D) - 1:
-            while index2 <= len(scoreboard_BotsAll_ArrayList_2D) - 1:
-                scoreboard_BotSingle_ArrayList_1D = scoreboard_BotsAll_ArrayList_2D[index2]
+            ###jwc o while index2 <= len(scoreboard_BotsAll_ArrayList_2D) - 1:
+            ###jwc o     scoreboard_BotSingle_ArrayList_1D = scoreboard_BotsAll_ArrayList_2D[index2]
+            ###jwc o 
+            ###jwc o     print("* C: DEBUG")
+            ###jwc o     ##jwc o print("  1:scoreboard_BotsAll_ArrayList_2D: " + str(scoreboard_BotsAll_ArrayList_2D))
+            ###jwc o     ##jwc o print("  2:scoreboard_BotSingle_ArrayList_1D: " + str(scoreboard_BotSingle_ArrayList_1D))
+            ###jwc o     ##jwc o print("  3:scoreboard_DataNumNew_ArrayList: " + str(scoreboard_DataNumNew_ArrayList))
+            ###jwc o 
+            ###jwc o     print("  1:rowData_ArrayList_Of_SingleBot_DictionaryPairs: " + str(rowData_ArrayList_.Of_SingleBot_DictionaryPairs))
+            ###jwc o     rowData_ArrayList_Of_SingleBot_DictionaryPairs.index
+            ###jwc o 
+            ###jwc o     if scoreboard_DataNumNew_ArrayList[0] == scoreboard_BotSingle_ArrayList_1D[0]:
+            ###jwc o         scoreboard_Bot_Found_Bool = True
+            ###jwc o         ###jwc o index22 = 0
+            ###jwc o         ###jwc o while index22 <= len(scoreboard_BotSingle_ArrayList_1D) - 1:
+            ###jwc o         ###jwc o     _codeComment_AsText = "Skip 0th Index: BotId"
+            ###jwc o         ###jwc o     if index22 != 0:
+            ###jwc o         ###jwc o         if _debug_Show_Priority_Hi_Bool:
+            ###jwc o         ###jwc o             print("* C1: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
+            ###jwc o         ###jwc o         ## Add the two above
+            ###jwc o         ###jwc o         scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
+            ###jwc o         ###jwc o         if _debug_Show_Priority_Hi_Bool:
+            ###jwc o         ###jwc o             print("* C2: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
+            ###jwc o         ###jwc o     index22 += 1
+            ###jwc o         ###jwc o while index22 <= len(scoreboard_BotSingle_ArrayList_1D) - 1:
+            ###jwc o         ###jwc o     if index22 != 0:
+            ###jwc o 
+            ###jwc o         _codeComment_AsText = "Skip 0th Index: BotId"
+            ###jwc o         index22 = 1
+            ###jwc o         if _debug_Show_Priority_Hi_Bool:
+            ###jwc o             ###jwc o print("* L-: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
+            ###jwc o             ###jwc ? print("* L-: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList['L']))
+            ###jwc o             ## Add the two above
+            ###jwc o             ##? scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + int(scoreboard_DataNumNew_ArrayList{'L'})
+            ###jwc o             print("* L+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
+            ###jwc o         
+            ###jwc o         y1 = scoreboard_DataNumNew_ArrayList[index22]
+            ###jwc o         y1Value[index2] = scoreboard_BotSingle_ArrayList_1D[index22]
+            ###jwc o         print('>>>  y1Value[index2]:' + str(y1Value[index2]))
+            ###jwc o         
+            ###jwc o 
+            ###jwc o         index22 += 1
+            ###jwc o 
+            ###jwc o         if _debug_Show_Priority_Hi_Bool:
+            ###jwc o             print("* M-: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
+            ###jwc o         ## Add the two above
+            ###jwc o         scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
+            ###jwc o         if _debug_Show_Priority_Hi_Bool:
+            ###jwc o             print("* M+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
+            ###jwc o 
+            ###jwc o         y2 = scoreboard_DataNumNew_ArrayList[index22]
+            ###jwc o         y2Value[index2] = scoreboard_BotSingle_ArrayList_1D[index22]
+            ###jwc o         print('>>> y2Value[index2]:' + str(y2Value[index2]))
+            ###jwc o 
+            ###jwc o 
+            ###jwc o         now = datetime.now()
+            ###jwc o         network_DataMessage_Rcvd_Bytes = now.timestamp()
+            ###jwc o         ###jwc o y1 = np.sin(network_DataMessage_Rcvd_Bytes)
+            ###jwc o         ###jwc o y2 = np.cos(network_DataMessage_Rcvd_Bytes)
+            ###jwc o         
+            ###jwc o         ###jwc y print("*** ***" + str(y1) +" "+ str(y2))
+            ###jwc o         ###jwc y line_plot.push([now], [[y1], [y2]])  
+            ###jwc o         
+            ###jwc o     ###jwc n scoreboard_BotsAll_StringFull_ArrayList_2D[index2] = network_DataMessage_Rcvd_Bytes            
+            ###jwc o 
+            ###jwc o     index2 += 1
+            
+            print("* D")
+            if not (scoreboard_Bot_Found_Bool):
+                ##jwc o scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
+                ##jwc o if _debug_Show_Priority_Hi_Bool:
+                ##jwc o     print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
 
-                print("*** DEBUG")
-                print(scoreboard_BotsAll_ArrayList_2D)
-                print(scoreboard_BotSingle_ArrayList_1D)
-                print(scoreboard_DataNumNew_ArrayList)
-
-                if scoreboard_DataNumNew_ArrayList[0] == scoreboard_BotSingle_ArrayList_1D[0]:
-                    scoreboard_Bot_Found_Bool = True
-                    ###jwc o index22 = 0
-                    ###jwc o while index22 <= len(scoreboard_BotSingle_ArrayList_1D) - 1:
-                    ###jwc o     _codeComment_AsText = "Skip 0th Index: BotId"
-                    ###jwc o     if index22 != 0:
-                    ###jwc o         if _debug_Show_Priority_Hi_Bool:
-                    ###jwc o             print("* C1: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
-                    ###jwc o         ## Add the two above
-                    ###jwc o         scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
-                    ###jwc o         if _debug_Show_Priority_Hi_Bool:
-                    ###jwc o             print("* C2: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
-                    ###jwc o     index22 += 1
-                    ###jwc o while index22 <= len(scoreboard_BotSingle_ArrayList_1D) - 1:
-                    ###jwc o     if index22 != 0:
-
-                    _codeComment_AsText = "Skip 0th Index: BotId"
-                    index22 = 1
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("* L-: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
-                    ## Add the two above
-                    scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("* L+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
-                    
-                    y1 = scoreboard_DataNumNew_ArrayList[index22]
-                    y1Value[index2] = scoreboard_BotSingle_ArrayList_1D[index22]
-                    print('>>>  y1Value[index2]:' + str(y1Value[index2]))
-                    
-
-                    index22 += 1
-
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("* M-: " + str(scoreboard_BotSingle_ArrayList_1D[index22]) + " " + str(scoreboard_DataNumNew_ArrayList[index22]))
-                    ## Add the two above
-                    scoreboard_BotSingle_ArrayList_1D[index22] = scoreboard_BotSingle_ArrayList_1D[index22] + scoreboard_DataNumNew_ArrayList[index22]
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("* M+: " + str(scoreboard_BotSingle_ArrayList_1D[index22]))
-
-                    y2 = scoreboard_DataNumNew_ArrayList[index22]
-                    y2Value[index2] = scoreboard_BotSingle_ArrayList_1D[index22]
-                    print('>>> y2Value[index2]:' + str(y2Value[index2]))
+                rowData_SingleBot_DictionaryPairs_Empty['row_base0_num'] = len(rowData_ArrayList_Of_SingleBot_DictionaryPairs)
+                rowData_SingleBot_DictionaryPairs_Empty['bot_id'] = scoreboard_DataMessage_Recvd_Dict['#']
+                rowData_SingleBot_DictionaryPairs_Empty['magnet_lastdelta'] = scoreboard_DataMessage_Recvd_Dict['M']
+                rowData_SingleBot_DictionaryPairs_Empty['magnet_total'] = 0
 
 
-                    now = datetime.now()
-                    network_DataMessage_Rcvd_Bytes = now.timestamp()
-                    ###jwc o y1 = np.sin(network_DataMessage_Rcvd_Bytes)
-                    ###jwc o y2 = np.cos(network_DataMessage_Rcvd_Bytes)
-                    
-                    ###jwc y print("*** ***" + str(y1) +" "+ str(y2))
-                    ###jwc y line_plot.push([now], [[y1], [y2]])  
-                    
-                ###jwc n scoreboard_BotsAll_StringFull_ArrayList_2D[index2] = network_DataMessage_Rcvd_Bytes            
+                print("  D1aa:" + str(rowData_ArrayList_Of_SingleBot_DictionaryPairs))
+                print("  D1ab:" + str(rowData_SingleBot_DictionaryPairs_Empty))
+                rowData_ArrayList_Of_SingleBot_DictionaryPairs.append(rowData_SingleBot_DictionaryPairs_Empty)
+                print("  D1b:" + str(rowData_ArrayList_Of_SingleBot_DictionaryPairs))
 
-                index2 += 1
-        if not (scoreboard_Bot_Found_Bool):
-            scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
-            if _debug_Show_Priority_Hi_Bool:
-                print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
-        
 
         ###jwc n prints twice: 2nd 0: now = datetime.now()
         ###jwc n prints twice: 2nd 0: network_DataMessage_Rcvd_Bytes = now.timestamp()
@@ -204,7 +286,7 @@ line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
 
 ## '0.1' sec
 ### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
-line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
+###jwc 23-0501-1400 yy line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
 
 
 ##jwc n ser = serial.Serial(
@@ -362,16 +444,6 @@ dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, '
 ###jwc n )
 
 
-## array of dictionary
-##
-rowData_List = [
-    {'row_base0#':0, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
-    {'row_base0#':1, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
-    {'row_base0#':2, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
-    {'row_base0#':3, 'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
-]
-
-
 ###jwc y }).classes('max-h-40')
 ###jwc y }).classes('max-h-80')
 ###jwc ? }).classes('max-h-500')
@@ -379,16 +451,25 @@ rowData_List = [
 ###jwc y }).classes('max-h-[128rem]')
 ###jwc y }).classes('h-[128rem]')
 
+###jwc 23-0501-1500 yy    'rowData' : rowData_List,
+
+###jwc 23-0501-1520        {'headerName': 'Row#', 'field': 'row#'},
+###jwc 23-0501-1520        {'headerName': 'BotId', 'field': 'botid'},
+###jwc 23-0501-1520        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
+###jwc 23-0501-1520        {'headerName': 'Light_Total', 'field': 'light_total'},
+###jwc 23-0501-1520        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
+###jwc 23-0501-1520        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
+
 grid = ui.aggrid({
     'columnDefs': [
-        {'headerName': 'Row#', 'field': 'row#'},
-        {'headerName': 'BotId', 'field': 'botid'},
+        {'headerName': 'Row_Base0_Num', 'field': 'row_base0_num'},
+        {'headerName': 'Bot_Id', 'field': 'bot_id'},
         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
         {'headerName': 'Light_Total', 'field': 'light_total'},
         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
         {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
     ],
-    'rowData' : rowData_List,
+    'rowData' : rowData_ArrayList_Of_SingleBot_DictionaryPairs,
     'rowSelection': 'multiple',
 ## Defaults to 'h-64'
 ## 1 rem = 16px, 2 rem = 1 full font height     
@@ -425,7 +506,7 @@ def updateGrid02():
     rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
     rowData_List[1]['magnet_lastdelta']+=2
     rowData_List[1]['magnet_total']+=rowData_List[1]['magnet_lastdelta']
-    rowData_List.append({'row#':5, 'botid':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    rowData_List.append({'row_base0_num':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
 
 
 ui.button('Update', on_click=updateGrid)
