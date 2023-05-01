@@ -102,9 +102,9 @@ def update_line_plot() -> None:
         ###jwc n network_DataMessage_Rcvd_02_Str = network_DataMessage_Rcvd_Str.rstrip("\\\r\\\n")
         ###jwc n network_DataMessage_Rcvd_02_Str = network_DataMessage_Rcvd_Str.replace("\r\n","")
 
-        ## ':-5' though only 4 length: '\r\n'
+        # ':-5' though only 4 length: '\r\n'
         network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[:-5]
-        ## Remove trailing spaces from both sides
+        # Remove trailing spaces from both sides
         network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str.strip()
         network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[network_DataMessage_Rcvd_Str.index("#"):]
 
