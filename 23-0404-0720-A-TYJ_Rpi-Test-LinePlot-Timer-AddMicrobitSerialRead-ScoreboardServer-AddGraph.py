@@ -11,8 +11,8 @@ from datetime import datetime
 import random as random_General
 
 
-## array of dictionary
-##
+# array of dictionary
+#
 rowData_List = [
     {'row_base0_num':0, 'bot_id':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
     {'row_base0_num':1, 'bot_id':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
@@ -20,12 +20,13 @@ rowData_List = [
     {'row_base0_num':3, 'bot_id':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
 ]
 
-rowData_ArrayList_Of_SingleBot_DictionaryPairs = [
-    {'row_base0_num':0, 'bot_id':10, 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
-    {'row_base0_num':1, 'bot_id':11, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
+    ###jwc y {'row_base0_num':1, 'bot_id':11, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
+rowData_ArrayList_OfDictionaryPairs_ForEachBot = [
+    # 'row_base0_num=0 & bot_id=0' for testing purpposes
+    {'row_base0_num':0, 'bot_id':0, 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
 ]
 
-rowData_SingleBot_DictionaryPairs_Empty = {
+rowData_OfDictionaryPairs_ForABot_Empty = {
     'row_base0_num':0, 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
     }
 
@@ -147,9 +148,9 @@ def update_line_plot() -> None:
         if True:
             scoreboard_Bot_Found_Bool = False
             print("* C")
-            print("  C1:" + str(rowData_ArrayList_Of_SingleBot_DictionaryPairs))
+            print("  C1:" + str(rowData_ArrayList_OfDictionaryPairs_ForEachBot))
 
-            for bot_dictionary in rowData_ArrayList_Of_SingleBot_DictionaryPairs:
+            for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForEachBot:
                 print("  C2:" + str(bot_dictionary))
                 if scoreboard_DataMessage_Recvd_Dict['#'] in bot_dictionary.values():
                     scoreboard_Bot_Found_Bool = True    
@@ -236,16 +237,16 @@ def update_line_plot() -> None:
                 ##jwc o if _debug_Show_Priority_Hi_Bool:
                 ##jwc o     print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
 
-                rowData_SingleBot_DictionaryPairs_Empty['row_base0_num'] = len(rowData_ArrayList_Of_SingleBot_DictionaryPairs)
-                rowData_SingleBot_DictionaryPairs_Empty['bot_id'] = scoreboard_DataMessage_Recvd_Dict['#']
-                rowData_SingleBot_DictionaryPairs_Empty['magnet_lastdelta'] = scoreboard_DataMessage_Recvd_Dict['M']
-                rowData_SingleBot_DictionaryPairs_Empty['magnet_total'] = 0
+                rowData_OfDictionaryPairs_ForABot_Empty['row_base0_num'] = len(rowData_ArrayList_OfDictionaryPairs_ForEachBot)
+                rowData_OfDictionaryPairs_ForABot_Empty['bot_id'] = scoreboard_DataMessage_Recvd_Dict['#']
+                rowData_OfDictionaryPairs_ForABot_Empty['magnet_lastdelta'] = scoreboard_DataMessage_Recvd_Dict['M']
+                rowData_OfDictionaryPairs_ForABot_Empty['magnet_total'] = 0
 
 
-                print("  D1aa:" + str(rowData_ArrayList_Of_SingleBot_DictionaryPairs))
-                print("  D1ab:" + str(rowData_SingleBot_DictionaryPairs_Empty))
-                rowData_ArrayList_Of_SingleBot_DictionaryPairs.append(rowData_SingleBot_DictionaryPairs_Empty)
-                print("  D1b:" + str(rowData_ArrayList_Of_SingleBot_DictionaryPairs))
+                print("  D1aa:" + str(rowData_ArrayList_OfDictionaryPairs_ForEachBot))
+                print("  D1ab:" + str(rowData_OfDictionaryPairs_ForABot_Empty))
+                rowData_ArrayList_OfDictionaryPairs_ForEachBot.append(rowData_OfDictionaryPairs_ForABot_Empty)
+                print("  D1b:" + str(rowData_ArrayList_OfDictionaryPairs_ForEachBot))
 
 
         ###jwc n prints twice: 2nd 0: now = datetime.now()
@@ -469,15 +470,16 @@ grid = ui.aggrid({
         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
         {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
     ],
-    'rowData' : rowData_ArrayList_Of_SingleBot_DictionaryPairs,
+    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForEachBot,
     'rowSelection': 'multiple',
-## Defaults to 'h-64'
-## 1 rem = 16px, 2 rem = 1 full font height     
+# Defaults to 'h-64'
+# 1 rem = 16px, 2 rem = 1 full font height     
 }).classes('h-[128rem]')
 
 
     ###jwc y grid.options['rowData'][1]['age'] += 1
     ###jwc y grid.options['rowData'][2]['weight'] += 2
+
 
 tenp1 = 5
 temp2 = 1
@@ -494,9 +496,9 @@ def updateGrid():
     ###jwc yy grid.options['rowData'][0]['magnet_lastdelta'] += temp2
     grid.options['rowData'][0]['magnet_lastdelta'] += temp2
     grid.options['rowData'][0]['magnet_total'] += temp2
-    grid.options['rowData'][1]['light_lastdelta'] += random_General.randint(1,100)
+    grid.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
     ###jwc n grid.options['rowData']['Carol']['age'] = random_Numpy(9)
-    grid.options['rowData'][2]['light_total'] += random_General.randint(1,100)
+    grid.options['rowData'][0]['light_total'] += random_General.randint(1,100)
 
     grid.update()
 
@@ -504,8 +506,8 @@ def updateGrid():
 def updateGrid02():
     rowData_List[0]['light_lastdelta']+=1
     rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
-    rowData_List[1]['magnet_lastdelta']+=2
-    rowData_List[1]['magnet_total']+=rowData_List[1]['magnet_lastdelta']
+    rowData_List[0]['magnet_lastdelta']+=2
+    rowData_List[0]['magnet_total']+=rowData_List[1]['magnet_lastdelta']
     rowData_List.append({'row_base0_num':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
 
 
