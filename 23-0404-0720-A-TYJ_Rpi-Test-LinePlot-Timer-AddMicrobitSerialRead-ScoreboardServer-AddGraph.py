@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.random import random
+from numpy.random import random as random_Numpy
 
 from datetime import datetime
 from nicegui import ui
@@ -8,7 +8,7 @@ import time
 import serial
 from datetime import datetime
 
-import random
+import random as random_General
 
 ser = serial.Serial(
         ##jwc o port='/dev/ttyACM0',
@@ -184,6 +184,7 @@ def update_line_plot() -> None:
 
 
 def update_line_plot_02() -> None:
+    ###jwc n update_line_plot
     now = datetime.now()
 
     print(">>> >>> " + str(y2Value[1]) +" "+ str(y2Value[2]) +": "+str(y2Value))
@@ -197,11 +198,13 @@ def update_line_plot_02() -> None:
 ###jwc good for slow real-time y line_updates = ui.timer(0.05, update_line_plot, active=True)
 ###jwc y no more linegraph real-time to test chart realtime instead, 
 ###jwc TYJ LINE GRAPH DID SEEM TO SLOW DOWN TEXTCHART/DISPLAY BY 10-20 SEC :)+
-line_updates = ui.timer(0.05, update_line_plot, active=False)
+###jwc y line_updates = ui.timer(0.05, update_line_plot, active=False)
+line_updates = ui.timer(1, update_line_plot, active=True)
 line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
 
 ## '0.1' sec
 ### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
+line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
 
 
 ##jwc n ser = serial.Serial(
@@ -283,6 +286,36 @@ dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, '
 ###jwc n     {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
 ###jwc n }
 
+    ###jwc yy 'rowData' :[
+    ###jwc yy     {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+    ###jwc yy     {'row#':2, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+    ###jwc yy     {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+    ###jwc yy ],
+
+###jwc y ## tuple (static) but prefer dict (dynamic) since latter more flexile, extnedible 
+###jwc y rowData_List = (
+###jwc y     {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+###jwc y     {'row#':2, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+###jwc y     {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+###jwc y     {'row#':4, 'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
+###jwc y )
+
+## dictionary
+##
+rowData_List = [
+    {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+    {'row#':2, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+    {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+    {'row#':4, 'botid':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
+]
+
+###jwc y }).classes('max-h-40')
+###jwc y }).classes('max-h-80')
+###jwc ? }).classes('max-h-500')
+###jwc ? }).classes('max-h-full')
+###jwc y }).classes('max-h-[128rem]')
+###jwc y }).classes('h-[128rem]')
+
 grid = ui.aggrid({
     'columnDefs': [
         {'headerName': 'Row#', 'field': 'row#'},
@@ -292,13 +325,11 @@ grid = ui.aggrid({
         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
         {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
     ],
-    'rowData' :[
-        {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
-        {'row#':2, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
-        {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
-    ],
+    'rowData' : rowData_List,
     'rowSelection': 'multiple',
-}).classes('max-h-40')
+## Defaults to 'h-64'
+## 1 rem = 16px, 2 rem = 1 full font height     
+}).classes('h-[128rem]')
 
 
     ###jwc y grid.options['rowData'][1]['age'] += 1
@@ -318,13 +349,23 @@ def updateGrid():
     ###jwc y grid.options['rowData'][0]['age'] += 1
     grid.options['rowData'][0]['magnet_lastdelta'] += temp2
     grid.options['rowData'][0]['magnet_total'] += temp2
-    grid.options['rowData'][1]['light_lastdelta'] += random.randint(1,100)
-    ###jwc n grid.options['rowData']['Carol']['age'] = random(9)
-    grid.options['rowData'][2]['light_total'] += random.randint(1,100)
+    grid.options['rowData'][1]['light_lastdelta'] += random_General.randint(1,100)
+    ###jwc n grid.options['rowData']['Carol']['age'] = random_Numpy(9)
+    grid.options['rowData'][2]['light_total'] += random_General.randint(1,100)
 
     grid.update()
 
+
+def updateGrid02():
+    rowData_List[0]['light_lastdelta']+=1
+    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
+    rowData_List[1]['magnet_lastdelta']+=2
+    rowData_List[1]['magnet_total']+=rowData_List[1]['magnet_lastdelta']
+    rowData_List.append({'row#':5, 'botid':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+
+
 ui.button('Update', on_click=updateGrid)
+ui.button('Update02', on_click=updateGrid02)
 ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
 
 ## '0.05' sec update
@@ -333,8 +374,8 @@ update_Grid = ui.timer(1, updateGrid, active=True)
 
 ###jwc n def update_table():
 ###jwc n     rows = [
-###jwc n         {'name': 'Alice', 'age': random(9)},
-###jwc n         {'name': 'Bob', 'age': random(9)},
+###jwc n         {'name': 'Alice', 'age': random_Numpy(9)},
+###jwc n         {'name': 'Bob', 'age': random_Numpy(9)},
 ###jwc n         {'name': 'Carol'},
 ###jwc n     ]
 
