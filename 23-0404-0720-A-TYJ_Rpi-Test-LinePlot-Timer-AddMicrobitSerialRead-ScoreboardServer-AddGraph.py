@@ -175,6 +175,8 @@ def update_line_plot() -> None:
                     scoreboard_Bot_Found_Bool = True    
                     
                     print("  C3a:bot_dictionary: " + str(bot_dictionary))
+                    bot_dictionary['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
+                    bot_dictionary['light_total'] += scoreboard_DataMessage_Rcvd_Dict['L']
                     bot_dictionary['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
                     bot_dictionary['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
                     print("  C3b:bot_dictionary: " + str(bot_dictionary))
@@ -189,6 +191,8 @@ def update_line_plot() -> None:
 
                 rowData_OfDictionaryPairs_ForABot_Empty_Local['row_base0_num'] = len(rowData_ArrayList_OfDictionaryPairs_ForAllBots)
                 rowData_OfDictionaryPairs_ForABot_Empty_Local['bot_id'] = scoreboard_DataMessage_Rcvd_Dict['#']
+                rowData_OfDictionaryPairs_ForABot_Empty_Local['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
+                rowData_OfDictionaryPairs_ForABot_Empty_Local['light_total'] += scoreboard_DataMessage_Rcvd_Dict['L']
                 rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
                 rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
 
