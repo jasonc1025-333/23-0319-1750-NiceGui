@@ -21,17 +21,19 @@ rowData_List = [
 ]
 
     ###jwc y {'row_base0_num':1, 'bot_id':11, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
-rowData_ArrayList_OfDictionaryPairs_ForEachBot = [
+    ###jwc y {'row_base0_num':1, 'bot_id':14, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
     # 'row_base0_num=0 & bot_id=0' for testing purpposes
+
+rowData_ArrayList_OfDictionaryPairs_ForAllBots = [
     {'row_base0_num':0, 'bot_id':0, 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
 ]
 
-rowData_OfDictionaryPairs_ForABot_Empty = {
-    'row_base0_num':0, 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
-    }
+###jwc global inerferes with .append so move to local: rowData_OfDictionaryPairs_ForABot_Empty = {
+###jwc global inerferes with .append so move to local:     'row_base0_num':0, 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
+###jwc global inerferes with .append so move to local:     }
 
 
-scoreboard_DataMessage_Recvd_Dict = {}
+scoreboard_DataMessage_Rcvd_Dict = {}
 
 ser = serial.Serial(
         ##jwc o port='/dev/ttyACM0',
@@ -73,6 +75,11 @@ def update_line_plot() -> None:
 
     now,network_DataMessage_Rcvd_Bytes,y1,y2 = 0, 0, 0, 0
 
+    rowData_OfDictionaryPairs_ForABot_Empty_Local = {
+    'row_base0_num':0, 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
+    }
+
+
     network_DataMessage_Rcvd_Bytes = ser.readline()
     if network_DataMessage_Rcvd_Bytes:
         ###jwc o temp, light = network_DataMessage_Rcvd_Bytes.decode().split(':')
@@ -87,6 +94,10 @@ def update_line_plot() -> None:
         ###jwc o not neeeded: datestamp = str(dt)[:16]
         ###jwc o not neeeded: newData = [datestamp, network_DataMessage_Rcvd_Bytes]
         ###jwc o not neeeded: print(newData)
+        
+        if _debug_Show_Priority_Hi_Bool:
+            print("* A: Raw String: ")
+            print("  A1:network_DataMessage_Rcvd_Bytes:" + str(network_DataMessage_Rcvd_Bytes) +"|")
 
         ###jwc o network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Bytes
         network_DataMessage_Rcvd_Str = str(network_DataMessage_Rcvd_Bytes)
@@ -106,13 +117,18 @@ def update_line_plot() -> None:
         network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[:-5]
         # Remove trailing spaces from both sides
         network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str.strip()
+        # invalid 'network_DataMessage_Rcvd_Str' will be detected here 'ValueError: substring not found' 
+        # \ and thus abort and retry w/ new 'network_DataMessage_Rcvd_Str'
         network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[network_DataMessage_Rcvd_Str.index("#"):]
 
+        ###jwc o if _debug_Show_Priority_Hi_Bool:
+        ###jwc o     ###jwc o print replaced by 'print'
+        ###jwc o     print("* A: Raw String: ")
+        ###jwc o     ###jwc o print("  A1>" + str(network_DataMessage_Rcvd_Str) +"|")
+        ###jwc o     print("  1:" + str(network_DataMessage_Rcvd_Str) +"|")
         if _debug_Show_Priority_Hi_Bool:
-            ###jwc o print replaced by 'print'
-            print("* A: Raw String: ")
-            ###jwc o print("  A1>" + str(network_DataMessage_Rcvd_Str) +"|")
-            print("  1:" + str(network_DataMessage_Rcvd_Str) +"|")
+            print("  A2:network_DataMessage_Rcvd_Str:" + str(network_DataMessage_Rcvd_Str) +"|")
+
         if True:
             scoreboard_DataNumNew_ArrayList = []
             ###jwc y scoreboard_DataStrNew_ArrayList = network_DataMessage_Rcvd_Str.split("|")
@@ -133,7 +149,8 @@ def update_line_plot() -> None:
                 
                 ### n scoreboard_DataNumNew_ArrayList['A']=int(key_Value_Pair__Value)
                 ### scoreboard_DataNumNew_ArrayList.append(int(key_Value_Pair__Value))
-                scoreboard_DataMessage_Recvd_Dict[key_Value_Pair__Key]=int(key_Value_Pair__Value)
+                # Add new 'key_Value_Pair'
+                scoreboard_DataMessage_Rcvd_Dict[key_Value_Pair__Key]=int(key_Value_Pair__Value)
 
                 if _debug_Show_Priority_Hi_Bool:
                     print("* B: Parsed Key:key_Value_Pair:")
@@ -142,27 +159,47 @@ def update_line_plot() -> None:
                     ###jwc o print("  2:"+ str((scoreboard_DataNumNew_ArrayList[len(scoreboard_DataNumNew_ArrayList) - 1])) +"|")
                     ###jwc o print("  3:"+ str(scoreboard_DataNumNew_ArrayList)
                           
-                    print("  2:scoreboard_DataMessage_Recvd_Dict: "+ str(scoreboard_DataMessage_Recvd_Dict) +"|")
+                    print("  2:scoreboard_DataMessage_Recvd_Dict: "+ str(scoreboard_DataMessage_Rcvd_Dict) +"|")
                    
 
         if True:
             scoreboard_Bot_Found_Bool = False
             print("* C")
-            print("  C1:" + str(rowData_ArrayList_OfDictionaryPairs_ForEachBot))
+            print("  C1:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
 
-            for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForEachBot:
+            for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
                 print("  C2:" + str(bot_dictionary))
-                if scoreboard_DataMessage_Recvd_Dict['#'] in bot_dictionary.values():
+                ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
+                if scoreboard_DataMessage_Rcvd_Dict['#'] == bot_dictionary['bot_id']:
+    
                     scoreboard_Bot_Found_Bool = True    
                     
                     print("  C3a:bot_dictionary: " + str(bot_dictionary))
-                    bot_dictionary['magnet_lastdelta']=scoreboard_DataMessage_Recvd_Dict['M']
-                    bot_dictionary['magnet_total']+=scoreboard_DataMessage_Recvd_Dict['M']
+                    bot_dictionary['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
+                    bot_dictionary['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
                     print("  C3b:bot_dictionary: " + str(bot_dictionary))
                     
 
-            ###jwc o index2 = 0
+            
+            print("* D")
+            if not (scoreboard_Bot_Found_Bool):
+                ##jwc o scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
+                ##jwc o if _debug_Show_Priority_Hi_Bool:
+                ##jwc o     print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
 
+                rowData_OfDictionaryPairs_ForABot_Empty_Local['row_base0_num'] = len(rowData_ArrayList_OfDictionaryPairs_ForAllBots)
+                rowData_OfDictionaryPairs_ForABot_Empty_Local['bot_id'] = scoreboard_DataMessage_Rcvd_Dict['#']
+                rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
+                rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
+
+
+                print("  D1aa:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+                print("  D1ab:" + str(rowData_OfDictionaryPairs_ForABot_Empty_Local))
+                rowData_ArrayList_OfDictionaryPairs_ForAllBots.append(rowData_OfDictionaryPairs_ForABot_Empty_Local)
+                print("  D1b:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+
+
+            ###jwc o index2 = 0
             ###jwc o while index2 <= len(scoreboard_BotsAll_ArrayList_2D) - 1:
             ###jwc o while index2 <= len(scoreboard_BotsAll_ArrayList_2D) - 1:
             ###jwc o     scoreboard_BotSingle_ArrayList_1D = scoreboard_BotsAll_ArrayList_2D[index2]
@@ -230,23 +267,6 @@ def update_line_plot() -> None:
             ###jwc o     ###jwc n scoreboard_BotsAll_StringFull_ArrayList_2D[index2] = network_DataMessage_Rcvd_Bytes            
             ###jwc o 
             ###jwc o     index2 += 1
-            
-            print("* D")
-            if not (scoreboard_Bot_Found_Bool):
-                ##jwc o scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
-                ##jwc o if _debug_Show_Priority_Hi_Bool:
-                ##jwc o     print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
-
-                rowData_OfDictionaryPairs_ForABot_Empty['row_base0_num'] = len(rowData_ArrayList_OfDictionaryPairs_ForEachBot)
-                rowData_OfDictionaryPairs_ForABot_Empty['bot_id'] = scoreboard_DataMessage_Recvd_Dict['#']
-                rowData_OfDictionaryPairs_ForABot_Empty['magnet_lastdelta'] = scoreboard_DataMessage_Recvd_Dict['M']
-                rowData_OfDictionaryPairs_ForABot_Empty['magnet_total'] = 0
-
-
-                print("  D1aa:" + str(rowData_ArrayList_OfDictionaryPairs_ForEachBot))
-                print("  D1ab:" + str(rowData_OfDictionaryPairs_ForABot_Empty))
-                rowData_ArrayList_OfDictionaryPairs_ForEachBot.append(rowData_OfDictionaryPairs_ForABot_Empty)
-                print("  D1b:" + str(rowData_ArrayList_OfDictionaryPairs_ForEachBot))
 
 
         ###jwc n prints twice: 2nd 0: now = datetime.now()
@@ -470,7 +490,7 @@ grid = ui.aggrid({
         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
         {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
     ],
-    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForEachBot,
+    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
     'rowSelection': 'multiple',
 # Defaults to 'h-64'
 # 1 rem = 16px, 2 rem = 1 full font height     
@@ -507,7 +527,7 @@ def updateGrid02():
     rowData_List[0]['light_lastdelta']+=1
     rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
     rowData_List[0]['magnet_lastdelta']+=2
-    rowData_List[0]['magnet_total']+=rowData_List[1]['magnet_lastdelta']
+    rowData_List[0]['magnet_total']+=rowData_List[0]['magnet_lastdelta']
     rowData_List.append({'row_base0_num':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
 
 
