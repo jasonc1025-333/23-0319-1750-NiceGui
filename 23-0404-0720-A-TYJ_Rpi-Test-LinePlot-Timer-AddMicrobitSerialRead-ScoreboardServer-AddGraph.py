@@ -15,18 +15,21 @@ import string
 # array of dictionary
 #
 rowData_List = [
-    {'row_id':0, 'bot_id':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
-    {'row_id':1, 'bot_id':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
     {'row_id':2, 'bot_id':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
     {'row_id':3, 'bot_id':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
+    {'row_id':1, 'bot_id':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+    {'row_id':0, 'bot_id':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
 ]
 
     ###jwc y {'row_id':1, 'bot_id':11, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
     ###jwc y {'row_id':1, 'bot_id':14, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
     # 'row_id=0 & bot_id=0' for testing purpposes
 
+###jwc 23-0504-0700 TYJ rowData_ArrayList_OfDictionaryPairs_ForAllBots = [
+###jwc 23-0504-0700 TYJ     {'row_id':'Test_Row', 'bot_id':'Test_Bot', 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
+###jwc 23-0504-0700 TYJ ]
 rowData_ArrayList_OfDictionaryPairs_ForAllBots = [
-    {'row_id':'Test_Row', 'bot_id':'Test_Bot', 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
+    {'row_id':'Test_Row', 'bot_id':'Test_Bot', 'mission_status':'-', 'team_id':'-', 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
 ]
 
 ###jwc global inerferes with .append so move to local: rowData_OfDictionaryPairs_ForABot_Empty = {
@@ -82,7 +85,8 @@ def update_line_plot() -> None:
     now,network_DataMessage_Rcvd_Bytes,y1,y2 = 0, 0, 0, 0
 
     rowData_OfDictionaryPairs_ForABot_Empty_Local = {
-    'row_id':'A', 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
+    ###jwc 23-0504-0710 y 'row_id':'A', 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
+    'row_id':'A', 'bot_id':0, 'mission_status':'-', 'team_id':'-', 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
     }
 
 
@@ -231,7 +235,7 @@ def update_line_plot() -> None:
 ### ### jwc yyy tyj: was 1 now to 10: line_updates = ui.timer(1, update_line_plot, active=True)
 line_updates = ui.timer(1, update_line_plot, active=True)
 ### ### jwc yyy tyj: line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
-ui.button('Update Chart', on_click=update_line_plot)
+### jwc 23-0504-0720 y ui.button('Update Chart', on_click=update_line_plot)
 
 ## '0.1' sec
 ### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
@@ -241,7 +245,8 @@ ui.button('Update Chart', on_click=update_line_plot)
 dictionary_Scoreboard_BotsAll_Ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
 
 ###jwc n dictionary_Scoreboard_BotsAll_Value_Default = {'botid':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
-dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0},
+###jwc 23-0504-0700 y dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0},
+dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'status':'-', 'team':'-', 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0},
 
 ###jwc n    'rowData' : dict.fromkeys( dictionary_Scoreboard_BotsAll_Ids, dictionary_Scoreboard_BotsAll_Value_Default),
 
@@ -291,10 +296,15 @@ dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, '
 ###jwc 23-0501-1520        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
 ###jwc 23-0501-1520        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
 
+
+
 grid = ui.aggrid({
     'columnDefs': [
         {'headerName': 'Row_Id', 'field': 'row_id'},
-        {'headerName': 'Bot_Id', 'field': 'bot_id'},
+        ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
+        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc'},
+        {'headerName': 'Mission_Status', 'field': 'mission_status'},
+        {'headerName': 'Team_Id', 'field': 'team_id'},
         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
         {'headerName': 'Light_Total', 'field': 'light_total'},
         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
@@ -332,6 +342,24 @@ async def selectedRows_Fn():
         grid.update()
 ui.button('Update4', on_click=selectedRows_Fn)
 
+
+def clear_Stats_Fn():
+    for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
+        print("  E1:" + str(bot_dictionary))
+        ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
+          
+        print("  E2a:bot_dictionary: " + str(bot_dictionary))
+        bot_dictionary['light_lastdelta'] = 0
+        bot_dictionary['light_total'] = 0
+        bot_dictionary['magnet_lastdelta'] = 0
+        bot_dictionary['magnet_total'] = 0
+        print("  E2b:bot_dictionary: " + str(bot_dictionary))
+    grid.update()
+    grid2.update()
+
+ui.button('Clear Stats', on_click=clear_Stats_Fn)
+
+
 ###jwc n will not work, no returned selected rows: def selectedRows_Fn5():
 ###jwc n will not work, no returned selected rows:         ###jwc n rows = await grid.get_selected_rows()
 ###jwc n will not work, no returned selected rows:         rows = grid2.get_selected_rows()
@@ -353,7 +381,10 @@ ui.button('Update4', on_click=selectedRows_Fn)
 grid2 = ui.aggrid({
     'columnDefs': [
         {'headerName': 'Row_Id', 'field': 'row_id'},
-        {'headerName': 'Bot_Id', 'field': 'bot_id'},
+        ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
+        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc'},
+        {'headerName': 'Mission_Status', 'field': 'mission_status'},
+        {'headerName': 'Team_Id', 'field': 'team_id'},
         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
         {'headerName': 'Light_Total', 'field': 'light_total'},
         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
@@ -412,26 +443,33 @@ def updateGrid():
     grid.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
     ###jwc n grid.options['rowData']['Carol']['age'] = random_Numpy(9)
     grid.options['rowData'][0]['light_total'] += random_General.randint(1,100)
+    ###jwc n grid.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
 
     grid.update()
 
+ui.button('Update Chart', on_click=updateGrid)
 
 def updateGrid02():
     rowData_List[0]['light_lastdelta']+=1
     rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
     rowData_List[0]['magnet_lastdelta']+=2
     rowData_List[0]['magnet_total']+=rowData_List[0]['magnet_lastdelta']
-    rowData_List.append({'row_id':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    ###jwc 23-0504-0720 y rowData_List.append({'row_id':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    rowData_List.append({'row_id':5, 'bot_id':1, 'mission_status':0, 'team_id':0, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    ###jwc y grid2.options['rowData'] = sorted(rowData_List, key=lambda data:data['bot_id'] )
+    ###jwc n grid2.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
+
+    grid.update()
+
 
 with ui.row():
-    ui.button('Update', on_click=updateGrid)
     ui.button('Update02', on_click=updateGrid02)
     ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
 
 ## '0.05' sec update
 ###jwc y update_Grid = ui.timer(0.05, updateGrid, active=True)
-### ###jwc y was 1 now to 10: update_Grid = ui.timer(1, updateGrid, active=True)
-update_Grid = ui.timer(10, updateGrid, active=True)
+### ###jwc y was 1 now to 10 >> 5: update_Grid = ui.timer(1, updateGrid, active=True)
+update_Grid = ui.timer(5, updateGrid, active=True)
 
 
 
