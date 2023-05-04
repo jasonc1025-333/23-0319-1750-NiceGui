@@ -9,27 +9,28 @@ import serial
 from datetime import datetime
 
 import random as random_General
+import string
 
 
 # array of dictionary
 #
 rowData_List = [
-    {'row_base0_num':0, 'bot_id':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
-    {'row_base0_num':1, 'bot_id':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
-    {'row_base0_num':2, 'bot_id':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
-    {'row_base0_num':3, 'bot_id':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
+    {'row_id':0, 'bot_id':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
+    {'row_id':1, 'bot_id':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
+    {'row_id':2, 'bot_id':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
+    {'row_id':3, 'bot_id':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
 ]
 
-    ###jwc y {'row_base0_num':1, 'bot_id':11, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
-    ###jwc y {'row_base0_num':1, 'bot_id':14, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
-    # 'row_base0_num=0 & bot_id=0' for testing purpposes
+    ###jwc y {'row_id':1, 'bot_id':11, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
+    ###jwc y {'row_id':1, 'bot_id':14, 'light_lastdelta':110, 'light_total':1100, 'magnet_lastdelta':11000, 'magnet_total':110000},
+    # 'row_id=0 & bot_id=0' for testing purpposes
 
 rowData_ArrayList_OfDictionaryPairs_ForAllBots = [
-    {'row_base0_num':0, 'bot_id':0, 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
+    {'row_id':'Test_Row', 'bot_id':'Test_Bot', 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
 ]
 
 ###jwc global inerferes with .append so move to local: rowData_OfDictionaryPairs_ForABot_Empty = {
-###jwc global inerferes with .append so move to local:     'row_base0_num':0, 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
+###jwc global inerferes with .append so move to local:     'row_id':0, 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
 ###jwc global inerferes with .append so move to local:     }
 
 
@@ -37,6 +38,8 @@ scoreboard_DataMessage_Rcvd_Dict = {}
 
 ser = serial.Serial(
         ##jwc o port='/dev/ttyACM0',
+        ###jwc y port='/dev/ttyACM1',
+
         ##jwc o port='COM3',
         port='/dev/ttyACM0',
         baudrate = 115200,
@@ -63,6 +66,9 @@ y2Value = [0,0,0]
 
 _debug_Show_Priority_Hi_Bool = True
 
+bot_TeamAssigned_Base0_Int = [0,0,0]
+
+
 ###jwc o line_plot = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
 ###jwc o     .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
 
@@ -76,7 +82,7 @@ def update_line_plot() -> None:
     now,network_DataMessage_Rcvd_Bytes,y1,y2 = 0, 0, 0, 0
 
     rowData_OfDictionaryPairs_ForABot_Empty_Local = {
-    'row_base0_num':0, 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
+    'row_id':'A', 'bot_id':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0,
     }
 
 
@@ -189,7 +195,10 @@ def update_line_plot() -> None:
                 ##jwc o if _debug_Show_Priority_Hi_Bool:
                 ##jwc o     print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
 
-                rowData_OfDictionaryPairs_ForABot_Empty_Local['row_base0_num'] = len(rowData_ArrayList_OfDictionaryPairs_ForAllBots)
+                # base_0 needed for letter
+                rowData_OfDictionaryPairs_ForABot_Empty_Local['row_id'] = chr( ord('A') + (len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) ) -1 )
+
+
                 rowData_OfDictionaryPairs_ForABot_Empty_Local['bot_id'] = scoreboard_DataMessage_Rcvd_Dict['#']
                 rowData_OfDictionaryPairs_ForABot_Empty_Local['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
                 rowData_OfDictionaryPairs_ForABot_Empty_Local['light_total'] += scoreboard_DataMessage_Rcvd_Dict['L']
@@ -312,6 +321,54 @@ line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
 ## '0.1' sec
 ### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
 ###jwc 23-0501-1400 yy line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
+
+def toggle_value_fn(bot_id_in:int):
+    bot_TeamAssigned_Base0_Int[bot_id_in] += 1
+
+def toggle_value_fn2():
+    bot_TeamAssigned_Base0_Int[0] += 1
+    print("****** bot_TeamAssigned_Base0_Int[0]: ")
+
+async def toggle_value_fn2A():
+    bot_TeamAssigned_Base0_Int[0] += 1
+    print("****** bot_TeamAssigned_Base0_Int[0]: ")
+
+def toggle_value_fn3():
+    print("****** bot_TeamAssigned_Base0_Int[1]: ")
+
+
+with ui.row():
+    toggle1 = ui.toggle([1, 2, 3], value=1)
+
+    toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value')
+
+    toggle3 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(1)', 'value')
+
+    ###jwc n compiles but no response: toggle4 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+    ###jwc n compiles but no response: toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn3')
+
+    ui.button('Update3', on_click=toggle_value_fn3)
+    ui.button('Update2', on_click=toggle_value_fn2)
+
+    ###jwc n ui.toggle({1: 'A', 2: 'B', 3: 'C'}, on_click=toggle_value_fn2)
+    ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
+    toggle6A = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
+
+    ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+    ###jwc n compiles but no response: toggle6B = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+
+    ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
+    ###jwc n compiles but no response: toggle7 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
+
+    ###jwc n compiles but no response: line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active').run_method('toggle_value_fn2')
+    ###jwc n compiles but no response: select1 = ui.select([1, 2, 3], value=1).run_method('toggle_value_fn2')
+
+    ###jwc n not compile line_checkbox = ui.checkbox('active').on_click=toggle_value_fn2
+    ###jwc n not compile ui.select([1, 2, 3], value=1).on_click=toggle_value_fn2
+
+
+    with ui.button('Click me!', on_click=lambda: badge.set_text(str(int(badge.text) + 1))): 
+        badge = ui.badge('0', color='red').props('floating')
 
 
 ##jwc n ser = serial.Serial(
@@ -487,7 +544,7 @@ dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, '
 
 grid = ui.aggrid({
     'columnDefs': [
-        {'headerName': 'Row_Base0_Num', 'field': 'row_base0_num'},
+        {'headerName': 'Row_Id', 'field': 'row_id'},
         {'headerName': 'Bot_Id', 'field': 'bot_id'},
         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
         {'headerName': 'Light_Total', 'field': 'light_total'},
@@ -532,12 +589,12 @@ def updateGrid02():
     rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
     rowData_List[0]['magnet_lastdelta']+=2
     rowData_List[0]['magnet_total']+=rowData_List[0]['magnet_lastdelta']
-    rowData_List.append({'row_base0_num':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    rowData_List.append({'row_id':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
 
-
-ui.button('Update', on_click=updateGrid)
-ui.button('Update02', on_click=updateGrid02)
-ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
+with ui.row():
+    ui.button('Update', on_click=updateGrid)
+    ui.button('Update02', on_click=updateGrid02)
+    ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
 
 ## '0.05' sec update
 ###jwc y update_Grid = ui.timer(0.05, updateGrid, active=True)
