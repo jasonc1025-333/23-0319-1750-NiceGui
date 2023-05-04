@@ -336,11 +336,12 @@ async def toggle_value_fn2A():
 def toggle_value_fn3():
     print("****** bot_TeamAssigned_Base0_Int[1]: ")
 
-def badge_fn():
-    if badge1.text == '1':
-        badge1.set_text('2')
-    else:
-        badge1.set_text('1')
+if True: 
+    def badge_fn():
+        if badge1.text == '1':
+            badge1.set_text('2')
+        else:
+            badge1.set_text('1')
 
 def badge_fn2():
     if badge2.text == '-':
@@ -358,6 +359,7 @@ def badge_fn3():
     elif badge3.text == 'B':
         badge3.set_text('-')
 
+    
 with ui.row():
     toggle1 = ui.toggle([1, 2, 3], value=1)
 
@@ -368,8 +370,8 @@ with ui.row():
     ###jwc n compiles but no response: toggle4 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
     ###jwc n compiles but no response: toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn3')
 
-    ui.button('Update3', on_click=toggle_value_fn3)
     ui.button('Update2', on_click=toggle_value_fn2)
+    ui.button('Update3', on_click=toggle_value_fn3)
 
     ###jwc n ui.toggle({1: 'A', 2: 'B', 3: 'C'}, on_click=toggle_value_fn2)
     ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
@@ -390,27 +392,45 @@ with ui.row():
 
     with ui.button('Click me!', on_click=lambda: badge.set_text(str(int(badge.text) + 1))): 
         badge = ui.badge('0', color='red').props('floating')
+    ###jwc n visibility still on: with ui.button('Click me1A'): 
+    ###jwc n visibility still on:     badge1A = ui.badge('0', color='red').props('floating').set_visibility('False')
 
-    with ui.button('Click me2!', on_click=badge_fn): 
-        badge1 = ui.badge('0', color='red').props('floating')
+    if True:
+        with ui.button('Click me1!', on_click=badge_fn): 
+            badge1 = ui.badge('0', color='red').props('floating')
 
-    with ui.button('Cl3!', on_click=badge_fn2): 
+    with ui.button('Cl2!', on_click=badge_fn2): 
         badge2 = ui.badge('-', color='red').props('floating')
     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
         badge3 = ui.badge('-', color='red').props('floating')
+
     ##jwc n if True:
         ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
             ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('False')
         ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
             ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('True')
-    ###jwc ? with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn2): 
-    ###jwc ?     badge4 = ui.badge('-', color='red').props('floating').set_visibility('True')
     ###jwc ? with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id'], on_click=badge_fn2): 
     ###jwc ?     badge5 = ui.badge('-', color='red').props('floating').set_visibility('False')
     ###jwc ? if False:
     ###jwc ?     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn2): 
     ###jwc ?         badge = ui.badge('-', color='red').props('floating')
 
+# jwc Only evaluated at startup, then is ignored, thus not good for realtime
+#
+if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
+###jwc if True:
+    def badge_fn4():
+        if badge4.text == '-':
+            badge4.set_text('A')
+        elif badge4.text == 'A':
+            badge4.set_text('B')
+        elif badge4.text == 'B':
+            badge4.set_text('-')
+
+
+    with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn4): 
+        badge4 = ui.badge('-', color='red').props('floating')
+    
 ##jwc n ser = serial.Serial(
 ##jwc n         ##jwc o port='/dev/ttyACM0',
 ##jwc n         port='COM3',
@@ -592,11 +612,93 @@ grid = ui.aggrid({
         {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
     ],
     'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
-    'rowSelection': 'multiple',
+    'rowSelection': 'multiple', 
+    'rowSelectionWithClick': 'True', 
+    ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
+
+    'onGridReady': ui.notify("Grid Ready")
+
 # Defaults to 'h-64'
 # 1 rem = 16px, 2 rem = 1 full font height     
 }).classes('h-[128rem]')
 
+
+async def selectedRows_Fn():
+        ###jwc n rows = await grid.get_selected_rows()
+        rows = await grid2.get_selected_rows()
+
+        ###jwc ? rows.forEach(function( selectedRow, index){
+        ui.notify("Notify")
+
+        ###jwc ? })
+        if len(rows) == 0:
+            ui.notify("No Data Selected")
+            return
+        else:
+            for row in rows:
+                print("* selectedRows_Fn:" + str(row))
+            ui.notify("Yes Data Selected")
+
+
+        grid.update()
+ui.button('Update4', on_click=selectedRows_Fn)
+
+###jwc n will not work, no returned selected rows: def selectedRows_Fn5():
+###jwc n will not work, no returned selected rows:         ###jwc n rows = await grid.get_selected_rows()
+###jwc n will not work, no returned selected rows:         rows = grid2.get_selected_rows()
+###jwc n will not work, no returned selected rows: 
+###jwc n will not work, no returned selected rows:         ###jwc ? rows.forEach(function( selectedRow, index){
+###jwc n will not work, no returned selected rows:         ui.notify("Notify")
+###jwc n will not work, no returned selected rows: 
+###jwc n will not work, no returned selected rows:         ###jwc ? })
+###jwc n will not work, no returned selected rows:         if rows == None:
+###jwc n will not work, no returned selected rows:             ui.notify("No Data Selected")
+###jwc n will not work, no returned selected rows:             return
+###jwc n will not work, no returned selected rows:         else:
+###jwc n will not work, no returned selected rows:             ui.notify("Yes Data Selected")
+###jwc n will not work, no returned selected rows: 
+###jwc n will not work, no returned selected rows:         grid.update()
+###jwc n will not work, no returned selected rows: ui.button('Update5', on_click=selectedRows_Fn5)
+
+
+grid2 = ui.aggrid({
+    'columnDefs': [
+        {'headerName': 'Row_Id', 'field': 'row_id'},
+        {'headerName': 'Bot_Id', 'field': 'bot_id'},
+        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
+        {'headerName': 'Light_Total', 'field': 'light_total'},
+        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
+        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
+    ],
+    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
+    'rowSelection': 'multiple', 
+    'rowSelectionWithClick': 'True', 
+    ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
+
+    'onGridReady': ui.notify("Grid Ready")
+
+# Defaults to 'h-64'
+# 1 rem = 16px, 2 rem = 1 full font height     
+}).classes('h-[128rem]')
+
+def updateGrid2():
+    ###jwc n grid.options[
+    ###jwc n     'rowData': [
+    ###jwc n     {'name': 'Alice', 'age': 28},
+    ###jwc n     {'name': 'Bob', 'age': 31},
+    ###jwc n     {'name': 'Carol', 'age': 52},
+    ###jwc n]] 
+    ###jwc y grid.options['rowData'][0]['age'] += 1
+    ###jwc yy grid.options['rowData'][0]['magnet_lastdelta'] += temp2
+    grid2.options['rowData'][0]['magnet_lastdelta'] += temp2
+    grid2.options['rowData'][0]['magnet_total'] += temp2
+    grid2.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
+    ###jwc n grid.options['rowData']['Carol']['age'] = random_Numpy(9)
+    grid2.options['rowData'][0]['light_total'] += random_General.randint(1,100)
+
+    grid2.update()
+
+update_Grid2 = ui.timer(5, updateGrid2, active=True)
 
     ###jwc y grid.options['rowData'][1]['age'] += 1
     ###jwc y grid.options['rowData'][2]['weight'] += 2
@@ -639,6 +741,7 @@ with ui.row():
 ## '0.05' sec update
 ###jwc y update_Grid = ui.timer(0.05, updateGrid, active=True)
 update_Grid = ui.timer(1, updateGrid, active=True)
+
 
 ###jwc n def update_table():
 ###jwc n     rows = [
