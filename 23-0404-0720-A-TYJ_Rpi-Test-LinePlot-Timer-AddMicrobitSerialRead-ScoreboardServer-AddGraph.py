@@ -336,6 +336,27 @@ async def toggle_value_fn2A():
 def toggle_value_fn3():
     print("****** bot_TeamAssigned_Base0_Int[1]: ")
 
+def badge_fn():
+    if badge1.text == '1':
+        badge1.set_text('2')
+    else:
+        badge1.set_text('1')
+
+def badge_fn2():
+    if badge2.text == '-':
+        badge2.set_text('A')
+    elif badge2.text == 'A':
+        badge2.set_text('B')
+    elif badge2.text == 'B':
+        badge2.set_text('-')
+
+def badge_fn3():
+    if badge3.text == '-':
+        badge3.set_text('A')
+    elif badge3.text == 'A':
+        badge3.set_text('B')
+    elif badge3.text == 'B':
+        badge3.set_text('-')
 
 with ui.row():
     toggle1 = ui.toggle([1, 2, 3], value=1)
@@ -370,6 +391,25 @@ with ui.row():
     with ui.button('Click me!', on_click=lambda: badge.set_text(str(int(badge.text) + 1))): 
         badge = ui.badge('0', color='red').props('floating')
 
+    with ui.button('Click me2!', on_click=badge_fn): 
+        badge1 = ui.badge('0', color='red').props('floating')
+
+    with ui.button('Cl3!', on_click=badge_fn2): 
+        badge2 = ui.badge('-', color='red').props('floating')
+    with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+        badge3 = ui.badge('-', color='red').props('floating')
+    ##jwc n if True:
+        ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+            ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('False')
+        ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+            ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('True')
+    ###jwc ? with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn2): 
+    ###jwc ?     badge4 = ui.badge('-', color='red').props('floating').set_visibility('True')
+    ###jwc ? with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id'], on_click=badge_fn2): 
+    ###jwc ?     badge5 = ui.badge('-', color='red').props('floating').set_visibility('False')
+    ###jwc ? if False:
+    ###jwc ?     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn2): 
+    ###jwc ?         badge = ui.badge('-', color='red').props('floating')
 
 ##jwc n ser = serial.Serial(
 ##jwc n         ##jwc o port='/dev/ttyACM0',
