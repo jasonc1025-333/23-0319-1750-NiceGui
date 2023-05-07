@@ -52,9 +52,6 @@ ser = serial.Serial(
         timeout=1
 )
 
-_debug_Show_Priority_Hi_Bool = True
-
-
 ###jwc o scoreboard_BotsAll_ArrayList_2D = [[]]
 scoreboard_BotsAll_ArrayList_2D = [[0,0,0]]
 scoreboard_BotSingle_ArrayList_1D = []
@@ -66,8 +63,11 @@ y2Value = [0,0,0]
 
 ###jwc n scoreboard_BotsAll_StringFull_ArrayList_2D =[{'#':0,'l':1,'m':2},{'#':10,'l':11,'m':12},{'#':20,'l':21,'m':22}]
 
-
+# Debug Prints
+#
+###jwc y _debug_Show_Priority_Hi_Bool = True
 _debug_Show_Priority_Hi_Bool = True
+_debug_Show_Priority_Lo_Bool = False
 
 bot_TeamAssigned_Base0_Int = [0,0,0]
 
@@ -80,7 +80,7 @@ bot_TeamAssigned_Base0_Int = [0,0,0]
 ### ### jwc yyy tyj: line_plot = ui.line_plot(n=2, limit=40, figsize=(6, 4), update_every=1) \
 ### ### jwc yyy tyj:     .with_legend(['Light', 'Magnet'], loc='upper center', ncol=2)
 
-def update_line_plot() -> None:
+def receive_Microbit_Messages_Fn() -> None:
 
     now,network_DataMessage_Rcvd_Bytes,y1,y2 = 0, 0, 0, 0
 
@@ -131,7 +131,7 @@ def update_line_plot() -> None:
         # \ and thus abort and retry w/ new 'network_DataMessage_Rcvd_Str'
         network_DataMessage_Rcvd_Str = network_DataMessage_Rcvd_Str[network_DataMessage_Rcvd_Str.index("#"):]
 
-        ###jwc o if _debug_Show_Priority_Hi_Bool:
+        ###jwc o if _debug_Show_Priority_Lo_Bool:
         ###jwc o     ###jwc o print replaced by 'print'
         ###jwc o     print("* A: Raw String: ")
         ###jwc o     ###jwc o print("  A1>" + str(network_DataMessage_Rcvd_Str) +"|")
@@ -162,7 +162,7 @@ def update_line_plot() -> None:
                 # Add new 'key_Value_Pair'
                 scoreboard_DataMessage_Rcvd_Dict[key_Value_Pair__Key]=int(key_Value_Pair__Value)
 
-                if _debug_Show_Priority_Hi_Bool:
+                if _debug_Show_Priority_Lo_Bool:
                     print("* B: Parsed Key:key_Value_Pair:")
                     print("  1:key_Value_Pair|key_Value_Pair__Key|key_Value_Pair__Value: " + key_Value_Pair +"|"+ key_Value_Pair__Key +"|"+ key_Value_Pair__Value +"|")
                     
@@ -174,29 +174,34 @@ def update_line_plot() -> None:
 
         if True:
             scoreboard_Bot_Found_Bool = False
-            print("* C")
-            print("  C1:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+            if _debug_Show_Priority_Lo_Bool:
+                print("* C")
+                print("  C1:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
 
             for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
-                print("  C2:" + str(bot_dictionary))
+                if _debug_Show_Priority_Lo_Bool:
+                    print("  C2:" + str(bot_dictionary))
                 ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
                 if scoreboard_DataMessage_Rcvd_Dict['#'] == bot_dictionary['bot_id']:
     
                     scoreboard_Bot_Found_Bool = True    
                     
-                    print("  C3a:bot_dictionary: " + str(bot_dictionary))
+                    if _debug_Show_Priority_Hi_Bool:
+                        print("  C3a:bot_dictionary: " + str(bot_dictionary))
                     bot_dictionary['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
                     bot_dictionary['light_total'] += scoreboard_DataMessage_Rcvd_Dict['L']
                     bot_dictionary['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
                     bot_dictionary['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
-                    print("  C3b:bot_dictionary: " + str(bot_dictionary))
+                    if _debug_Show_Priority_Hi_Bool:
+                        print("  C3b:bot_dictionary: " + str(bot_dictionary))
                     
 
             
-            print("* D")
+            if _debug_Show_Priority_Lo_Bool:
+                print("* D")
             if not (scoreboard_Bot_Found_Bool):
                 ##jwc o scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
-                ##jwc o if _debug_Show_Priority_Hi_Bool:
+                ##jwc o if _debug_Show_Priority_Lo_Bool:
                 ##jwc o     print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
 
                 # base_0 needed for letter
@@ -210,36 +215,22 @@ def update_line_plot() -> None:
                 rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
 
 
-                print("  D1aa:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
-                print("  D1ab:" + str(rowData_OfDictionaryPairs_ForABot_Empty_Local))
+                if _debug_Show_Priority_Hi_Bool:
+                    print("  D1aa:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+                    print("  D1ab:" + str(rowData_OfDictionaryPairs_ForABot_Empty_Local))
                 rowData_ArrayList_OfDictionaryPairs_ForAllBots.append(rowData_OfDictionaryPairs_ForABot_Empty_Local)
-                print("  D1b:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+                if _debug_Show_Priority_Hi_Bool:
+                    print("  D1b:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+    else:
+        print("*** No Serial Read *** ")
 
 
 ### ### jwc yyy tyj: def update_line_plot_02() -> None:
-### ### jwc yyy tyj:     ###jwc n update_line_plot
+### ### jwc yyy tyj:     ###jwc n receive_Microbit_Messages_Fn
 ### ### jwc yyy tyj:     now = datetime.now()
 ### ### jwc yyy tyj: 
 ### ### jwc yyy tyj:     print(">>> >>> " + str(y2Value[1]) +" "+ str(y2Value[2]) +": "+str(y2Value))
 ### ### jwc yyy tyj:     line_plot.push([now.timestamp()], [[y2Value[1]], [y2Value[2]]])  
-
-
-###jwc o line_updates = ui.timer(0.1, update_line_plot, active=False)
-###jwc timer x2 speed: 0.1 to 0.05
-###jwc o line_updates = ui.timer(0.05, update_line_plot, active=False)
-## '0.05' sec
-###jwc good for slow real-time y line_updates = ui.timer(0.05, update_line_plot, active=True)
-###jwc y no more linegraph real-time to test chart realtime instead, 
-###jwc TYJ LINE GRAPH DID SEEM TO SLOW DOWN TEXTCHART/DISPLAY BY 10-20 SEC :)+
-###jwc y line_updates = ui.timer(0.05, update_line_plot, active=False)
-### ### jwc yyy tyj: was 1 now to 10: line_updates = ui.timer(1, update_line_plot, active=True)
-line_updates = ui.timer(1, update_line_plot, active=True)
-### ### jwc yyy tyj: line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active')
-### jwc 23-0504-0720 y ui.button('Update Chart', on_click=update_line_plot)
-
-## '0.1' sec
-### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
-###jwc 23-0501-1400 yy line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
 
 
 dictionary_Scoreboard_BotsAll_Ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
@@ -297,7 +288,6 @@ dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'status':'-', 'team':'
 ###jwc 23-0501-1520        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
 
 
-
 grid = ui.aggrid({
     'columnDefs': [
         {'headerName': 'Row_Id', 'field': 'row_id'},
@@ -319,12 +309,14 @@ grid = ui.aggrid({
 
 # Defaults to 'h-64'
 # 1 rem = 16px, 2 rem = 1 full font height     
-}).classes('h-[128rem]')
+###jwc y }).classes('h-[128rem]')
+}).classes('h-64')
 
 
 async def selectedRows_Fn():
         ###jwc n rows = await grid.get_selected_rows()
-        rows = await grid2.get_selected_rows()
+        ###jwc y rows = await grid2.get_selected_rows()
+        rows = await grid.get_selected_rows()
 
         ###jwc ? rows.forEach(function( selectedRow, index){
         ui.notify("Notify")
@@ -340,7 +332,7 @@ async def selectedRows_Fn():
 
 
         grid.update()
-ui.button('Update4', on_click=selectedRows_Fn)
+ui.button('Selected Row(s)', on_click=selectedRows_Fn)
 
 
 def clear_Stats_Fn():
@@ -355,7 +347,7 @@ def clear_Stats_Fn():
         bot_dictionary['magnet_total'] = 0
         print("  E2b:bot_dictionary: " + str(bot_dictionary))
     grid.update()
-    grid2.update()
+    ###jwc 23-0506-1700 y reduce to one grid: grid2.update()
 
 ui.button('Clear Stats', on_click=clear_Stats_Fn)
 
@@ -378,58 +370,58 @@ ui.button('Clear Stats', on_click=clear_Stats_Fn)
 ###jwc n will not work, no returned selected rows: ui.button('Update5', on_click=selectedRows_Fn5)
 
 
-grid2 = ui.aggrid({
-    'columnDefs': [
-        {'headerName': 'Row_Id', 'field': 'row_id'},
-        ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
-        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc'},
-        {'headerName': 'Mission_Status', 'field': 'mission_status'},
-        {'headerName': 'Team_Id', 'field': 'team_id'},
-        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
-        {'headerName': 'Light_Total', 'field': 'light_total'},
-        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
-        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
-    ],
-    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
-    'rowSelection': 'multiple', 
-    'rowSelectionWithClick': 'True', 
-    ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
+###jwc 23-0506-1700 y reduce to one grid: grid2 = ui.aggrid({
+###jwc 23-0506-1700 y reduce to one grid:     'columnDefs': [
+###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Row_Id', 'field': 'row_id'},
+###jwc 23-0506-1700 y reduce to one grid:         ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
+###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc'},
+###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Mission_Status', 'field': 'mission_status'},
+###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Team_Id', 'field': 'team_id'},
+###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
+###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Light_Total', 'field': 'light_total'},
+###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
+###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
+###jwc 23-0506-1700 y reduce to one grid:     ],
+###jwc 23-0506-1700 y reduce to one grid:     'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
+###jwc 23-0506-1700 y reduce to one grid:     'rowSelection': 'multiple', 
+###jwc 23-0506-1700 y reduce to one grid:     'rowSelectionWithClick': 'True', 
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
+###jwc 23-0506-1700 y reduce to one grid: 
+###jwc 23-0506-1700 y reduce to one grid:     'onGridReady': ui.notify("Grid Ready")
+###jwc 23-0506-1700 y reduce to one grid: 
+###jwc 23-0506-1700 y reduce to one grid: # Defaults to 'h-64'
+###jwc 23-0506-1700 y reduce to one grid: # 1 rem = 16px, 2 rem = 1 full font height     
+###jwc 23-0506-1700 y reduce to one grid: }).classes('h-[128rem]')
 
-    'onGridReady': ui.notify("Grid Ready")
+###jwc 23-0506-1700 y reduce to one grid: def updateGrid2():
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc n grid.options[
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc n     'rowData': [
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc n     {'name': 'Alice', 'age': 28},
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc n     {'name': 'Bob', 'age': 31},
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc n     {'name': 'Carol', 'age': 52},
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc n]] 
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc y grid.options['rowData'][0]['age'] += 1
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc yy grid.options['rowData'][0]['magnet_lastdelta'] += temp2
+###jwc 23-0506-1700 y reduce to one grid:     grid2.options['rowData'][0]['magnet_lastdelta'] += temp2
+###jwc 23-0506-1700 y reduce to one grid:     grid2.options['rowData'][0]['magnet_total'] += temp2
+###jwc 23-0506-1700 y reduce to one grid:     grid2.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc n grid.options['rowData']['Carol']['age'] = random_Numpy(9)
+###jwc 23-0506-1700 y reduce to one grid:     grid2.options['rowData'][0]['light_total'] += random_General.randint(1,100)
+###jwc 23-0506-1700 y reduce to one grid: 
+###jwc 23-0506-1700 y reduce to one grid:     grid2.update()
 
-# Defaults to 'h-64'
-# 1 rem = 16px, 2 rem = 1 full font height     
-}).classes('h-[128rem]')
-
-def updateGrid2():
-    ###jwc n grid.options[
-    ###jwc n     'rowData': [
-    ###jwc n     {'name': 'Alice', 'age': 28},
-    ###jwc n     {'name': 'Bob', 'age': 31},
-    ###jwc n     {'name': 'Carol', 'age': 52},
-    ###jwc n]] 
-    ###jwc y grid.options['rowData'][0]['age'] += 1
-    ###jwc yy grid.options['rowData'][0]['magnet_lastdelta'] += temp2
-    grid2.options['rowData'][0]['magnet_lastdelta'] += temp2
-    grid2.options['rowData'][0]['magnet_total'] += temp2
-    grid2.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
-    ###jwc n grid.options['rowData']['Carol']['age'] = random_Numpy(9)
-    grid2.options['rowData'][0]['light_total'] += random_General.randint(1,100)
-
-    grid2.update()
-
-### ###jwc y was 5 now 1: update_Grid2 = ui.timer(5, updateGrid2, active=True)
-update_Grid2 = ui.timer(1, updateGrid2, active=True)
-
-    ###jwc y grid.options['rowData'][1]['age'] += 1
-    ###jwc y grid.options['rowData'][2]['weight'] += 2
+###jwc 23-0506-1700 y reduce to one grid: ### ###jwc y was 5 now 1: update_Grid2 = ui.timer(5, updateGrid2, active=True)
+###jwc 23-0506-1700 y reduce to one grid: update_Grid2 = ui.timer(1, updateGrid2, active=True)
+###jwc 23-0506-1700 y reduce to one grid: 
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc y grid.options['rowData'][1]['age'] += 1
+###jwc 23-0506-1700 y reduce to one grid:     ###jwc y grid.options['rowData'][2]['weight'] += 2
 
 
 tenp1 = 5
 temp2 = 1
 
 
-def updateGrid():
+def update_WebGrid_Fn():
     ###jwc n grid.options[
     ###jwc n     'rowData': [
     ###jwc n     {'name': 'Alice', 'age': 28},
@@ -447,9 +439,10 @@ def updateGrid():
 
     grid.update()
 
-ui.button('Update Chart', on_click=updateGrid)
+ui.button('update_WebGrid_Fn', on_click=update_WebGrid_Fn)
 
-def updateGrid02():
+
+def update_WebGrid_02_Fn():
     rowData_List[0]['light_lastdelta']+=1
     rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
     rowData_List[0]['magnet_lastdelta']+=2
@@ -462,129 +455,211 @@ def updateGrid02():
     grid.update()
 
 
+def update_WebGrid_03_Fn():
+    rowData_List[0]['light_lastdelta']+=1
+    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
+    grid.update()
+
+
+
 with ui.row():
-    ui.button('Update02', on_click=updateGrid02)
+    ui.button('update_WebGrid_02_Fn', on_click=update_WebGrid_02_Fn)
     ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
 
+# Seems #1: receive_Microbit_Messages_ReturnValue 0.0001sec (0.1msec) -&- update_WebGrid_03_ReturnValue 4 sec seems optimum :)+
+# Seems #2: receive_Microbit_Messages_ReturnValue 0.001sec (1msec) -&- update_WebGrid_03_ReturnValue 3 sec seems optimum :)+
+
+###jwc o receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=False)
+###jwc timer x2 speed: 0.1 to 0.05
+###jwc o receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=False)
+## '0.05' sec
+###jwc good for slow real-time y receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
+###jwc y no more linegraph real-time to test chart realtime instead, 
+###jwc TYJ LINE GRAPH DID SEEM TO SLOW DOWN TEXTCHART/DISPLAY BY 10-20 SEC :)+
+###jwc y receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=False)
+### ### jwc yyy tyj: was 1 now to 10: receive_Microbit_Messages_ReturnValue = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 50 sec: receive_Microbit_Messages_ReturnValue = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 25 sec: receive_Microbit_Messages_ReturnValue = ui.timer(0.5, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 10 sec: receive_Microbit_Messages_ReturnValue = ui.timer(0.25, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 2-3 sec: receive_Microbit_Messages_ReturnValue = ui.timer(0.125, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 2-3 sec :)+ 0.05sec=20fps
+###jwc ? receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
+###jwc ? receive_Microbit_Messages_ReturnValue = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
+
+###jwc 2nd bot '12' not show: n receive_Microbit_Messages_ReturnValue = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
+###jwc ? receive_Microbit_Messages_ReturnValue = ui.timer(0.5, receive_Microbit_Messages_Fn, active=True)
+###jwc ? receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
+###jwc y receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
+###jwc y receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
+###jwc 20msec: 30 sec  receive_Microbit_Messages_ReturnValue = ui.timer(0.020, receive_Microbit_Messages_Fn, active=True)
+
+###jwc 10-20sec receive_Microbit_Messages_ReturnValue = ui.timer(0.010, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead every 2-3 messages y receive_Microbit_Messages_ReturnValue = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
+###jwc 2.5' receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
+###jwc 7-8sec / 1 NoSerialRead every 2 messages:  receive_Microbit_Messages_ReturnValue = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead after each wave (11,12): receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
+###jwc same as 0.0001 receive_Microbit_Messages_ReturnValue = ui.timer(0.00001, receive_Microbit_Messages_Fn, active=True)
+###jwc same as 0.0001 receive_Microbit_Messages_ReturnValue = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
+###jwc same as 0.0001 receive_Microbit_Messages_ReturnValue = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
+###jwc same receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead every 7-8 messages: receive_Microbit_Messages_ReturnValue = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead every 2 (BotId 11,12) messages: receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead every 2 (BotId 11,12) messages: receive_Microbit_Messages_ReturnValue = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSearialRead every 2-5-8 (BotId 11,12,14) messages: receive_Microbit_Messages_ReturnValue = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSearialRead every 2-5-8 (BotId 11,12,14) messages: receive_Microbit_Messages_ReturnValue = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSearialRead every 2-5 (BotId 11,12,14) messages: 0.1msec
+receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
+
+###jwc ? line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active')
+###jwc y line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active')
+
+
+### ### jwc yyy tyj: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active')
+### jwc 23-0504-0720 y ui.button('Update Chart', on_click=receive_Microbit_Messages_Fn)
+
+## '0.1' sec
+### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
+###jwc 23-0501-1400 yy line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
+
+
+
 ## '0.05' sec update
-###jwc y update_Grid = ui.timer(0.05, updateGrid, active=True)
-### ###jwc y was 1 now to 10 >> 5: update_Grid = ui.timer(1, updateGrid, active=True)
-update_Grid = ui.timer(5, updateGrid, active=True)
+###jwc y update_WebGrid_03_ReturnValue = ui.timer(0.05, update_WebGrid_Fn, active=True)
+### ###jwc y was 1 now to 10 >> 5: update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_Fn, active=True)
+###jwc 23-0506-1720 y Hold off to not compete w/ main update: update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_Fn, active=True)
+
+###jwc y update_WebGrid_03_ReturnValue = ui.timer(0.05, update_WebGrid_Fn, active=True)
+###jwc 20msec
+###jwc ? update_WebGrid_03_ReturnValue = ui.timer(0.020, update_WebGrid_Fn, active=True)
+#
+###jwc 30sec update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_03_Fn, active=True)
+###jwc 15 sec update_WebGrid_03_ReturnValue = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
+###jwc 18 sec update_WebGrid_03_ReturnValue = ui.timer(0.25, update_WebGrid_03_Fn, active=True)
+###jwc 15-30 sec update_WebGrid_03_ReturnValue = ui.timer(0.125, update_WebGrid_03_Fn, active=True)
+###jwc 10-15sec update_WebGrid_03_ReturnValue = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
+###jwc 8-10sec update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_03_Fn, active=True)
+###jwc 6-8sec update_WebGrid_03_ReturnValue = ui.timer(2, update_WebGrid_03_Fn, active=True)
+###jwc 6sec update_WebGrid_03_ReturnValue = ui.timer(3, update_WebGrid_03_Fn, active=True)
+###jwc 5sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc 6-8 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
+###jwc 4-6 sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc 5-9 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
+update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
 
 
 
 ### ### Test Later
 ###
 ###
-def toggle_value_fn(bot_id_in:int):
-    bot_TeamAssigned_Base0_Int[bot_id_in] += 1
-
-def toggle_value_fn2():
-    bot_TeamAssigned_Base0_Int[0] += 1
-    print("****** bot_TeamAssigned_Base0_Int[0]: ")
-
-async def toggle_value_fn2A():
-    bot_TeamAssigned_Base0_Int[0] += 1
-    print("****** bot_TeamAssigned_Base0_Int[0]: ")
-
-def toggle_value_fn3():
-    print("****** bot_TeamAssigned_Base0_Int[1]: ")
-
-if True: 
-    def badge_fn():
-        if badge1.text == '1':
-            badge1.set_text('2')
-        else:
-            badge1.set_text('1')
-
-def badge_fn2():
-    if badge2.text == '-':
-        badge2.set_text('A')
-    elif badge2.text == 'A':
-        badge2.set_text('B')
-    elif badge2.text == 'B':
-        badge2.set_text('-')
-
-def badge_fn3():
-    if badge3.text == '-':
-        badge3.set_text('A')
-    elif badge3.text == 'A':
-        badge3.set_text('B')
-    elif badge3.text == 'B':
-        badge3.set_text('-')
-
-    
-with ui.row():
-    toggle1 = ui.toggle([1, 2, 3], value=1)
-
-    toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value')
-
-    toggle3 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(1)', 'value')
-
-    ###jwc n compiles but no response: toggle4 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
-    ###jwc n compiles but no response: toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn3')
-
-    ui.button('Update2', on_click=toggle_value_fn2)
-    ui.button('Update3', on_click=toggle_value_fn3)
-
-    ###jwc n ui.toggle({1: 'A', 2: 'B', 3: 'C'}, on_click=toggle_value_fn2)
-    ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
-    toggle6A = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
-
-    ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
-    ###jwc n compiles but no response: toggle6B = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
-
-    ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
-    ###jwc n compiles but no response: toggle7 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
-
-    ###jwc n compiles but no response: line_checkbox = ui.checkbox('active').bind_value(line_updates, 'active').run_method('toggle_value_fn2')
-    ###jwc n compiles but no response: select1 = ui.select([1, 2, 3], value=1).run_method('toggle_value_fn2')
-
-    ###jwc n not compile line_checkbox = ui.checkbox('active').on_click=toggle_value_fn2
-    ###jwc n not compile ui.select([1, 2, 3], value=1).on_click=toggle_value_fn2
-
-
-    with ui.button('Click me!', on_click=lambda: badge.set_text(str(int(badge.text) + 1))): 
-        badge = ui.badge('0', color='red').props('floating')
-    ###jwc n visibility still on: with ui.button('Click me1A'): 
-    ###jwc n visibility still on:     badge1A = ui.badge('0', color='red').props('floating').set_visibility('False')
-
-    if True:
-        with ui.button('Click me1!', on_click=badge_fn): 
-            badge1 = ui.badge('0', color='red').props('floating')
-
-    with ui.button('Cl2!', on_click=badge_fn2): 
-        badge2 = ui.badge('-', color='red').props('floating')
-    with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
-        badge3 = ui.badge('-', color='red').props('floating')
-
-    ##jwc n if True:
-        ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
-            ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('False')
-        ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
-            ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('True')
-    ###jwc ? with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id'], on_click=badge_fn2): 
-    ###jwc ?     badge5 = ui.badge('-', color='red').props('floating').set_visibility('False')
-    ###jwc ? if False:
-    ###jwc ?     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn2): 
-    ###jwc ?         badge = ui.badge('-', color='red').props('floating')
-
-
-# jwc Only evaluated at startup, then is ignored, thus not good for realtime
-#
-if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
-###jwc if True:
-    def badge_fn4():
-        if badge4.text == '-':
-            badge4.set_text('A')
-        elif badge4.text == 'A':
-            badge4.set_text('B')
-        elif badge4.text == 'B':
-            badge4.set_text('-')
-
-
-    with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn4): 
-        badge4 = ui.badge('-', color='red').props('floating')
+###jwc 23-0506-1840 test later since could cause server lag: def toggle_value_fn(bot_id_in:int):
+###jwc 23-0506-1840 test later since could cause server lag:     bot_TeamAssigned_Base0_Int[bot_id_in] += 1
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: def toggle_value_fn2():
+###jwc 23-0506-1840 test later since could cause server lag:     bot_TeamAssigned_Base0_Int[0] += 1
+###jwc 23-0506-1840 test later since could cause server lag:     print("****** bot_TeamAssigned_Base0_Int[0]: ")
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: async def toggle_value_fn2A():
+###jwc 23-0506-1840 test later since could cause server lag:     bot_TeamAssigned_Base0_Int[0] += 1
+###jwc 23-0506-1840 test later since could cause server lag:     print("****** bot_TeamAssigned_Base0_Int[0]: ")
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: def toggle_value_fn3():
+###jwc 23-0506-1840 test later since could cause server lag:     print("****** bot_TeamAssigned_Base0_Int[1]: ")
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: if True: 
+###jwc 23-0506-1840 test later since could cause server lag:     def badge_fn():
+###jwc 23-0506-1840 test later since could cause server lag:         if badge1.text == '1':
+###jwc 23-0506-1840 test later since could cause server lag:             badge1.set_text('2')
+###jwc 23-0506-1840 test later since could cause server lag:         else:
+###jwc 23-0506-1840 test later since could cause server lag:             badge1.set_text('1')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: def badge_fn2():
+###jwc 23-0506-1840 test later since could cause server lag:     if badge2.text == '-':
+###jwc 23-0506-1840 test later since could cause server lag:         badge2.set_text('A')
+###jwc 23-0506-1840 test later since could cause server lag:     elif badge2.text == 'A':
+###jwc 23-0506-1840 test later since could cause server lag:         badge2.set_text('B')
+###jwc 23-0506-1840 test later since could cause server lag:     elif badge2.text == 'B':
+###jwc 23-0506-1840 test later since could cause server lag:         badge2.set_text('-')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: def badge_fn3():
+###jwc 23-0506-1840 test later since could cause server lag:     if badge3.text == '-':
+###jwc 23-0506-1840 test later since could cause server lag:         badge3.set_text('A')
+###jwc 23-0506-1840 test later since could cause server lag:     elif badge3.text == 'A':
+###jwc 23-0506-1840 test later since could cause server lag:         badge3.set_text('B')
+###jwc 23-0506-1840 test later since could cause server lag:     elif badge3.text == 'B':
+###jwc 23-0506-1840 test later since could cause server lag:         badge3.set_text('-')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     
+###jwc 23-0506-1840 test later since could cause server lag: with ui.row():
+###jwc 23-0506-1840 test later since could cause server lag:     toggle1 = ui.toggle([1, 2, 3], value=1)
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     toggle3 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(1)', 'value')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: toggle4 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn3')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     ui.button('Update2', on_click=toggle_value_fn2)
+###jwc 23-0506-1840 test later since could cause server lag:     ui.button('Update3', on_click=toggle_value_fn3)
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n ui.toggle({1: 'A', 2: 'B', 3: 'C'}, on_click=toggle_value_fn2)
+###jwc 23-0506-1840 test later since could cause server lag:     ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
+###jwc 23-0506-1840 test later since could cause server lag:     toggle6A = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: toggle6B = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: toggle7 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active').run_method('toggle_value_fn2')
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: select1 = ui.select([1, 2, 3], value=1).run_method('toggle_value_fn2')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n not compile line_checkbox = ui.checkbox('active').on_click=toggle_value_fn2
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n not compile ui.select([1, 2, 3], value=1).on_click=toggle_value_fn2
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     with ui.button('Click me!', on_click=lambda: badge.set_text(str(int(badge.text) + 1))): 
+###jwc 23-0506-1840 test later since could cause server lag:         badge = ui.badge('0', color='red').props('floating')
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n visibility still on: with ui.button('Click me1A'): 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n visibility still on:     badge1A = ui.badge('0', color='red').props('floating').set_visibility('False')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     if True:
+###jwc 23-0506-1840 test later since could cause server lag:         with ui.button('Click me1!', on_click=badge_fn): 
+###jwc 23-0506-1840 test later since could cause server lag:             badge1 = ui.badge('0', color='red').props('floating')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     with ui.button('Cl2!', on_click=badge_fn2): 
+###jwc 23-0506-1840 test later since could cause server lag:         badge2 = ui.badge('-', color='red').props('floating')
+###jwc 23-0506-1840 test later since could cause server lag:     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+###jwc 23-0506-1840 test later since could cause server lag:         badge3 = ui.badge('-', color='red').props('floating')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     ##jwc n if True:
+###jwc 23-0506-1840 test later since could cause server lag:         ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+###jwc 23-0506-1840 test later since could cause server lag:             ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('False')
+###jwc 23-0506-1840 test later since could cause server lag:         ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+###jwc 23-0506-1840 test later since could cause server lag:             ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('True')
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ? with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id'], on_click=badge_fn2): 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ?     badge5 = ui.badge('-', color='red').props('floating').set_visibility('False')
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ? if False:
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ?     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn2): 
+###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ?         badge = ui.badge('-', color='red').props('floating')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: # jwc Only evaluated at startup, then is ignored, thus not good for realtime
+###jwc 23-0506-1840 test later since could cause server lag: #
+###jwc 23-0506-1840 test later since could cause server lag: if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
+###jwc 23-0506-1840 test later since could cause server lag: ###jwc if True:
+###jwc 23-0506-1840 test later since could cause server lag:     def badge_fn4():
+###jwc 23-0506-1840 test later since could cause server lag:         if badge4.text == '-':
+###jwc 23-0506-1840 test later since could cause server lag:             badge4.set_text('A')
+###jwc 23-0506-1840 test later since could cause server lag:         elif badge4.text == 'A':
+###jwc 23-0506-1840 test later since could cause server lag:             badge4.set_text('B')
+###jwc 23-0506-1840 test later since could cause server lag:         elif badge4.text == 'B':
+###jwc 23-0506-1840 test later since could cause server lag:             badge4.set_text('-')
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag: 
+###jwc 23-0506-1840 test later since could cause server lag:     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn4): 
+###jwc 23-0506-1840 test later since could cause server lag:         badge4 = ui.badge('-', color='red').props('floating')
     
 
 
