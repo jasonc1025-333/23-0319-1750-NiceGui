@@ -73,7 +73,7 @@ _debug_Show_Priority_Lo_Bool = False
 class update_WebGrid_UiTimer_Class:
         def __init__(self):
             self.timer_Sec_Int = 4
-            self.active_Bool = True
+            self.active_Bool = False
 
 update_WebGrid_UiTimer_Object = update_WebGrid_UiTimer_Class()
 
@@ -304,6 +304,51 @@ def clear_Stats_Fn():
 ui.button('Clear Stats', on_click=clear_Stats_Fn)
 
 
+def update_WebGrid_03_Fn():
+    rowData_List[0]['light_lastdelta']+=1
+    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
+    scoreboardServer_WebGrid.update()
+
+## '0.1' sec
+### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
+###jwc 23-0501-1400 yy line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
+
+## '0.05' sec update
+###jwc y update_WebGrid_03_ReturnValue = ui.timer(0.05, update_WebGrid_Fn, active=True)
+### ###jwc y was 1 now to 10 >> 5: update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_Fn, active=True)
+###jwc 23-0506-1720 y Hold off to not compete w/ main update: update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_Fn, active=True)
+
+###jwc y update_WebGrid_03_ReturnValue = ui.timer(0.05, update_WebGrid_Fn, active=True)
+###jwc 20msec
+###jwc ? update_WebGrid_03_ReturnValue = ui.timer(0.020, update_WebGrid_Fn, active=True)
+#
+###jwc 30sec update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_03_Fn, active=True)
+###jwc 15 sec update_WebGrid_03_ReturnValue = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
+###jwc 18 sec update_WebGrid_03_ReturnValue = ui.timer(0.25, update_WebGrid_03_Fn, active=True)
+###jwc 15-30 sec update_WebGrid_03_ReturnValue = ui.timer(0.125, update_WebGrid_03_Fn, active=True)
+###jwc 10-15sec update_WebGrid_03_ReturnValue = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
+###jwc 8-10sec update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_03_Fn, active=True)
+###jwc 6-8sec update_WebGrid_03_ReturnValue = ui.timer(2, update_WebGrid_03_Fn, active=True)
+###jwc 6sec update_WebGrid_03_ReturnValue = ui.timer(3, update_WebGrid_03_Fn, active=True)
+###jwc 5sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc 6-8 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
+###jwc 4-6 sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc 5-9 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
+###jwc yy update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc yyy update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
+update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
+
+
+###jwc y update_WebGrid_UiTimer_Active_Switch02 = ui.switch('active').bind_value_to(update_WebGrid_03_ReturnValue, 'active')
+###jwc y update_WebGrid_UiTimer_Active_Switch02 = ui.checkbox('update_WebGrid').bind_value_to(update_WebGrid_03_ReturnValue, 'active')
+###jwc y ui.label('Check!').bind_visibility_from(update_WebGrid_UiTimer_Active_Switch02, 'value')
+
+
+# 'Toggle' has  real-time feedback vs. 'Checkbox' and 'Switch' 
+update_WebGrid_UiTimer_Timer_Toggle = ui.toggle({0: 'WebGrid_Update:Off', 1: 'WebGrid_Update:On'}).bind_value(update_WebGrid_03_ReturnValue, 'active')
+
+
+
 def update_WebGrid_UiTimer_Timer_Toggle_Fn(event: ValueChangeEventArguments):
     name = type(event.sender).__name__
     ui.notify(f'{name}: {event.value}')
@@ -379,10 +424,6 @@ def update_WebGrid_02_Fn():
     ###jwc n grid2.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
     scoreboardServer_WebGrid.update()
 
-def update_WebGrid_03_Fn():
-    rowData_List[0]['light_lastdelta']+=1
-    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
-    scoreboardServer_WebGrid.update()
 
 with ui.row():
     ui.button('update_WebGrid_02_Fn', on_click=update_WebGrid_02_Fn)
@@ -607,40 +648,6 @@ receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messag
 
 ### ### jwc yyy tyj: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active')
 ### jwc 23-0504-0720 y ui.button('Update Chart', on_click=receive_Microbit_Messages_Fn)
-
-## '0.1' sec
-### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
-###jwc 23-0501-1400 yy line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
-
-
-
-## '0.05' sec update
-###jwc y update_WebGrid_03_ReturnValue = ui.timer(0.05, update_WebGrid_Fn, active=True)
-### ###jwc y was 1 now to 10 >> 5: update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_Fn, active=True)
-###jwc 23-0506-1720 y Hold off to not compete w/ main update: update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_Fn, active=True)
-
-###jwc y update_WebGrid_03_ReturnValue = ui.timer(0.05, update_WebGrid_Fn, active=True)
-###jwc 20msec
-###jwc ? update_WebGrid_03_ReturnValue = ui.timer(0.020, update_WebGrid_Fn, active=True)
-#
-###jwc 30sec update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_03_Fn, active=True)
-###jwc 15 sec update_WebGrid_03_ReturnValue = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
-###jwc 18 sec update_WebGrid_03_ReturnValue = ui.timer(0.25, update_WebGrid_03_Fn, active=True)
-###jwc 15-30 sec update_WebGrid_03_ReturnValue = ui.timer(0.125, update_WebGrid_03_Fn, active=True)
-###jwc 10-15sec update_WebGrid_03_ReturnValue = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
-###jwc 8-10sec update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_03_Fn, active=True)
-###jwc 6-8sec update_WebGrid_03_ReturnValue = ui.timer(2, update_WebGrid_03_Fn, active=True)
-###jwc 6sec update_WebGrid_03_ReturnValue = ui.timer(3, update_WebGrid_03_Fn, active=True)
-###jwc 5sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
-###jwc 6-8 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
-###jwc 4-6 sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
-###jwc 5-9 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
-###jwc yy update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
-###jwc yyy update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
-update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
-
-
-update_WebGrid_UiTimer_Active_Switch02 = ui.switch('active').bind_value_to(update_WebGrid_03_ReturnValue, 'active')
 
 
 ui.run()
