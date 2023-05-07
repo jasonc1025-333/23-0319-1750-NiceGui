@@ -3,6 +3,7 @@ from numpy.random import random as random_Numpy
 
 from datetime import datetime
 from nicegui import ui
+from nicegui.events import ValueChangeEventArguments
 
 import time
 import serial
@@ -69,10 +70,18 @@ y2Value = [0,0,0]
 _debug_Show_Priority_Hi_Bool = True
 _debug_Show_Priority_Lo_Bool = False
 
+class update_WebGrid_UiTimer_Class:
+        def __init__(self):
+            self.timer_Sec_Int = 4
+            self.active_Bool = True
+
+update_WebGrid_UiTimer_Object = update_WebGrid_UiTimer_Class()
+
+###jwc n update_WebGrid_UiTimer_Active_Bool = False
+
 bot_TeamAssigned_Base0_Int = [0,0,0]
 
-_update_WebGrid_UiTimer_Interval_Sec_Int = 4
-_update_WebGrid_UiTimer_Active_Bool = True
+update_WebGrid_UiTimer_Interval_Sec_Int = 4
 
 
 ###jwc o line_plot = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
@@ -278,6 +287,43 @@ def receive_Microbit_Messages_Fn() -> None:
 ###jwc yy ]
 
 
+def clear_Stats_Fn():
+    for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
+        print("  E1:" + str(bot_dictionary))
+        ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
+          
+        print("  E2a:bot_dictionary: " + str(bot_dictionary))
+        bot_dictionary['light_lastdelta'] = 0
+        bot_dictionary['light_total'] = 0
+        bot_dictionary['magnet_lastdelta'] = 0
+        bot_dictionary['magnet_total'] = 0
+        print("  E2b:bot_dictionary: " + str(bot_dictionary))
+    scoreboardServer_WebGrid.update()
+    ###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: grid2.update()
+
+ui.button('Clear Stats', on_click=clear_Stats_Fn)
+
+
+def update_WebGrid_UiTimer_Timer_Toggle_Fn(event: ValueChangeEventArguments):
+    name = type(event.sender).__name__
+    ui.notify(f'{name}: {event.value}')
+    ###jwc n update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
+    print("****** update_WebGrid_UiTimer_Timer_Toggle_Fn: " + str(update_WebGrid_UiTimer_Object.timer_Sec_Int))
+
+def update_WebGrid_UiTimer_Active_Switch_Fn(event: ValueChangeEventArguments):
+    name = type(event.sender).__name__
+    ui.notify(f'{name}: {event.value}')
+    ###jwc n update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
+
+
+    print("****** update_WebGrid_UiTimer_Active_Switch_Fn: " + str(update_WebGrid_UiTimer_Object.active_Bool))
+
+###jwc n update_WebGrid_UiTimer_Active_Toggle = ui.toggle({1: 'F', 2: 'G', 3: 'H'}).on('click', update_WebGrid_UiTimer_Active_Toggle_Fn).bind_value_from(bool,'update_WebGrid_UiTimer_Active_Bool')
+update_WebGrid_UiTimer_Timer_Toggle = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid_UiTimer_Object, 'timer_Sec_Int')
+###jwc ? update_WebGrid_UiTimer_Active_Switch = ui.switch ('update_WebGrid_UiTimer_Active_Switch', on_change=update_WebGrid_UiTimer_Active_Switch_Fn).bind_value(update_WebGrid_UiTimer_Object, 'active_Bool')
+    
+
+
 async def selectedRows_Fn():
         ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
         ###jwc y rows = await grid2.get_selected_rows()
@@ -297,23 +343,6 @@ async def selectedRows_Fn():
             return
         scoreboardServer_WebGrid.update()
 ui.button('Selected Row(s)', on_click=selectedRows_Fn)
-
-
-def clear_Stats_Fn():
-    for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
-        print("  E1:" + str(bot_dictionary))
-        ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
-          
-        print("  E2a:bot_dictionary: " + str(bot_dictionary))
-        bot_dictionary['light_lastdelta'] = 0
-        bot_dictionary['light_total'] = 0
-        bot_dictionary['magnet_lastdelta'] = 0
-        bot_dictionary['magnet_total'] = 0
-        print("  E2b:bot_dictionary: " + str(bot_dictionary))
-    scoreboardServer_WebGrid.update()
-    ###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: grid2.update()
-
-ui.button('Clear Stats', on_click=clear_Stats_Fn)
 
 
 tenp1 = 5
@@ -371,6 +400,8 @@ def toggle_value_fn(bot_id_in:int):
 def toggle_value_fn2():
     bot_TeamAssigned_Base0_Int[0] += 1
     print("****** bot_TeamAssigned_Base0_Int[0]: " + str(bot_TeamAssigned_Base0_Int[0]))
+toggle5 = ui.toggle({1: 'F', 2: 'G', 3: 'H'}).on('click', toggle_value_fn2)
+
 
 async def toggle_value_fn2A():
     bot_TeamAssigned_Base0_Int[0] += 1
@@ -408,7 +439,9 @@ with ui.row():
 
     toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value')
 
-    toggle3 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(1)', 'value')
+    ###jwc n toggle3 = ui.toggle({1: 'C', 2: 'D', 3: 'E'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(1)', 'value')
+    ###jwc n toggle3 = ui.toggle({1: 'C', 2: 'D', 3: 'E'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(value)', 'value')
+    ###jwc n toggle3 = ui.toggle({1: 'C', 2: 'D', 3: 'E'}).bind_value(toggle1, 'value').run_method('toggle_value_fn()', 'value')
 
     ###jwc n compiles but no response: toggle4 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
     ###jwc n compiles but no response: toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn3')
@@ -417,8 +450,8 @@ with ui.row():
     ui.button('Update3', on_click=toggle_value_fn3)
 
     ###jwc n ui.toggle({1: 'A', 2: 'B', 3: 'C'}, on_click=toggle_value_fn2)
-    toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
-    toggle6A = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
+    ###jwc n toggle6A = ui.toggle({1: 'I', 2: 'J', 3: 'K'}).on('click', toggle_value_fn, ['1'])
+    ###jwc n toggle6A = ui.toggle({1: 'I', 2: 'J', 3: 'K'}).on('click', toggle_value_fn, ['value'])
 
     ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
     ###jwc n compiles but no response: toggle6B = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
@@ -602,8 +635,13 @@ receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messag
 ###jwc 6-8 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
 ###jwc 4-6 sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
 ###jwc 5-9 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
-update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
-    
+###jwc yy update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc yyy update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
+update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
+
+
+update_WebGrid_UiTimer_Active_Switch02 = ui.switch('active').bind_value_to(update_WebGrid_03_ReturnValue, 'active')
+
 
 ui.run()
 
