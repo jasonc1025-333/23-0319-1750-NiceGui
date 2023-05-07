@@ -71,6 +71,9 @@ _debug_Show_Priority_Lo_Bool = False
 
 bot_TeamAssigned_Base0_Int = [0,0,0]
 
+_update_WebGrid_UiTimer_Interval_Sec_Int = 4
+_update_WebGrid_UiTimer_Active_Bool = True
+
 
 ###jwc o line_plot = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
 ###jwc o     .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
@@ -80,6 +83,9 @@ bot_TeamAssigned_Base0_Int = [0,0,0]
 ### ### jwc yyy tyj: line_plot = ui.line_plot(n=2, limit=40, figsize=(6, 4), update_every=1) \
 ### ### jwc yyy tyj:     .with_legend(['Light', 'Magnet'], loc='upper center', ncol=2)
 
+#
+# receive_Microbit_Messages_Fn
+#
 def receive_Microbit_Messages_Fn() -> None:
 
     now,network_DataMessage_Rcvd_Bytes,y1,y2 = 0, 0, 0, 0
@@ -233,13 +239,14 @@ def receive_Microbit_Messages_Fn() -> None:
 ### ### jwc yyy tyj:     line_plot.push([now.timestamp()], [[y2Value[1]], [y2Value[2]]])  
 
 
-dictionary_Scoreboard_BotsAll_Ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
 
-###jwc n dictionary_Scoreboard_BotsAll_Value_Default = {'botid':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
-###jwc 23-0504-0700 y dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0},
-dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'status':'-', 'team':'-', 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0},
-
-###jwc n    'rowData' : dict.fromkeys( dictionary_Scoreboard_BotsAll_Ids, dictionary_Scoreboard_BotsAll_Value_Default),
+###jwc test only: done: dictionary_Scoreboard_BotsAll_Ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
+###jwc test only: done: 
+###jwc test only: done: ###jwc n dictionary_Scoreboard_BotsAll_Value_Default = {'botid':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+###jwc test only: done: ###jwc 23-0504-0700 y dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0},
+###jwc test only: done: dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'status':'-', 'team':'-', 'light_lastdelta':0, 'light_total':0, 'magnet_lastdelta':0, 'magnet_total':0},
+###jwc test only: done: 
+###jwc test only: done: ###jwc n    'rowData' : dict.fromkeys( dictionary_Scoreboard_BotsAll_Ids, dictionary_Scoreboard_BotsAll_Value_Default),
 
     ###jwc y 'rowData' :[
     ###jwc y     {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
@@ -271,6 +278,205 @@ dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'status':'-', 'team':'
 ###jwc yy ]
 
 
+async def selectedRows_Fn():
+        ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
+        ###jwc y rows = await grid2.get_selected_rows()
+        rows = await scoreboardServer_WebGrid.get_selected_rows()
+
+        ###jwc ? rows.forEach(function( selectedRow, index){
+        ui.notify("Notify")
+
+        ###jwc ? })
+        ###jwc y if len(rows) == 0:
+        if rows:
+            for row in rows:
+                print("* selectedRows_Fn:" + str(row))
+            ui.notify("Yes Data Selected")
+        else:
+            ui.notify("No Data Selected")
+            return
+        scoreboardServer_WebGrid.update()
+ui.button('Selected Row(s)', on_click=selectedRows_Fn)
+
+
+def clear_Stats_Fn():
+    for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
+        print("  E1:" + str(bot_dictionary))
+        ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
+          
+        print("  E2a:bot_dictionary: " + str(bot_dictionary))
+        bot_dictionary['light_lastdelta'] = 0
+        bot_dictionary['light_total'] = 0
+        bot_dictionary['magnet_lastdelta'] = 0
+        bot_dictionary['magnet_total'] = 0
+        print("  E2b:bot_dictionary: " + str(bot_dictionary))
+    scoreboardServer_WebGrid.update()
+    ###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: grid2.update()
+
+ui.button('Clear Stats', on_click=clear_Stats_Fn)
+
+
+tenp1 = 5
+temp2 = 1
+
+def update_WebGrid_Fn():
+    ###jwc n scoreboardServer_WebGrid.options[
+    ###jwc n     'rowData': [
+    ###jwc n     {'name': 'Alice', 'age': 28},
+    ###jwc n     {'name': 'Bob', 'age': 31},
+    ###jwc n     {'name': 'Carol', 'age': 52},
+    ###jwc n]] 
+    ###jwc y scoreboardServer_WebGrid.options['rowData'][0]['age'] += 1
+    ###jwc yy scoreboardServer_WebGrid.options['rowData'][0]['magnet_lastdelta'] += temp2
+    scoreboardServer_WebGrid.options['rowData'][0]['magnet_lastdelta'] += temp2
+    scoreboardServer_WebGrid.options['rowData'][0]['magnet_total'] += temp2
+    scoreboardServer_WebGrid.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
+    ###jwc n scoreboardServer_WebGrid.options['rowData']['Carol']['age'] = random_Numpy(9)
+    scoreboardServer_WebGrid.options['rowData'][0]['light_total'] += random_General.randint(1,100)
+    ###jwc n scoreboardServer_WebGrid.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
+    scoreboardServer_WebGrid.update()
+
+ui.button('update_WebGrid_Fn', on_click=update_WebGrid_Fn)
+
+
+def update_WebGrid_02_Fn():
+    rowData_List[0]['light_lastdelta']+=1
+    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
+    rowData_List[0]['magnet_lastdelta']+=2
+    rowData_List[0]['magnet_total']+=rowData_List[0]['magnet_lastdelta']
+    ###jwc 23-0504-0720 y rowData_List.append({'row_id':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    rowData_List.append({'row_id':5, 'bot_id':1, 'mission_status':0, 'team_id':0, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    ###jwc y grid2.options['rowData'] = sorted(rowData_List, key=lambda data:data['bot_id'] )
+    ###jwc n grid2.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
+    scoreboardServer_WebGrid.update()
+
+def update_WebGrid_03_Fn():
+    rowData_List[0]['light_lastdelta']+=1
+    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
+    scoreboardServer_WebGrid.update()
+
+with ui.row():
+    ui.button('update_WebGrid_02_Fn', on_click=update_WebGrid_02_Fn)
+    ui.button('Select all', on_click=lambda: scoreboardServer_WebGrid.call_api_method('selectAll'))
+
+
+### Test UI
+###
+
+def toggle_value_fn(bot_id_in:int):
+    bot_TeamAssigned_Base0_Int[bot_id_in] += 1
+    print("****** bot_TeamAssigned_Base0_Int[bot_id_in]: " + str(bot_TeamAssigned_Base0_Int[bot_id_in]))
+
+
+def toggle_value_fn2():
+    bot_TeamAssigned_Base0_Int[0] += 1
+    print("****** bot_TeamAssigned_Base0_Int[0]: " + str(bot_TeamAssigned_Base0_Int[0]))
+
+async def toggle_value_fn2A():
+    bot_TeamAssigned_Base0_Int[0] += 1
+    print("****** bot_TeamAssigned_Base0_Int[0]: " + str(bot_TeamAssigned_Base0_Int[0]))
+
+def toggle_value_fn3():
+    print("****** bot_TeamAssigned_Base0_Int[1]: " + str(bot_TeamAssigned_Base0_Int[1]))
+
+if True: 
+    def badge_fn():
+        if badge1.text == '1':
+            badge1.set_text('2')
+        else:
+            badge1.set_text('1')
+
+def badge_fn2():
+    if badge2.text == '-':
+        badge2.set_text('A')
+    elif badge2.text == 'A':
+        badge2.set_text('B')
+    elif badge2.text == 'B':
+        badge2.set_text('-')
+
+def badge_fn3():
+    if badge3.text == '-':
+        badge3.set_text('A')
+    elif badge3.text == 'A':
+        badge3.set_text('B')
+    elif badge3.text == 'B':
+        badge3.set_text('-')
+
+    
+with ui.row():
+    toggle1 = ui.toggle([1, 2, 3], value=1)
+
+    toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value')
+
+    toggle3 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(1)', 'value')
+
+    ###jwc n compiles but no response: toggle4 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+    ###jwc n compiles but no response: toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn3')
+
+    ui.button('Update2', on_click=toggle_value_fn2)
+    ui.button('Update3', on_click=toggle_value_fn3)
+
+    ###jwc n ui.toggle({1: 'A', 2: 'B', 3: 'C'}, on_click=toggle_value_fn2)
+    toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
+    toggle6A = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
+
+    ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+    ###jwc n compiles but no response: toggle6B = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
+
+    ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
+    ###jwc n compiles but no response: toggle7 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
+
+    ###jwc n compiles but no response: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active').run_method('toggle_value_fn2')
+    ###jwc n compiles but no response: select1 = ui.select([1, 2, 3], value=1).run_method('toggle_value_fn2')
+
+    ###jwc n not compile line_checkbox = ui.checkbox('active').on_click=toggle_value_fn2
+    ###jwc n not compile ui.select([1, 2, 3], value=1).on_click=toggle_value_fn2
+
+
+    with ui.button('Click me!', on_click=lambda: badge.set_text(str(int(badge.text) + 1))): 
+        badge = ui.badge('0', color='red').props('floating')
+    ###jwc n visibility still on: with ui.button('Click me1A'): 
+    ###jwc n visibility still on:     badge1A = ui.badge('0', color='red').props('floating').set_visibility('False')
+
+    if True:
+        with ui.button('Click me1!', on_click=badge_fn): 
+            badge1 = ui.badge('0', color='red').props('floating')
+
+    with ui.button('Cl2!', on_click=badge_fn2): 
+        badge2 = ui.badge('-', color='red').props('floating')
+    with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+        badge3 = ui.badge('-', color='red').props('floating')
+
+    ##jwc n if True:
+        ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+            ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('False')
+        ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
+            ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('True')
+    ###jwc ? with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id'], on_click=badge_fn2): 
+    ###jwc ?     badge5 = ui.badge('-', color='red').props('floating').set_visibility('False')
+    ###jwc ? if False:
+    ###jwc ?     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn2): 
+    ###jwc ?         badge = ui.badge('-', color='red').props('floating')
+
+
+# jwc Only evaluated at startup, then is ignored, thus not good for realtime
+#
+if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
+###jwc if True:
+    def badge_fn4():
+        if badge4.text == '-':
+            badge4.set_text('A')
+        elif badge4.text == 'A':
+            badge4.set_text('B')
+        elif badge4.text == 'B':
+            badge4.set_text('-')
+
+
+    with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn4): 
+        badge4 = ui.badge('-', color='red').props('floating')
+
+
+
 ###jwc y }).classes('max-h-40')
 ###jwc y }).classes('max-h-80')
 ###jwc ? }).classes('max-h-500')
@@ -287,18 +493,20 @@ dictionary_Scoreboard_BotsAll_Value_Default = {'botid':0, 'status':'-', 'team':'
 ###jwc 23-0501-1520        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
 ###jwc 23-0501-1520        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
 
-
-grid = ui.aggrid({
+#
+# scoreboardServer_WebGrid
+#
+scoreboardServer_WebGrid = ui.aggrid({
     'columnDefs': [
-        {'headerName': 'Row_Id', 'field': 'row_id'},
+        {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true'},
         ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
-        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc'},
+        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc', 'checkboxSelection': True},
         {'headerName': 'Mission_Status', 'field': 'mission_status'},
         {'headerName': 'Team_Id', 'field': 'team_id'},
         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
-        {'headerName': 'Light_Total', 'field': 'light_total'},
+        {'headerName': 'Light_Total', 'field': 'light_total', 'sortable':'true'},
         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
-        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
+        {'headerName': 'Magnet_Total', 'field': 'magnet_total', 'sortable':'true'},
     ],
     'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
     'rowSelection': 'multiple', 
@@ -310,164 +518,14 @@ grid = ui.aggrid({
 # Defaults to 'h-64'
 # 1 rem = 16px, 2 rem = 1 full font height     
 ###jwc y }).classes('h-[128rem]')
-}).classes('h-64')
+###jwc y }).classes('h-64')
+}).classes('h-[128rem]')
 
 
-async def selectedRows_Fn():
-        ###jwc n rows = await grid.get_selected_rows()
-        ###jwc y rows = await grid2.get_selected_rows()
-        rows = await grid.get_selected_rows()
-
-        ###jwc ? rows.forEach(function( selectedRow, index){
-        ui.notify("Notify")
-
-        ###jwc ? })
-        if len(rows) == 0:
-            ui.notify("No Data Selected")
-            return
-        else:
-            for row in rows:
-                print("* selectedRows_Fn:" + str(row))
-            ui.notify("Yes Data Selected")
-
-
-        grid.update()
-ui.button('Selected Row(s)', on_click=selectedRows_Fn)
-
-
-def clear_Stats_Fn():
-    for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
-        print("  E1:" + str(bot_dictionary))
-        ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
-          
-        print("  E2a:bot_dictionary: " + str(bot_dictionary))
-        bot_dictionary['light_lastdelta'] = 0
-        bot_dictionary['light_total'] = 0
-        bot_dictionary['magnet_lastdelta'] = 0
-        bot_dictionary['magnet_total'] = 0
-        print("  E2b:bot_dictionary: " + str(bot_dictionary))
-    grid.update()
-    ###jwc 23-0506-1700 y reduce to one grid: grid2.update()
-
-ui.button('Clear Stats', on_click=clear_Stats_Fn)
-
-
-###jwc n will not work, no returned selected rows: def selectedRows_Fn5():
-###jwc n will not work, no returned selected rows:         ###jwc n rows = await grid.get_selected_rows()
-###jwc n will not work, no returned selected rows:         rows = grid2.get_selected_rows()
-###jwc n will not work, no returned selected rows: 
-###jwc n will not work, no returned selected rows:         ###jwc ? rows.forEach(function( selectedRow, index){
-###jwc n will not work, no returned selected rows:         ui.notify("Notify")
-###jwc n will not work, no returned selected rows: 
-###jwc n will not work, no returned selected rows:         ###jwc ? })
-###jwc n will not work, no returned selected rows:         if rows == None:
-###jwc n will not work, no returned selected rows:             ui.notify("No Data Selected")
-###jwc n will not work, no returned selected rows:             return
-###jwc n will not work, no returned selected rows:         else:
-###jwc n will not work, no returned selected rows:             ui.notify("Yes Data Selected")
-###jwc n will not work, no returned selected rows: 
-###jwc n will not work, no returned selected rows:         grid.update()
-###jwc n will not work, no returned selected rows: ui.button('Update5', on_click=selectedRows_Fn5)
-
-
-###jwc 23-0506-1700 y reduce to one grid: grid2 = ui.aggrid({
-###jwc 23-0506-1700 y reduce to one grid:     'columnDefs': [
-###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Row_Id', 'field': 'row_id'},
-###jwc 23-0506-1700 y reduce to one grid:         ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
-###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc'},
-###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Mission_Status', 'field': 'mission_status'},
-###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Team_Id', 'field': 'team_id'},
-###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
-###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Light_Total', 'field': 'light_total'},
-###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
-###jwc 23-0506-1700 y reduce to one grid:         {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
-###jwc 23-0506-1700 y reduce to one grid:     ],
-###jwc 23-0506-1700 y reduce to one grid:     'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
-###jwc 23-0506-1700 y reduce to one grid:     'rowSelection': 'multiple', 
-###jwc 23-0506-1700 y reduce to one grid:     'rowSelectionWithClick': 'True', 
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
-###jwc 23-0506-1700 y reduce to one grid: 
-###jwc 23-0506-1700 y reduce to one grid:     'onGridReady': ui.notify("Grid Ready")
-###jwc 23-0506-1700 y reduce to one grid: 
-###jwc 23-0506-1700 y reduce to one grid: # Defaults to 'h-64'
-###jwc 23-0506-1700 y reduce to one grid: # 1 rem = 16px, 2 rem = 1 full font height     
-###jwc 23-0506-1700 y reduce to one grid: }).classes('h-[128rem]')
-
-###jwc 23-0506-1700 y reduce to one grid: def updateGrid2():
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc n grid.options[
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc n     'rowData': [
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc n     {'name': 'Alice', 'age': 28},
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc n     {'name': 'Bob', 'age': 31},
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc n     {'name': 'Carol', 'age': 52},
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc n]] 
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc y grid.options['rowData'][0]['age'] += 1
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc yy grid.options['rowData'][0]['magnet_lastdelta'] += temp2
-###jwc 23-0506-1700 y reduce to one grid:     grid2.options['rowData'][0]['magnet_lastdelta'] += temp2
-###jwc 23-0506-1700 y reduce to one grid:     grid2.options['rowData'][0]['magnet_total'] += temp2
-###jwc 23-0506-1700 y reduce to one grid:     grid2.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc n grid.options['rowData']['Carol']['age'] = random_Numpy(9)
-###jwc 23-0506-1700 y reduce to one grid:     grid2.options['rowData'][0]['light_total'] += random_General.randint(1,100)
-###jwc 23-0506-1700 y reduce to one grid: 
-###jwc 23-0506-1700 y reduce to one grid:     grid2.update()
-
-###jwc 23-0506-1700 y reduce to one grid: ### ###jwc y was 5 now 1: update_Grid2 = ui.timer(5, updateGrid2, active=True)
-###jwc 23-0506-1700 y reduce to one grid: update_Grid2 = ui.timer(1, updateGrid2, active=True)
-###jwc 23-0506-1700 y reduce to one grid: 
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc y grid.options['rowData'][1]['age'] += 1
-###jwc 23-0506-1700 y reduce to one grid:     ###jwc y grid.options['rowData'][2]['weight'] += 2
-
-
-tenp1 = 5
-temp2 = 1
-
-
-def update_WebGrid_Fn():
-    ###jwc n grid.options[
-    ###jwc n     'rowData': [
-    ###jwc n     {'name': 'Alice', 'age': 28},
-    ###jwc n     {'name': 'Bob', 'age': 31},
-    ###jwc n     {'name': 'Carol', 'age': 52},
-    ###jwc n]] 
-    ###jwc y grid.options['rowData'][0]['age'] += 1
-    ###jwc yy grid.options['rowData'][0]['magnet_lastdelta'] += temp2
-    grid.options['rowData'][0]['magnet_lastdelta'] += temp2
-    grid.options['rowData'][0]['magnet_total'] += temp2
-    grid.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
-    ###jwc n grid.options['rowData']['Carol']['age'] = random_Numpy(9)
-    grid.options['rowData'][0]['light_total'] += random_General.randint(1,100)
-    ###jwc n grid.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
-
-    grid.update()
-
-ui.button('update_WebGrid_Fn', on_click=update_WebGrid_Fn)
-
-
-def update_WebGrid_02_Fn():
-    rowData_List[0]['light_lastdelta']+=1
-    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
-    rowData_List[0]['magnet_lastdelta']+=2
-    rowData_List[0]['magnet_total']+=rowData_List[0]['magnet_lastdelta']
-    ###jwc 23-0504-0720 y rowData_List.append({'row_id':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
-    rowData_List.append({'row_id':5, 'bot_id':1, 'mission_status':0, 'team_id':0, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
-    ###jwc y grid2.options['rowData'] = sorted(rowData_List, key=lambda data:data['bot_id'] )
-    ###jwc n grid2.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
-
-    grid.update()
-
-
-def update_WebGrid_03_Fn():
-    rowData_List[0]['light_lastdelta']+=1
-    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
-    grid.update()
-
-
-
-with ui.row():
-    ui.button('update_WebGrid_02_Fn', on_click=update_WebGrid_02_Fn)
-    ui.button('Select all', on_click=lambda: grid.call_api_method('selectAll'))
-
+#
 # Seems #1: receive_Microbit_Messages_ReturnValue 0.0001sec (0.1msec) -&- update_WebGrid_03_ReturnValue 4 sec seems optimum :)+
 # Seems #2: receive_Microbit_Messages_ReturnValue 0.001sec (1msec) -&- update_WebGrid_03_ReturnValue 3 sec seems optimum :)+
+#
 
 ###jwc o receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=False)
 ###jwc timer x2 speed: 0.1 to 0.05
@@ -545,122 +603,75 @@ receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messag
 ###jwc 4-6 sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
 ###jwc 5-9 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
 update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
-
-
-
-### ### Test Later
-###
-###
-###jwc 23-0506-1840 test later since could cause server lag: def toggle_value_fn(bot_id_in:int):
-###jwc 23-0506-1840 test later since could cause server lag:     bot_TeamAssigned_Base0_Int[bot_id_in] += 1
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: def toggle_value_fn2():
-###jwc 23-0506-1840 test later since could cause server lag:     bot_TeamAssigned_Base0_Int[0] += 1
-###jwc 23-0506-1840 test later since could cause server lag:     print("****** bot_TeamAssigned_Base0_Int[0]: ")
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: async def toggle_value_fn2A():
-###jwc 23-0506-1840 test later since could cause server lag:     bot_TeamAssigned_Base0_Int[0] += 1
-###jwc 23-0506-1840 test later since could cause server lag:     print("****** bot_TeamAssigned_Base0_Int[0]: ")
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: def toggle_value_fn3():
-###jwc 23-0506-1840 test later since could cause server lag:     print("****** bot_TeamAssigned_Base0_Int[1]: ")
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: if True: 
-###jwc 23-0506-1840 test later since could cause server lag:     def badge_fn():
-###jwc 23-0506-1840 test later since could cause server lag:         if badge1.text == '1':
-###jwc 23-0506-1840 test later since could cause server lag:             badge1.set_text('2')
-###jwc 23-0506-1840 test later since could cause server lag:         else:
-###jwc 23-0506-1840 test later since could cause server lag:             badge1.set_text('1')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: def badge_fn2():
-###jwc 23-0506-1840 test later since could cause server lag:     if badge2.text == '-':
-###jwc 23-0506-1840 test later since could cause server lag:         badge2.set_text('A')
-###jwc 23-0506-1840 test later since could cause server lag:     elif badge2.text == 'A':
-###jwc 23-0506-1840 test later since could cause server lag:         badge2.set_text('B')
-###jwc 23-0506-1840 test later since could cause server lag:     elif badge2.text == 'B':
-###jwc 23-0506-1840 test later since could cause server lag:         badge2.set_text('-')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: def badge_fn3():
-###jwc 23-0506-1840 test later since could cause server lag:     if badge3.text == '-':
-###jwc 23-0506-1840 test later since could cause server lag:         badge3.set_text('A')
-###jwc 23-0506-1840 test later since could cause server lag:     elif badge3.text == 'A':
-###jwc 23-0506-1840 test later since could cause server lag:         badge3.set_text('B')
-###jwc 23-0506-1840 test later since could cause server lag:     elif badge3.text == 'B':
-###jwc 23-0506-1840 test later since could cause server lag:         badge3.set_text('-')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     
-###jwc 23-0506-1840 test later since could cause server lag: with ui.row():
-###jwc 23-0506-1840 test later since could cause server lag:     toggle1 = ui.toggle([1, 2, 3], value=1)
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     toggle3 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(1)', 'value')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: toggle4 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn3')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     ui.button('Update2', on_click=toggle_value_fn2)
-###jwc 23-0506-1840 test later since could cause server lag:     ui.button('Update3', on_click=toggle_value_fn3)
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n ui.toggle({1: 'A', 2: 'B', 3: 'C'}, on_click=toggle_value_fn2)
-###jwc 23-0506-1840 test later since could cause server lag:     ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
-###jwc 23-0506-1840 test later since could cause server lag:     toggle6A = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).on('click', toggle_value_fn2)
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: toggle6B = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: toggle7 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active').run_method('toggle_value_fn2')
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n compiles but no response: select1 = ui.select([1, 2, 3], value=1).run_method('toggle_value_fn2')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n not compile line_checkbox = ui.checkbox('active').on_click=toggle_value_fn2
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n not compile ui.select([1, 2, 3], value=1).on_click=toggle_value_fn2
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     with ui.button('Click me!', on_click=lambda: badge.set_text(str(int(badge.text) + 1))): 
-###jwc 23-0506-1840 test later since could cause server lag:         badge = ui.badge('0', color='red').props('floating')
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n visibility still on: with ui.button('Click me1A'): 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc n visibility still on:     badge1A = ui.badge('0', color='red').props('floating').set_visibility('False')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     if True:
-###jwc 23-0506-1840 test later since could cause server lag:         with ui.button('Click me1!', on_click=badge_fn): 
-###jwc 23-0506-1840 test later since could cause server lag:             badge1 = ui.badge('0', color='red').props('floating')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     with ui.button('Cl2!', on_click=badge_fn2): 
-###jwc 23-0506-1840 test later since could cause server lag:         badge2 = ui.badge('-', color='red').props('floating')
-###jwc 23-0506-1840 test later since could cause server lag:     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
-###jwc 23-0506-1840 test later since could cause server lag:         badge3 = ui.badge('-', color='red').props('floating')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     ##jwc n if True:
-###jwc 23-0506-1840 test later since could cause server lag:         ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
-###jwc 23-0506-1840 test later since could cause server lag:             ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('False')
-###jwc 23-0506-1840 test later since could cause server lag:         ##jwc n with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn3): 
-###jwc 23-0506-1840 test later since could cause server lag:             ##jwc n badge3 = ui.badge('-', color='red').props('floating').set_visibility('True')
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ? with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id'], on_click=badge_fn2): 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ?     badge5 = ui.badge('-', color='red').props('floating').set_visibility('False')
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ? if False:
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ?     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], on_click=badge_fn2): 
-###jwc 23-0506-1840 test later since could cause server lag:     ###jwc ?         badge = ui.badge('-', color='red').props('floating')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: # jwc Only evaluated at startup, then is ignored, thus not good for realtime
-###jwc 23-0506-1840 test later since could cause server lag: #
-###jwc 23-0506-1840 test later since could cause server lag: if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
-###jwc 23-0506-1840 test later since could cause server lag: ###jwc if True:
-###jwc 23-0506-1840 test later since could cause server lag:     def badge_fn4():
-###jwc 23-0506-1840 test later since could cause server lag:         if badge4.text == '-':
-###jwc 23-0506-1840 test later since could cause server lag:             badge4.set_text('A')
-###jwc 23-0506-1840 test later since could cause server lag:         elif badge4.text == 'A':
-###jwc 23-0506-1840 test later since could cause server lag:             badge4.set_text('B')
-###jwc 23-0506-1840 test later since could cause server lag:         elif badge4.text == 'B':
-###jwc 23-0506-1840 test later since could cause server lag:             badge4.set_text('-')
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag: 
-###jwc 23-0506-1840 test later since could cause server lag:     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn4): 
-###jwc 23-0506-1840 test later since could cause server lag:         badge4 = ui.badge('-', color='red').props('floating')
     
 
-
 ui.run()
+
+
+#
+# Archive
+#
+
+###jwc n will not work, no returned selected rows: def selectedRows_Fn5():
+###jwc n will not work, no returned selected rows:         ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
+###jwc n will not work, no returned selected rows:         rows = grid2.get_selected_rows()
+###jwc n will not work, no returned selected rows: 
+###jwc n will not work, no returned selected rows:         ###jwc ? rows.forEach(function( selectedRow, index){
+###jwc n will not work, no returned selected rows:         ui.notify("Notify")
+###jwc n will not work, no returned selected rows: 
+###jwc n will not work, no returned selected rows:         ###jwc ? })
+###jwc n will not work, no returned selected rows:         if rows == None:
+###jwc n will not work, no returned selected rows:             ui.notify("No Data Selected")
+###jwc n will not work, no returned selected rows:             return
+###jwc n will not work, no returned selected rows:         else:
+###jwc n will not work, no returned selected rows:             ui.notify("Yes Data Selected")
+###jwc n will not work, no returned selected rows: 
+###jwc n will not work, no returned selected rows:         scoreboardServer_WebGrid.update()
+###jwc n will not work, no returned selected rows: ui.button('Update5', on_click=selectedRows_Fn5)
+
+
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: grid2 = ui.aggrid({
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     'columnDefs': [
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         {'headerName': 'Row_Id', 'field': 'row_id'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         {'headerName': 'Mission_Status', 'field': 'mission_status'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         {'headerName': 'Team_Id', 'field': 'team_id'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         {'headerName': 'Light_Total', 'field': 'light_total'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:         {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ],
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     'rowSelection': 'multiple', 
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     'rowSelectionWithClick': 'True', 
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: 
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     'onGridReady': ui.notify("Grid Ready")
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: 
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: # Defaults to 'h-64'
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: # 1 rem = 16px, 2 rem = 1 full font height     
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: }).classes('h-[128rem]')
+
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: def updateGrid2():
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc n scoreboardServer_WebGrid.options[
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc n     'rowData': [
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc n     {'name': 'Alice', 'age': 28},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc n     {'name': 'Bob', 'age': 31},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc n     {'name': 'Carol', 'age': 52},
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc n]] 
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc y scoreboardServer_WebGrid.options['rowData'][0]['age'] += 1
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc yy scoreboardServer_WebGrid.options['rowData'][0]['magnet_lastdelta'] += temp2
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     grid2.options['rowData'][0]['magnet_lastdelta'] += temp2
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     grid2.options['rowData'][0]['magnet_total'] += temp2
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     grid2.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc n scoreboardServer_WebGrid.options['rowData']['Carol']['age'] = random_Numpy(9)
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     grid2.options['rowData'][0]['light_total'] += random_General.randint(1,100)
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: 
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     grid2.update()
+
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: ### ###jwc y was 5 now 1: update_Grid2 = ui.timer(5, updateGrid2, active=True)
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: update_Grid2 = ui.timer(1, updateGrid2, active=True)
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: 
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc y scoreboardServer_WebGrid.options['rowData'][1]['age'] += 1
+###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc y scoreboardServer_WebGrid.options['rowData'][2]['weight'] += 2
