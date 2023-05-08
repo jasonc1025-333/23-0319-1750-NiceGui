@@ -15,7 +15,7 @@ import string
 
 # array of dictionary
 #
-rowData_List = [
+rowData_Test_List = [
     {'row_id':2, 'bot_id':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
     {'row_id':3, 'bot_id':41, 'light_lastdelta':42, 'light_total':43, 'magnet_lastdelta':44, 'magnet_total':45},    
     {'row_id':1, 'bot_id':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
@@ -70,12 +70,14 @@ y2Value = [0,0,0]
 _debug_Show_Priority_Hi_Bool = True
 _debug_Show_Priority_Lo_Bool = False
 
-class update_WebGrid_UiTimer_Class:
+class update_WebGrid_UiTimer_Initialization_Class:
         def __init__(self):
+            ###jwc y self.timer_Sec_Int = 8
             self.timer_Sec_Int = 4
-            self.active_Bool = False
+            ###jwc y self.active_Bool = False
+            self.active_Bool = True
 
-update_WebGrid_UiTimer_Object = update_WebGrid_UiTimer_Class()
+update_WebGrid_UiTimer_Initialization_Object = update_WebGrid_UiTimer_Initialization_Class()
 
 ###jwc n update_WebGrid_UiTimer_Active_Bool = False
 
@@ -270,7 +272,7 @@ def receive_Microbit_Messages_Fn() -> None:
     ###jwc yy ],
 
 ###jwc y ## tuple (static) but prefer dict (dynamic) since latter more flexile, extnedible 
-###jwc y rowData_List = (
+###jwc y rowData_Test_List = (
 ###jwc y     {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
 ###jwc y     {'row#':2, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
 ###jwc y     {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
@@ -279,7 +281,7 @@ def receive_Microbit_Messages_Fn() -> None:
 
 ###jwc yy ## array of dictionary
 ###jwc yy ##
-###jwc yy rowData_List = [
+###jwc yy rowData_Test_List = [
 ###jwc yy     {'row#':1, 'botid':11, 'light_lastdelta':12, 'light_total':13, 'magnet_lastdelta':14, 'magnet_total':15},
 ###jwc yy     {'row#':2, 'botid':21, 'light_lastdelta':22, 'light_total':23, 'magnet_lastdelta':24, 'magnet_total':25},
 ###jwc yy     {'row#':3, 'botid':31, 'light_lastdelta':32, 'light_total':33, 'magnet_lastdelta':34, 'magnet_total':35},    
@@ -300,98 +302,138 @@ def clear_Stats_Fn():
         print("  E2b:bot_dictionary: " + str(bot_dictionary))
     scoreboardServer_WebGrid.update()
     ###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: grid2.update()
-
+#
 ui.button('Clear Stats', on_click=clear_Stats_Fn)
 
-
+# update_WebGrid_03_Fn
+#
 def update_WebGrid_03_Fn():
-    rowData_List[0]['light_lastdelta']+=1
-    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
     scoreboardServer_WebGrid.update()
-
+#
+###jwc y update_WebGrid_UiTimer_Active_Switch02 = ui.switch('active').bind_value_to(update_WebGrid__UiTimer_Active_n_Interval__Object, 'active')
+###jwc y update_WebGrid_UiTimer_Active_Switch02 = ui.checkbox('update_WebGrid').bind_value_to(update_WebGrid__UiTimer_Active_n_Interval__Object, 'active')
+###jwc y ui.label('Check!').bind_visibility_from(update_WebGrid_UiTimer_Active_Switch02, 'value')
+#
 ## '0.1' sec
 ### jwc ym line_updates_02 = ui.timer(0.1, update_line_plot_02, active=True)
 ###jwc 23-0501-1400 yy line_updates_02 = ui.timer(2, update_line_plot_02, active=True)
-
-## '0.05' sec update
-###jwc y update_WebGrid_03_ReturnValue = ui.timer(0.05, update_WebGrid_Fn, active=True)
-### ###jwc y was 1 now to 10 >> 5: update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_Fn, active=True)
-###jwc 23-0506-1720 y Hold off to not compete w/ main update: update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_Fn, active=True)
-
-###jwc y update_WebGrid_03_ReturnValue = ui.timer(0.05, update_WebGrid_Fn, active=True)
-###jwc 20msec
-###jwc ? update_WebGrid_03_ReturnValue = ui.timer(0.020, update_WebGrid_Fn, active=True)
 #
-###jwc 30sec update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_03_Fn, active=True)
-###jwc 15 sec update_WebGrid_03_ReturnValue = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
-###jwc 18 sec update_WebGrid_03_ReturnValue = ui.timer(0.25, update_WebGrid_03_Fn, active=True)
-###jwc 15-30 sec update_WebGrid_03_ReturnValue = ui.timer(0.125, update_WebGrid_03_Fn, active=True)
-###jwc 10-15sec update_WebGrid_03_ReturnValue = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
-###jwc 8-10sec update_WebGrid_03_ReturnValue = ui.timer(1, update_WebGrid_03_Fn, active=True)
-###jwc 6-8sec update_WebGrid_03_ReturnValue = ui.timer(2, update_WebGrid_03_Fn, active=True)
-###jwc 6sec update_WebGrid_03_ReturnValue = ui.timer(3, update_WebGrid_03_Fn, active=True)
-###jwc 5sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
-###jwc 6-8 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
-###jwc 4-6 sec update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
-###jwc 5-9 sec update_WebGrid_03_ReturnValue = ui.timer(5, update_WebGrid_03_Fn, active=True)
-###jwc yy update_WebGrid_03_ReturnValue = ui.timer(4, update_WebGrid_03_Fn, active=True)
-###jwc yyy update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
-update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
+## '0.05' sec update
+###jwc y update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(0.05, update_WebGrid_Fn, active=True)
+### ###jwc y was 1 now to 10 >> 5: update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(1, update_WebGrid_Fn, active=True)
+###jwc 23-0506-1720 y Hold off to not compete w/ main update: update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(5, update_WebGrid_Fn, active=True)
+#
+###jwc y update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(0.05, update_WebGrid_Fn, active=True)
+###jwc 20msec
+###jwc ? update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(0.020, update_WebGrid_Fn, active=True)
+#
+###jwc 30sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(1, update_WebGrid_03_Fn, active=True)
+###jwc 15 sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
+###jwc 18 sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(0.25, update_WebGrid_03_Fn, active=True)
+###jwc 15-30 sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(0.125, update_WebGrid_03_Fn, active=True)
+###jwc 10-15sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(0.5, update_WebGrid_03_Fn, active=True)
+###jwc 8-10sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(1, update_WebGrid_03_Fn, active=True)
+###jwc 6-8sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(2, update_WebGrid_03_Fn, active=True)
+###jwc 6sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(3, update_WebGrid_03_Fn, active=True)
+###jwc 5sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc 6-8 sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(5, update_WebGrid_03_Fn, active=True)
+###jwc 4-6 sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc 5-9 sec update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(5, update_WebGrid_03_Fn, active=True)
+###jwc yy update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(4, update_WebGrid_03_Fn, active=True)
+###jwc yyy update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Initialization_Object.active_Bool)
+###jwc yyy update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int, update_WebGrid_03_Fn, active = update_WebGrid_UiTimer_Initialization_Object.active_Bool)
+###jwc n 'interval' error: update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(interval=update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Initialization_Object.active_Bool)
+
+# 1st Paramater: Initial Value Only 
+# 3rd Paramater: Initial Value Only
+update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int, update_WebGrid_03_Fn, active = update_WebGrid_UiTimer_Initialization_Object.active_Bool)
 
 
-###jwc y update_WebGrid_UiTimer_Active_Switch02 = ui.switch('active').bind_value_to(update_WebGrid_03_ReturnValue, 'active')
-###jwc y update_WebGrid_UiTimer_Active_Switch02 = ui.checkbox('update_WebGrid').bind_value_to(update_WebGrid_03_ReturnValue, 'active')
-###jwc y ui.label('Check!').bind_visibility_from(update_WebGrid_UiTimer_Active_Switch02, 'value')
 
-
+def update_WebGrid_UiTimer_Active_Toggle_Fn(event: ValueChangeEventArguments):
+    ###jwc n AttributeError: 'dict' object has no attribute 'sender': name = type(event.sender).__name__
+    ###jwc n ui.notify(f'{name}: {event.value}')
+    ###jwc n update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(updat e_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Initialization_Object.active_Bool)
+    ###jwc y print("****** update_WebGrid_UiTimer_Active_Toggle_Fn: " + str(update_WebGrid_UiTimer_Initialization_Object.active_Bool))
+    print("****** update_WebGrid_UiTimer_Active_Toggle_Fn: " + str(update_WebGrid__UiTimer_Active_n_Interval__Object.active))
+#
+###jwc n ###jwc ? update_WebGrid_UiTimer_Active_Switch = ui.switch ('update_WebGrid_UiTimer_Active_Switch', on_change=update_WebGrid_UiTimer_Active_Toggle_Fn).bind_value(update_WebGrid_UiTimer_Initialization_Object, 'active_Bool')
+#
 # 'Toggle' has  real-time feedback vs. 'Checkbox' and 'Switch' 
-update_WebGrid_UiTimer_Timer_Toggle = ui.toggle({0: 'WebGrid_Update:Off', 1: 'WebGrid_Update:On'}).bind_value(update_WebGrid_03_ReturnValue, 'active')
+###jwc yyy update_WebGrid_UiTimer_Active_Toggle_Object = ui.toggle({0: 'WebGrid_Update:Off', 1: 'WebGrid_Update:On'}).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'active')
+update_WebGrid_UiTimer_Active_Toggle_Object = ui.toggle({0: 'WebGrid_Update:Off', 1: 'WebGrid_Update:On'}).on('click', update_WebGrid_UiTimer_Active_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'active')
 
 
 
 def update_WebGrid_UiTimer_Timer_Toggle_Fn(event: ValueChangeEventArguments):
-    name = type(event.sender).__name__
-    ui.notify(f'{name}: {event.value}')
-    ###jwc n update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
-    print("****** update_WebGrid_UiTimer_Timer_Toggle_Fn: " + str(update_WebGrid_UiTimer_Object.timer_Sec_Int))
-
-def update_WebGrid_UiTimer_Active_Switch_Fn(event: ValueChangeEventArguments):
-    name = type(event.sender).__name__
-    ui.notify(f'{name}: {event.value}')
-    ###jwc n update_WebGrid_03_ReturnValue = ui.timer(update_WebGrid_UiTimer_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Object.active_Bool)
-
-
-    print("****** update_WebGrid_UiTimer_Active_Switch_Fn: " + str(update_WebGrid_UiTimer_Object.active_Bool))
-
-###jwc n update_WebGrid_UiTimer_Active_Toggle = ui.toggle({1: 'F', 2: 'G', 3: 'H'}).on('click', update_WebGrid_UiTimer_Active_Toggle_Fn).bind_value_from(bool,'update_WebGrid_UiTimer_Active_Bool')
-update_WebGrid_UiTimer_Timer_Toggle = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid_UiTimer_Object, 'timer_Sec_Int')
-###jwc ? update_WebGrid_UiTimer_Active_Switch = ui.switch ('update_WebGrid_UiTimer_Active_Switch', on_change=update_WebGrid_UiTimer_Active_Switch_Fn).bind_value(update_WebGrid_UiTimer_Object, 'active_Bool')
+    ###jwc n 'sender' unknown':  name = type(event.sender).__name__
+    ###jwc n ui.notify(f'{name}: {event.value}')
+    ###jwc n AttributeError: 'dict' object has no attribute 'value': ui.notify(f'{event.value}')
+    ###jwc n update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int, update_WebGrid_03_Fn, active=update_WebGrid_UiTimer_Initialization_Object.active_Bool)
+    ###jwc y print("****** update_WebGrid_UiTimer_Timer_Toggle_Fn: " + str(update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int))
+    print("****** update_WebGrid_UiTimer_Timer_Toggle_Fn: " + str(update_WebGrid__UiTimer_Active_n_Interval__Object.interval))
+#
+###jwc n update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({1: 'F', 2: 'G', 3: 'H'}).on('click', update_WebGrid_UiTimer_Active_Toggle_Fn).bind_value_from(bool,'update_WebGrid_UiTimer_Active_Bool')
+###jwc ? update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid_UiTimer_Initialization_Object, 'timer_Sec_Int')
+update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
     
 
 
-async def selectedRows_Fn():
+async def selectedRows_TeamBlue_Fn():
         ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
         ###jwc y rows = await grid2.get_selected_rows()
         rows = await scoreboardServer_WebGrid.get_selected_rows()
 
         ###jwc ? rows.forEach(function( selectedRow, index){
-        ui.notify("Notify")
+        ###jwc y  ui.notify("Notify")
 
         ###jwc ? })
         ###jwc y if len(rows) == 0:
         if rows:
             for row in rows:
-                print("* selectedRows_Fn:" + str(row))
-            ui.notify("Yes Data Selected")
+                row['team_id'] = 'Blue'
+                print("*** selectedRows_Fn:" + str(row))
+                ui.notify(f"{row['bot_id']}, {row['team_id']}")
         else:
             ui.notify("No Data Selected")
             return
         scoreboardServer_WebGrid.update()
-ui.button('Selected Row(s)', on_click=selectedRows_Fn)
+###jwc n selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
+ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
+
+def selectedRows_TeamBlue02_Fn():
+        ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
+        ###jwc y rows = await grid2.get_selected_rows()
+        rows = scoreboardServer_WebGrid.get_selected_rows()
+        row = scoreboardServer_WebGrid.get_selected_row()
+
+        ###jwc ? rows.forEach(function( selectedRow, index){
+        ###jwc y  ui.notify("Notify")
+
+        ###jwc ? })
+        ###jwc y if len(rows) == 0:
+
+        if row:
+            ###jwc y for row in rows:
+            ###jwc row['team_id'] = 'Blue'
+            print("*** selectedRow_Fn:" + str(row))
+
+        if rows:
+            ###jwc for row in rows:
+                ###jwc row['team_id'] = 'Blue'
+                ###jwc print("*** selectedRows_Fn:" + str(row))
+            print("*** selectedRows_Fn:" + str(rows))
+
+        else:
+            ui.notify("No Data Selected")
+            return
+        scoreboardServer_WebGrid.update()
+###jwc n selectedRows_TeamBlue02_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue02_Fn)
+ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue02_Fn)
 
 
-tenp1 = 5
-temp2 = 1
+temp1 = 1
+temp2 = 2
 
 def update_WebGrid_Fn():
     ###jwc n scoreboardServer_WebGrid.options[
@@ -402,28 +444,32 @@ def update_WebGrid_Fn():
     ###jwc n]] 
     ###jwc y scoreboardServer_WebGrid.options['rowData'][0]['age'] += 1
     ###jwc yy scoreboardServer_WebGrid.options['rowData'][0]['magnet_lastdelta'] += temp2
-    scoreboardServer_WebGrid.options['rowData'][0]['magnet_lastdelta'] += temp2
-    scoreboardServer_WebGrid.options['rowData'][0]['magnet_total'] += temp2
-    scoreboardServer_WebGrid.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
-    ###jwc n scoreboardServer_WebGrid.options['rowData']['Carol']['age'] = random_Numpy(9)
-    scoreboardServer_WebGrid.options['rowData'][0]['light_total'] += random_General.randint(1,100)
+    rowData_Test_List[0]['light_lastdelta'] += temp1
+    rowData_Test_List[0]['light_total'] += rowData_Test_List[0]['light_lastdelta']
+    rowData_Test_List[0]['magnet_lastdelta'] += temp2
+    rowData_Test_List[0]['magnet_total'] += rowData_Test_List[0]['magnet_lastdelta']
+
     ###jwc n scoreboardServer_WebGrid.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
     scoreboardServer_WebGrid.update()
 
 ui.button('update_WebGrid_Fn', on_click=update_WebGrid_Fn)
 
 
+
+ui.label('*** ARCHIVE ***')
+
 def update_WebGrid_02_Fn():
-    rowData_List[0]['light_lastdelta']+=1
-    rowData_List[0]['light_total']+=rowData_List[0]['light_lastdelta']
-    rowData_List[0]['magnet_lastdelta']+=2
-    rowData_List[0]['magnet_total']+=rowData_List[0]['magnet_lastdelta']
-    ###jwc 23-0504-0720 y rowData_List.append({'row_id':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
-    rowData_List.append({'row_id':5, 'bot_id':1, 'mission_status':0, 'team_id':0, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
-    ###jwc y grid2.options['rowData'] = sorted(rowData_List, key=lambda data:data['bot_id'] )
+    ###jwc n scoreboardServer_WebGrid.options['rowData']['Carol']['age'] = random_Numpy(9)
+    scoreboardServer_WebGrid.options['rowData'][0]['light_lastdelta'] += random_General.randint(1,100)
+    scoreboardServer_WebGrid.options['rowData'][0]['light_total'] += random_General.randint(1,100)
+    scoreboardServer_WebGrid.options['rowData'][0]['magnet_lastdelta'] += temp2
+    scoreboardServer_WebGrid.options['rowData'][0]['magnet_total'] += temp2
+
+    ###jwc 23-0504-0720 y rowData_Test_List.append({'row_id':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    rowData_Test_List.append({'row_id':5, 'bot_id':1, 'mission_status':0, 'team_id':0, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
+    ###jwc y grid2.options['rowData'] = sorted(rowData_Test_List, key=lambda data:data['bot_id'] )
     ###jwc n grid2.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
     scoreboardServer_WebGrid.update()
-
 
 with ui.row():
     ui.button('update_WebGrid_02_Fn', on_click=update_WebGrid_02_Fn)
@@ -487,8 +533,8 @@ with ui.row():
     ###jwc n compiles but no response: toggle4 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2')
     ###jwc n compiles but no response: toggle5 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn3')
 
-    ui.button('Update2', on_click=toggle_value_fn2)
-    ui.button('Update3', on_click=toggle_value_fn3)
+    update2_Object = ui.button('Update2', on_click=toggle_value_fn2)
+    update3_Object = ui.button('Update3', on_click=toggle_value_fn3)
 
     ###jwc n ui.toggle({1: 'A', 2: 'B', 3: 'C'}, on_click=toggle_value_fn2)
     ###jwc n toggle6A = ui.toggle({1: 'I', 2: 'J', 3: 'K'}).on('click', toggle_value_fn, ['1'])
@@ -500,7 +546,7 @@ with ui.row():
     ###jwc n compiles but no response: ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
     ###jwc n compiles but no response: toggle7 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).run_method('toggle_value_fn2A')
 
-    ###jwc n compiles but no response: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active').run_method('toggle_value_fn2')
+    ###jwc n compiles but no response: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_Object, 'active').run_method('toggle_value_fn2')
     ###jwc n compiles but no response: select1 = ui.select([1, 2, 3], value=1).run_method('toggle_value_fn2')
 
     ###jwc n not compile line_checkbox = ui.checkbox('active').on_click=toggle_value_fn2
@@ -545,7 +591,6 @@ if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
         elif badge4.text == 'B':
             badge4.set_text('-')
 
-
     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn4): 
         badge4 = ui.badge('-', color='red').props('floating')
 
@@ -558,7 +603,7 @@ if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
 ###jwc y }).classes('max-h-[128rem]')
 ###jwc y }).classes('h-[128rem]')
 
-###jwc 23-0501-1500 yy    'rowData' : rowData_List,
+###jwc 23-0501-1500 yy    'rowData' : rowData_Test_List,
 
 ###jwc 23-0501-1520        {'headerName': 'Row#', 'field': 'row#'},
 ###jwc 23-0501-1520        {'headerName': 'BotId', 'field': 'botid'},
@@ -597,56 +642,56 @@ scoreboardServer_WebGrid = ui.aggrid({
 
 
 #
-# Seems #1: receive_Microbit_Messages_ReturnValue 0.0001sec (0.1msec) -&- update_WebGrid_03_ReturnValue 4 sec seems optimum :)+
-# Seems #2: receive_Microbit_Messages_ReturnValue 0.001sec (1msec) -&- update_WebGrid_03_ReturnValue 3 sec seems optimum :)+
+# Seems #1: receive_Microbit_Messages_Object 0.0001sec (0.1msec) -&- update_WebGrid__UiTimer_Active_n_Interval__Object 4 sec seems optimum :)+
+# Seems #2: receive_Microbit_Messages_Object 0.001sec (1msec) -&- update_WebGrid__UiTimer_Active_n_Interval__Object 3 sec seems optimum :)+
 #
 
-###jwc o receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=False)
+###jwc o receive_Microbit_Messages_Object = ui.timer(0.1, receive_Microbit_Messages_Fn, active=False)
 ###jwc timer x2 speed: 0.1 to 0.05
-###jwc o receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=False)
+###jwc o receive_Microbit_Messages_Object = ui.timer(0.05, receive_Microbit_Messages_Fn, active=False)
 ## '0.05' sec
-###jwc good for slow real-time y receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
+###jwc good for slow real-time y receive_Microbit_Messages_Object = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
 ###jwc y no more linegraph real-time to test chart realtime instead, 
 ###jwc TYJ LINE GRAPH DID SEEM TO SLOW DOWN TEXTCHART/DISPLAY BY 10-20 SEC :)+
-###jwc y receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=False)
-### ### jwc yyy tyj: was 1 now to 10: receive_Microbit_Messages_ReturnValue = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
-###jwc 23-0506-1640 50 sec: receive_Microbit_Messages_ReturnValue = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
-###jwc 23-0506-1640 25 sec: receive_Microbit_Messages_ReturnValue = ui.timer(0.5, receive_Microbit_Messages_Fn, active=True)
-###jwc 23-0506-1640 10 sec: receive_Microbit_Messages_ReturnValue = ui.timer(0.25, receive_Microbit_Messages_Fn, active=True)
-###jwc 23-0506-1640 2-3 sec: receive_Microbit_Messages_ReturnValue = ui.timer(0.125, receive_Microbit_Messages_Fn, active=True)
+###jwc y receive_Microbit_Messages_Object = ui.timer(0.05, receive_Microbit_Messages_Fn, active=False)
+### ### jwc yyy tyj: was 1 now to 10: receive_Microbit_Messages_Object = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 50 sec: receive_Microbit_Messages_Object = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 25 sec: receive_Microbit_Messages_Object = ui.timer(0.5, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 10 sec: receive_Microbit_Messages_Object = ui.timer(0.25, receive_Microbit_Messages_Fn, active=True)
+###jwc 23-0506-1640 2-3 sec: receive_Microbit_Messages_Object = ui.timer(0.125, receive_Microbit_Messages_Fn, active=True)
 ###jwc 23-0506-1640 2-3 sec :)+ 0.05sec=20fps
-###jwc ? receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
-###jwc ? receive_Microbit_Messages_ReturnValue = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
+###jwc ? receive_Microbit_Messages_Object = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
+###jwc ? receive_Microbit_Messages_Object = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
 
-###jwc 2nd bot '12' not show: n receive_Microbit_Messages_ReturnValue = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
-###jwc ? receive_Microbit_Messages_ReturnValue = ui.timer(0.5, receive_Microbit_Messages_Fn, active=True)
-###jwc ? receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
-###jwc y receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
-###jwc y receive_Microbit_Messages_ReturnValue = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
-###jwc 20msec: 30 sec  receive_Microbit_Messages_ReturnValue = ui.timer(0.020, receive_Microbit_Messages_Fn, active=True)
+###jwc 2nd bot '12' not show: n receive_Microbit_Messages_Object = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
+###jwc ? receive_Microbit_Messages_Object = ui.timer(0.5, receive_Microbit_Messages_Fn, active=True)
+###jwc ? receive_Microbit_Messages_Object = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
+###jwc y receive_Microbit_Messages_Object = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
+###jwc y receive_Microbit_Messages_Object = ui.timer(0.05, receive_Microbit_Messages_Fn, active=True)
+###jwc 20msec: 30 sec  receive_Microbit_Messages_Object = ui.timer(0.020, receive_Microbit_Messages_Fn, active=True)
 
-###jwc 10-20sec receive_Microbit_Messages_ReturnValue = ui.timer(0.010, receive_Microbit_Messages_Fn, active=True)
-###jwc 1 NoSerialRead every 2-3 messages y receive_Microbit_Messages_ReturnValue = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
-###jwc 2.5' receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
-###jwc 7-8sec / 1 NoSerialRead every 2 messages:  receive_Microbit_Messages_ReturnValue = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
-###jwc 1 NoSerialRead after each wave (11,12): receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
-###jwc same as 0.0001 receive_Microbit_Messages_ReturnValue = ui.timer(0.00001, receive_Microbit_Messages_Fn, active=True)
-###jwc same as 0.0001 receive_Microbit_Messages_ReturnValue = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
-###jwc same as 0.0001 receive_Microbit_Messages_ReturnValue = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
-###jwc same receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
-###jwc 1 NoSerialRead every 7-8 messages: receive_Microbit_Messages_ReturnValue = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
-###jwc 1 NoSerialRead every 2 (BotId 11,12) messages: receive_Microbit_Messages_ReturnValue = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
-###jwc 1 NoSerialRead every 2 (BotId 11,12) messages: receive_Microbit_Messages_ReturnValue = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
-###jwc 1 NoSearialRead every 2-5-8 (BotId 11,12,14) messages: receive_Microbit_Messages_ReturnValue = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
-###jwc 1 NoSearialRead every 2-5-8 (BotId 11,12,14) messages: receive_Microbit_Messages_ReturnValue = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
+###jwc 10-20sec receive_Microbit_Messages_Object = ui.timer(0.010, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead every 2-3 messages y receive_Microbit_Messages_Object = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
+###jwc 2.5' receive_Microbit_Messages_Object = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
+###jwc 7-8sec / 1 NoSerialRead every 2 messages:  receive_Microbit_Messages_Object = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead after each wave (11,12): receive_Microbit_Messages_Object = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
+###jwc same as 0.0001 receive_Microbit_Messages_Object = ui.timer(0.00001, receive_Microbit_Messages_Fn, active=True)
+###jwc same as 0.0001 receive_Microbit_Messages_Object = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
+###jwc same as 0.0001 receive_Microbit_Messages_Object = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
+###jwc same receive_Microbit_Messages_Object = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead every 7-8 messages: receive_Microbit_Messages_Object = ui.timer(1, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead every 2 (BotId 11,12) messages: receive_Microbit_Messages_Object = ui.timer(0.1, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSerialRead every 2 (BotId 11,12) messages: receive_Microbit_Messages_Object = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSearialRead every 2-5-8 (BotId 11,12,14) messages: receive_Microbit_Messages_Object = ui.timer(0.01, receive_Microbit_Messages_Fn, active=True)
+###jwc 1 NoSearialRead every 2-5-8 (BotId 11,12,14) messages: receive_Microbit_Messages_Object = ui.timer(0.001, receive_Microbit_Messages_Fn, active=True)
 ###jwc 1 NoSearialRead every 2-5 (BotId 11,12,14) messages: 0.1msec
-receive_Microbit_Messages_ReturnValue = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
+receive_Microbit_Messages_Object = ui.timer(0.0001, receive_Microbit_Messages_Fn, active=True)
 
-###jwc ? line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active')
-###jwc y line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active')
+###jwc ? line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_Object, 'active')
+###jwc y line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_Object, 'active')
 
 
-### ### jwc yyy tyj: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_ReturnValue, 'active')
+### ### jwc yyy tyj: line_checkbox = ui.checkbox('active').bind_value(receive_Microbit_Messages_Object, 'active')
 ### jwc 23-0504-0720 y ui.button('Update Chart', on_click=receive_Microbit_Messages_Fn)
 
 
@@ -720,3 +765,5 @@ ui.run()
 ###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: 
 ###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc y scoreboardServer_WebGrid.options['rowData'][1]['age'] += 1
 ###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid:     ###jwc y scoreboardServer_WebGrid.options['rowData'][2]['weight'] += 2
+
+
