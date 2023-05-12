@@ -392,44 +392,46 @@ async def selectedRows_TeamBlue_Fn():
         if rows:
             for row in rows:
                 row['team_id'] = 'Blue'
-                print("*** selectedRows_Fn:" + str(row))
                 ui.notify(f"{row['bot_id']}, {row['team_id']}")
+                print( "*** *** selectedRows_Fn:" + str(row))
+                print(f"*** *** {row['bot_id']}, {row['team_id']}, {row['row_id']}")
         else:
             ui.notify("No Data Selected")
             return
         scoreboardServer_WebGrid.update()
 ###jwc n selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
-ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
+###jwc y ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
+selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
 
-def selectedRows_TeamBlue02_Fn():
-        ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
-        ###jwc y rows = await grid2.get_selected_rows()
-        rows = scoreboardServer_WebGrid.get_selected_rows()
-        row = scoreboardServer_WebGrid.get_selected_row()
-
-        ###jwc ? rows.forEach(function( selectedRow, index){
-        ###jwc y  ui.notify("Notify")
-
-        ###jwc ? })
-        ###jwc y if len(rows) == 0:
-
-        if row:
-            ###jwc y for row in rows:
-            ###jwc row['team_id'] = 'Blue'
-            print("*** selectedRow_Fn:" + str(row))
-
-        if rows:
-            ###jwc for row in rows:
-                ###jwc row['team_id'] = 'Blue'
-                ###jwc print("*** selectedRows_Fn:" + str(row))
-            print("*** selectedRows_Fn:" + str(rows))
-
-        else:
-            ui.notify("No Data Selected")
-            return
-        scoreboardServer_WebGrid.update()
-###jwc n selectedRows_TeamBlue02_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue02_Fn)
-ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue02_Fn)
+###jwc n def selectedRows_TeamBlue02_Fn():
+###jwc n         ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
+###jwc n         ###jwc y rows = await grid2.get_selected_rows()
+###jwc n         rows = scoreboardServer_WebGrid.get_selected_rows()
+###jwc n         row = scoreboardServer_WebGrid.get_selected_row()
+###jwc n 
+###jwc n         ###jwc ? rows.forEach(function( selectedRow, index){
+###jwc n         ###jwc y  ui.notify("Notify")
+###jwc n 
+###jwc n         ###jwc ? })
+###jwc n         ###jwc y if len(rows) == 0:
+###jwc n 
+###jwc n         if row:
+###jwc n             ###jwc y for row in rows:
+###jwc n             ###jwc row['team_id'] = 'Blue'
+###jwc n             print("*** selectedRow_Fn:" + str(row))
+###jwc n 
+###jwc n         if rows:
+###jwc n             ###jwc for row in rows:
+###jwc n                 ###jwc row['team_id'] = 'Blue'
+###jwc n                 ###jwc print("*** selectedRows_Fn:" + str(row))
+###jwc n             print("*** selectedRows_Fn:" + str(rows))
+###jwc n 
+###jwc n         else:
+###jwc n             ui.notify("No Data Selected")
+###jwc n             return
+###jwc n         scoreboardServer_WebGrid.update()
+###jwc n ###jwc n selectedRows_TeamBlue02_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue02_Fn)
+###jwc n ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue02_Fn)
 
 
 temp1 = 1
@@ -448,11 +450,92 @@ def update_WebGrid_Fn():
     rowData_Test_List[0]['light_total'] += rowData_Test_List[0]['light_lastdelta']
     rowData_Test_List[0]['magnet_lastdelta'] += temp2
     rowData_Test_List[0]['magnet_total'] += rowData_Test_List[0]['magnet_lastdelta']
-
     ###jwc n scoreboardServer_WebGrid.options['rowData'] = sorted(rowData_ArrayList_OfDictionaryPairs_ForAllBots, key=lambda data:data['bot_id'] )
     scoreboardServer_WebGrid.update()
 
 ui.button('update_WebGrid_Fn', on_click=update_WebGrid_Fn)
+
+
+
+###jwc y }).classes('max-h-40')
+###jwc y }).classes('max-h-80')
+###jwc ? }).classes('max-h-500')
+###jwc ? }).classes('max-h-full')
+###jwc y }).classes('max-h-[128rem]')
+###jwc y }).classes('h-[128rem]')
+
+###jwc 23-0501-1500 yy    'rowData' : rowData_Test_List,
+
+###jwc 23-0501-1520        {'headerName': 'Row#', 'field': 'row#'},
+###jwc 23-0501-1520        {'headerName': 'BotId', 'field': 'botid'},
+###jwc 23-0501-1520        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
+###jwc 23-0501-1520        {'headerName': 'Light_Total', 'field': 'light_total'},
+###jwc 23-0501-1520        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
+###jwc 23-0501-1520        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
+
+#
+# scoreboardServer_WebGrid
+#
+scoreboardServer_WebGrid = ui.aggrid({
+    'columnDefs': [
+        {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true'},
+        ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
+        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc', 'checkboxSelection': True},
+        {'headerName': 'Mission_Status', 'field': 'mission_status'},
+        {'headerName': 'Team_Id', 'field': 'team_id'},
+        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
+        {'headerName': 'Light_Total', 'field': 'light_total', 'sortable':'true'},
+        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
+        {'headerName': 'Magnet_Total', 'field': 'magnet_total', 'sortable':'true'},
+    ],
+    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
+    'rowSelection': 'multiple', 
+    'rowSelectionWithClick': 'True', 
+    ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
+    'onGridReady': ui.notify("Grid Ready")
+# Defaults to 'h-64'
+# 1 rem = 16px, 2 rem = 1 full font height     
+###jwc y }).classes('h-[128rem]')
+###jwc y }).classes('h-64')
+}).classes('h-[128rem]')
+
+
+###jwc y testOnly scoreboardServer_WebGrid_02 = ui.aggrid({
+###jwc y testOnly     'columnDefs': [
+###jwc y testOnly         {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true'},
+###jwc y testOnly         ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
+###jwc y testOnly         {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc', 'checkboxSelection': True},
+###jwc y testOnly         {'headerName': 'Mission_Status', 'field': 'mission_status'},
+###jwc y testOnly         {'headerName': 'Team_Id', 'field': 'team_id'},
+###jwc y testOnly         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
+###jwc y testOnly         {'headerName': 'Light_Total', 'field': 'light_total', 'sortable':'true'},
+###jwc y testOnly         {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
+###jwc y testOnly         {'headerName': 'Magnet_Total', 'field': 'magnet_total', 'sortable':'true'},
+###jwc y testOnly     ],
+###jwc y testOnly     'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
+###jwc y testOnly     'rowSelection': 'multiple', 
+###jwc y testOnly     'rowSelectionWithClick': 'True', 
+###jwc y testOnly     ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
+###jwc y testOnly     'onGridReady': ui.notify("Grid Ready")
+###jwc y testOnly # Defaults to 'h-64'
+###jwc y testOnly # 1 rem = 16px, 2 rem = 1 full font height     
+###jwc y testOnly ###jwc y }).classes('h-[128rem]')
+###jwc y testOnly ###jwc y }).classes('h-64')
+###jwc y testOnly }).classes('h-64')
+
+
+###jwc 20 scoreboardServer_WebGrid_02 = ui.aggrid({
+###jwc 20     'columnDefs': [
+###jwc 20         {'headerName': 'Name', 'field': 'name', 'checkboxSelection': True},
+###jwc 20         {'headerName': 'Age', 'field': 'age'},
+###jwc 20     ],
+###jwc 20     'rowData': [
+###jwc 20         {'name': 'Alice', 'age': 18},
+###jwc 20         {'name': 'Bob', 'age': 21},
+###jwc 20         {'name': 'Carol', 'age': 42},
+###jwc 20     ],
+###jwc 20     'rowSelection': 'multiple',
+###jwc 20 }).classes('max-h-4
 
 
 
@@ -464,7 +547,6 @@ def update_WebGrid_02_Fn():
     scoreboardServer_WebGrid.options['rowData'][0]['light_total'] += random_General.randint(1,100)
     scoreboardServer_WebGrid.options['rowData'][0]['magnet_lastdelta'] += temp2
     scoreboardServer_WebGrid.options['rowData'][0]['magnet_total'] += temp2
-
     ###jwc 23-0504-0720 y rowData_Test_List.append({'row_id':5, 'bot_id':51, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
     rowData_Test_List.append({'row_id':5, 'bot_id':1, 'mission_status':0, 'team_id':0, 'light_lastdelta':52, 'light_total':53, 'magnet_lastdelta':54, 'magnet_total':55})
     ###jwc y grid2.options['rowData'] = sorted(rowData_Test_List, key=lambda data:data['bot_id'] )
@@ -596,205 +678,105 @@ if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
 
 
 
-###jwc y }).classes('max-h-40')
-###jwc y }).classes('max-h-80')
-###jwc ? }).classes('max-h-500')
-###jwc ? }).classes('max-h-full')
-###jwc y }).classes('max-h-[128rem]')
-###jwc y }).classes('h-[128rem]')
-
-###jwc 23-0501-1500 yy    'rowData' : rowData_Test_List,
-
-###jwc 23-0501-1520        {'headerName': 'Row#', 'field': 'row#'},
-###jwc 23-0501-1520        {'headerName': 'BotId', 'field': 'botid'},
-###jwc 23-0501-1520        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
-###jwc 23-0501-1520        {'headerName': 'Light_Total', 'field': 'light_total'},
-###jwc 23-0501-1520        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
-###jwc 23-0501-1520        {'headerName': 'Magnet_Total', 'field': 'magnet_total'},
-
-#
-# scoreboardServer_WebGrid
-#
-scoreboardServer_WebGrid = ui.aggrid({
-    'columnDefs': [
-        {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true'},
-        ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
-        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc', 'checkboxSelection': True},
-        {'headerName': 'Mission_Status', 'field': 'mission_status'},
-        {'headerName': 'Team_Id', 'field': 'team_id'},
-        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
-        {'headerName': 'Light_Total', 'field': 'light_total', 'sortable':'true'},
-        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
-        {'headerName': 'Magnet_Total', 'field': 'magnet_total', 'sortable':'true'},
-    ],
-    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
-    'rowSelection': 'multiple', 
-    'rowSelectionWithClick': 'True', 
-    ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
-
-    'onGridReady': ui.notify("Grid Ready")
-
-# Defaults to 'h-64'
-# 1 rem = 16px, 2 rem = 1 full font height     
-###jwc y }).classes('h-[128rem]')
-###jwc y }).classes('h-64')
-}).classes('h-[128rem]')
-
-
-
-
-scoreboardServer_WebGrid_02 = ui.aggrid({
-    'columnDefs': [
-        {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true'},
-        ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
-        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc', 'checkboxSelection': True},
-        {'headerName': 'Mission_Status', 'field': 'mission_status'},
-        {'headerName': 'Team_Id', 'field': 'team_id'},
-        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
-        {'headerName': 'Light_Total', 'field': 'light_total', 'sortable':'true'},
-        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
-        {'headerName': 'Magnet_Total', 'field': 'magnet_total', 'sortable':'true'},
-    ],
-    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
-    'rowSelection': 'multiple', 
-    'rowSelectionWithClick': 'True', 
-    ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
-
-    'onGridReady': ui.notify("Grid Ready")
-
-# Defaults to 'h-64'
-# 1 rem = 16px, 2 rem = 1 full font height     
-###jwc y }).classes('h-[128rem]')
-###jwc y }).classes('h-64')
-}).classes('h-64')
-
-
-###jwc 20 scoreboardServer_WebGrid_02 = ui.aggrid({
-###jwc 20     'columnDefs': [
-###jwc 20         {'headerName': 'Name', 'field': 'name', 'checkboxSelection': True},
-###jwc 20         {'headerName': 'Age', 'field': 'age'},
-###jwc 20     ],
-###jwc 20     'rowData': [
-###jwc 20         {'name': 'Alice', 'age': 18},
-###jwc 20         {'name': 'Bob', 'age': 21},
-###jwc 20         {'name': 'Carol', 'age': 42},
-###jwc 20     ],
-###jwc 20     'rowSelection': 'multiple',
-###jwc 20 }).classes('max-h-4
+###jwc test asyncio: not needed: import asyncio
+###jwc test asyncio: not needed: ###jwc n async def output_selected_rows():
+###jwc test asyncio: not needed: ###jwc n     ###jwc n async with async_timeout
+###jwc test asyncio: not needed: ###jwc n     ###jwc n await asyncio.sleep(10)
+###jwc test asyncio: not needed: ###jwc n 
+###jwc test asyncio: not needed: ###jwc n     try:
+###jwc test asyncio: not needed: ###jwc n         ###jwc o rows = await scoreboardServer_WebGrid_02.get_selected_rows()
+###jwc test asyncio: not needed: ###jwc n         ###jwc n rows = await asyncio.shield(scoreboardServer_WebGrid_02.get_selected_rows())
+###jwc test asyncio: not needed: ###jwc n         rows = await scoreboardServer_WebGrid_02.get_selected_rows()
+###jwc test asyncio: not needed: ###jwc n         if rows:
+###jwc test asyncio: not needed: ###jwc n             for row in rows:
+###jwc test asyncio: not needed: ###jwc n                 ###jwc o ui.notify(f"{row['name']}, {row['age']}")
+###jwc test asyncio: not needed: ###jwc n                 ui.notify(f"{row['bot_id']}, {row['Row_Id']}, {row['light_lastdelta']}")
+###jwc test asyncio: not needed: ###jwc n                 print(f"*** *** {row['bot_id']}, {row['Row_Id']}, {row['light_lastdelta']}")
+###jwc test asyncio: not needed: ###jwc n         else:
+###jwc test asyncio: not needed: ###jwc n             ui.notify('No rows selected.')
+###jwc test asyncio: not needed: ###jwc n     except TimeoutError:
+###jwc test asyncio: not needed: ###jwc n         print('*** *** except TimeoutError *** ***')
+###jwc test asyncio: not needed: ###jwc n         temp = output_selected_rows()
+###jwc test asyncio: not needed: ###jwc n     print('*** *** output_selected_rows DONE *** ***')
+###jwc test asyncio: not needed: 
+###jwc test asyncio: not needed: async def output_selected_rows():
+###jwc test asyncio: not needed:     ###jwc n async with async_timeout
+###jwc test asyncio: not needed:     ###jwc n await asyncio.sleep(10)
+###jwc test asyncio: not needed: 
+###jwc test asyncio: not needed:     ###jwc o rows = await scoreboardServer_WebGrid_02.get_selected_rows()
+###jwc test asyncio: not needed:     ###jwc n rows = await asyncio.shield(scoreboardServer_WebGrid_02.get_selected_rows())
+###jwc test asyncio: not needed:     rows = await scoreboardServer_WebGrid_02.get_selected_rows()
+###jwc test asyncio: not needed:     if rows:
+###jwc test asyncio: not needed:         for row in rows:
+###jwc test asyncio: not needed:             ###jwc o ui.notify(f"{row['name']}, {row['age']}")
+###jwc test asyncio: not needed:             ui.notify(f"{row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
+###jwc test asyncio: not needed:             print(f"*** *** {row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
+###jwc test asyncio: not needed:     else:
+###jwc test asyncio: not needed:         ui.notify('No rows selected.')
+###jwc test asyncio: not needed: async def output_selected_row():
+###jwc test asyncio: not needed:     row = await scoreboardServer_WebGrid_02.get_selected_row()
+###jwc test asyncio: not needed:     if row:
+###jwc test asyncio: not needed:         ###jwc o ui.notify(f"{row['name']}, {row['age']}")
+###jwc test asyncio: not needed:         ui.notify(f"{row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
+###jwc test asyncio: not needed:         print(f"*** *** {row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
+###jwc test asyncio: not needed:     else:
+###jwc test asyncio: not needed:         ui.notify('No row selected!')
+###jwc test asyncio: not needed: async def main_01():
+###jwc test asyncio: not needed:     task = asyncio.create_task(
+###jwc test asyncio: not needed:         output_selected_rows()
+###jwc test asyncio: not needed:     )
+###jwc test asyncio: not needed:     print("*** *** main_01 *** ***")
+###jwc test asyncio: not needed:     MAX_TIMEOUT = 20
+###jwc test asyncio: not needed:     try:
+###jwc test asyncio: not needed:         await asyncio.wait_for(task, timeout=MAX_TIMEOUT)
+###jwc test asyncio: not needed:     except TimeoutError:
+###jwc test asyncio: not needed:         print('The task was cancelled due to a timeout')      
+###jwc test asyncio: not needed: async def main_02():
+###jwc test asyncio: not needed:     task = asyncio.create_task(
+###jwc test asyncio: not needed:         output_selected_rows()
+###jwc test asyncio: not needed:     )
+###jwc test asyncio: not needed: 
+###jwc test asyncio: not needed:     MAX_TIMEOUT = 20
+###jwc test asyncio: not needed:     try:
+###jwc test asyncio: not needed:         await asyncio.wait_for(asyncio.shield(task), timeout=MAX_TIMEOUT)
+###jwc test asyncio: not needed:     except TimeoutError:
+###jwc test asyncio: not needed:         print('The task took more than expected and will complete soon.')
+###jwc test asyncio: not needed:         result = await task
+###jwc test asyncio: not needed:         print(result)
+###jwc test asyncio: not needed: ###jwc o ui.button('Output selected rows', on_click=output_selected_rows)
+###jwc test asyncio: not needed: ###jwc n ui.button('Output selected rows', on_click=main_02)
+###jwc test asyncio: not needed: ui.button('Output selected rows', on_click=output_selected_rows)
+###jwc test asyncio: not needed: ui.button('Output selected row', on_click=output_selected_row)
 
 
 
-import asyncio
-
-###jwc n async def output_selected_rows():
-###jwc n     ###jwc n async with async_timeout
-###jwc n     ###jwc n await asyncio.sleep(10)
-###jwc n 
-###jwc n     try:
-###jwc n         ###jwc o rows = await scoreboardServer_WebGrid_02.get_selected_rows()
-###jwc n         ###jwc n rows = await asyncio.shield(scoreboardServer_WebGrid_02.get_selected_rows())
-###jwc n         rows = await scoreboardServer_WebGrid_02.get_selected_rows()
-###jwc n         if rows:
-###jwc n             for row in rows:
-###jwc n                 ###jwc o ui.notify(f"{row['name']}, {row['age']}")
-###jwc n                 ui.notify(f"{row['bot_id']}, {row['Row_Id']}, {row['light_lastdelta']}")
-###jwc n                 print(f"*** *** {row['bot_id']}, {row['Row_Id']}, {row['light_lastdelta']}")
-###jwc n         else:
-###jwc n             ui.notify('No rows selected.')
-###jwc n     except TimeoutError:
-###jwc n         print('*** *** except TimeoutError *** ***')
-###jwc n         temp = output_selected_rows()
-###jwc n     print('*** *** output_selected_rows DONE *** ***')
-
-async def output_selected_rows():
-    ###jwc n async with async_timeout
-    ###jwc n await asyncio.sleep(10)
-
-    ###jwc o rows = await scoreboardServer_WebGrid_02.get_selected_rows()
-    ###jwc n rows = await asyncio.shield(scoreboardServer_WebGrid_02.get_selected_rows())
-    rows = await scoreboardServer_WebGrid_02.get_selected_rows()
-    if rows:
-        for row in rows:
-            ###jwc o ui.notify(f"{row['name']}, {row['age']}")
-            ui.notify(f"{row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
-            print(f"*** *** {row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
-    else:
-        ui.notify('No rows selected.')
-
-
-async def output_selected_row():
-    row = await scoreboardServer_WebGrid_02.get_selected_row()
-    if row:
-        ###jwc o ui.notify(f"{row['name']}, {row['age']}")
-        ui.notify(f"{row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
-        print(f"*** *** {row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
-    else:
-        ui.notify('No row selected!')
-
-
-async def main_01():
-    task = asyncio.create_task(
-        output_selected_rows()
-    )
-    print("*** *** main_01 *** ***")
-    MAX_TIMEOUT = 20
-    try:
-        await asyncio.wait_for(task, timeout=MAX_TIMEOUT)
-    except TimeoutError:
-        print('The task was cancelled due to a timeout')      
-
-async def main_02():
-    task = asyncio.create_task(
-        output_selected_rows()
-    )
-
-    MAX_TIMEOUT = 20
-    try:
-        await asyncio.wait_for(asyncio.shield(task), timeout=MAX_TIMEOUT)
-    except TimeoutError:
-        print('The task took more than expected and will complete soon.')
-        result = await task
-        print(result)
-
-
-###jwc o ui.button('Output selected rows', on_click=output_selected_rows)
-###jwc n ui.button('Output selected rows', on_click=main_02)
-ui.button('Output selected rows', on_click=output_selected_rows)
-ui.button('Output selected row', on_click=output_selected_row)
-
-
-
-grid = ui.aggrid({
-    'columnDefs': [
-        {'headerName': 'Name', 'field': 'name', 'checkboxSelection': True},
-        {'headerName': 'Age', 'field': 'age'},
-    ],
-    'rowData': [
-        {'name': 'Alice', 'age': 18},
-        {'name': 'Bob', 'age': 21},
-        {'name': 'Carol', 'age': 42},
-    ],
-    'rowSelection': 'multiple',
-}).classes('max-h-40')
-
-async def output_selected_rows_02():
-    rows = await grid.get_selected_rows()
-    if rows:
-        for row in rows:
-            ui.notify(f"{row['name']}, {row['age']}")
-    else:
-        ui.notify('No rows selected.')
-
-async def output_selected_row_02():
-    row = await grid.get_selected_row()
-    if row:
-        ui.notify(f"{row['name']}, {row['age']}")
-    else:
-        ui.notify('No row selected!')
-
-ui.button('Output selected rows', on_click=output_selected_rows_02)
-ui.button('Output selected row', on_click=output_selected_row_02)
-
+###jwc y test example: grid = ui.aggrid({
+###jwc y test example:     'columnDefs': [
+###jwc y test example:         {'headerName': 'Name', 'field': 'name', 'checkboxSelection': True},
+###jwc y test example:         {'headerName': 'Age', 'field': 'age'},
+###jwc y test example:     ],
+###jwc y test example:     'rowData': [
+###jwc y test example:         {'name': 'Alice', 'age': 18},
+###jwc y test example:         {'name': 'Bob', 'age': 21},
+###jwc y test example:         {'name': 'Carol', 'age': 42},
+###jwc y test example:     ],
+###jwc y test example:     'rowSelection': 'multiple',
+###jwc y test example: }).classes('max-h-40')
+###jwc y test example: async def output_selected_rows_02():
+###jwc y test example:     rows = await grid.get_selected_rows()
+###jwc y test example:     if rows:
+###jwc y test example:         for row in rows:
+###jwc y test example:             ui.notify(f"{row['name']}, {row['age']}")
+###jwc y test example:     else:
+###jwc y test example:         ui.notify('No rows selected.')
+###jwc y test example: async def output_selected_row_02():
+###jwc y test example:     row = await grid.get_selected_row()
+###jwc y test example:     if row:
+###jwc y test example:         ui.notify(f"{row['name']}, {row['age']}")
+###jwc y test example:     else:
+###jwc y test example:         ui.notify('No row selected!')
+###jwc y test example: ui.button('Output selected rows', on_click=output_selected_rows_02)
+###jwc y test example: ui.button('Output selected row', on_click=output_selected_row_02)
 
 
 
