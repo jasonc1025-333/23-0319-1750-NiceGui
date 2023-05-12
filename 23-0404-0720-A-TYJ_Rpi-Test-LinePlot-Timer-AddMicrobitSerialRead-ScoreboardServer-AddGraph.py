@@ -641,6 +641,163 @@ scoreboardServer_WebGrid = ui.aggrid({
 }).classes('h-[128rem]')
 
 
+
+
+scoreboardServer_WebGrid_02 = ui.aggrid({
+    'columnDefs': [
+        {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true'},
+        ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
+        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc', 'checkboxSelection': True},
+        {'headerName': 'Mission_Status', 'field': 'mission_status'},
+        {'headerName': 'Team_Id', 'field': 'team_id'},
+        {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
+        {'headerName': 'Light_Total', 'field': 'light_total', 'sortable':'true'},
+        {'headerName': 'Magnet_LastDelta', 'field': 'magnet_lastdelta'},
+        {'headerName': 'Magnet_Total', 'field': 'magnet_total', 'sortable':'true'},
+    ],
+    'rowData' : rowData_ArrayList_OfDictionaryPairs_ForAllBots,
+    'rowSelection': 'multiple', 
+    'rowSelectionWithClick': 'True', 
+    ###jwc n not seem to work 'rowMultiSelectWithClick': 'True',
+
+    'onGridReady': ui.notify("Grid Ready")
+
+# Defaults to 'h-64'
+# 1 rem = 16px, 2 rem = 1 full font height     
+###jwc y }).classes('h-[128rem]')
+###jwc y }).classes('h-64')
+}).classes('h-64')
+
+
+###jwc 20 scoreboardServer_WebGrid_02 = ui.aggrid({
+###jwc 20     'columnDefs': [
+###jwc 20         {'headerName': 'Name', 'field': 'name', 'checkboxSelection': True},
+###jwc 20         {'headerName': 'Age', 'field': 'age'},
+###jwc 20     ],
+###jwc 20     'rowData': [
+###jwc 20         {'name': 'Alice', 'age': 18},
+###jwc 20         {'name': 'Bob', 'age': 21},
+###jwc 20         {'name': 'Carol', 'age': 42},
+###jwc 20     ],
+###jwc 20     'rowSelection': 'multiple',
+###jwc 20 }).classes('max-h-4
+
+
+
+import asyncio
+
+###jwc n async def output_selected_rows():
+###jwc n     ###jwc n async with async_timeout
+###jwc n     ###jwc n await asyncio.sleep(10)
+###jwc n 
+###jwc n     try:
+###jwc n         ###jwc o rows = await scoreboardServer_WebGrid_02.get_selected_rows()
+###jwc n         ###jwc n rows = await asyncio.shield(scoreboardServer_WebGrid_02.get_selected_rows())
+###jwc n         rows = await scoreboardServer_WebGrid_02.get_selected_rows()
+###jwc n         if rows:
+###jwc n             for row in rows:
+###jwc n                 ###jwc o ui.notify(f"{row['name']}, {row['age']}")
+###jwc n                 ui.notify(f"{row['bot_id']}, {row['Row_Id']}, {row['light_lastdelta']}")
+###jwc n                 print(f"*** *** {row['bot_id']}, {row['Row_Id']}, {row['light_lastdelta']}")
+###jwc n         else:
+###jwc n             ui.notify('No rows selected.')
+###jwc n     except TimeoutError:
+###jwc n         print('*** *** except TimeoutError *** ***')
+###jwc n         temp = output_selected_rows()
+###jwc n     print('*** *** output_selected_rows DONE *** ***')
+
+async def output_selected_rows():
+    ###jwc n async with async_timeout
+    ###jwc n await asyncio.sleep(10)
+
+    ###jwc o rows = await scoreboardServer_WebGrid_02.get_selected_rows()
+    ###jwc n rows = await asyncio.shield(scoreboardServer_WebGrid_02.get_selected_rows())
+    rows = await scoreboardServer_WebGrid_02.get_selected_rows()
+    if rows:
+        for row in rows:
+            ###jwc o ui.notify(f"{row['name']}, {row['age']}")
+            ui.notify(f"{row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
+            print(f"*** *** {row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
+    else:
+        ui.notify('No rows selected.')
+
+
+async def output_selected_row():
+    row = await scoreboardServer_WebGrid_02.get_selected_row()
+    if row:
+        ###jwc o ui.notify(f"{row['name']}, {row['age']}")
+        ui.notify(f"{row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
+        print(f"*** *** {row['bot_id']}, {row['row_id']}, {row['light_lastdelta']}")
+    else:
+        ui.notify('No row selected!')
+
+
+async def main_01():
+    task = asyncio.create_task(
+        output_selected_rows()
+    )
+    print("*** *** main_01 *** ***")
+    MAX_TIMEOUT = 20
+    try:
+        await asyncio.wait_for(task, timeout=MAX_TIMEOUT)
+    except TimeoutError:
+        print('The task was cancelled due to a timeout')      
+
+async def main_02():
+    task = asyncio.create_task(
+        output_selected_rows()
+    )
+
+    MAX_TIMEOUT = 20
+    try:
+        await asyncio.wait_for(asyncio.shield(task), timeout=MAX_TIMEOUT)
+    except TimeoutError:
+        print('The task took more than expected and will complete soon.')
+        result = await task
+        print(result)
+
+
+###jwc o ui.button('Output selected rows', on_click=output_selected_rows)
+###jwc n ui.button('Output selected rows', on_click=main_02)
+ui.button('Output selected rows', on_click=output_selected_rows)
+ui.button('Output selected row', on_click=output_selected_row)
+
+
+
+grid = ui.aggrid({
+    'columnDefs': [
+        {'headerName': 'Name', 'field': 'name', 'checkboxSelection': True},
+        {'headerName': 'Age', 'field': 'age'},
+    ],
+    'rowData': [
+        {'name': 'Alice', 'age': 18},
+        {'name': 'Bob', 'age': 21},
+        {'name': 'Carol', 'age': 42},
+    ],
+    'rowSelection': 'multiple',
+}).classes('max-h-40')
+
+async def output_selected_rows_02():
+    rows = await grid.get_selected_rows()
+    if rows:
+        for row in rows:
+            ui.notify(f"{row['name']}, {row['age']}")
+    else:
+        ui.notify('No rows selected.')
+
+async def output_selected_row_02():
+    row = await grid.get_selected_row()
+    if row:
+        ui.notify(f"{row['name']}, {row['age']}")
+    else:
+        ui.notify('No row selected!')
+
+ui.button('Output selected rows', on_click=output_selected_rows_02)
+ui.button('Output selected row', on_click=output_selected_row_02)
+
+
+
+
 #
 # Seems #1: receive_Microbit_Messages_Object 0.0001sec (0.1msec) -&- update_WebGrid__UiTimer_Active_n_Interval__Object 4 sec seems optimum :)+
 # Seems #2: receive_Microbit_Messages_Object 0.001sec (1msec) -&- update_WebGrid__UiTimer_Active_n_Interval__Object 3 sec seems optimum :)+
