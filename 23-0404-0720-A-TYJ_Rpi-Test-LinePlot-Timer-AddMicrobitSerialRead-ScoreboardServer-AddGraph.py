@@ -174,10 +174,16 @@ def receive_Microbit_Messages_Fn() -> None:
 
                 ##jwc n scoreboard_DataNumNew_ArrayList.append({key_Value_Pair__Key:int(key_Value_Pair__Value)})
                 
-                ### n scoreboard_DataNumNew_ArrayList['A']=int(key_Value_Pair__Value)
-                ### scoreboard_DataNumNew_ArrayList.append(int(key_Value_Pair__Value))
-                # Add new 'key_Value_Pair'
-                scoreboard_DataMessage_Rcvd_Dict[key_Value_Pair__Key]=int(key_Value_Pair__Value)
+                try:
+                    ### n scoreboard_DataNumNew_ArrayList['A']=int(key_Value_Pair__Value)
+                    ### scoreboard_DataNumNew_ArrayList.append(int(key_Value_Pair__Value))
+                    # Add new 'key_Value_Pair'
+                    scoreboard_DataMessage_Rcvd_Dict[key_Value_Pair__Key]=int(key_Value_Pair__Value)
+                except ValueError:
+                    scoreboard_DataMessage_Rcvd_Dict[key_Value_Pair__Key]=str(key_Value_Pair__Value)
+                    print("!!! 23-0519-1200 'except ValueError' 1:" + str(scoreboard_DataMessage_Rcvd_Dict[key_Value_Pair__Key]) + " 2:" + str(key_Value_Pair__Key) + " 3:" + str(key_Value_Pair__Value) + "|")
+                except:
+                    print("!!! 23-0519-1210 non-'except ValueError'")
 
                 if _debug_Show_Priority_Lo_Bool:
                     print("* B: Parsed Key:key_Value_Pair:")
