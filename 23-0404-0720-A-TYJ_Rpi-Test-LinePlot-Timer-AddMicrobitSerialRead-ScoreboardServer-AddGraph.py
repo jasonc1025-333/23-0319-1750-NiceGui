@@ -29,13 +29,34 @@ rowData_Test_List = [
 ###jwc 23-0504-0700 TYJ rowData_ArrayList_OfDictionaryPairs_ForAllBots = [
 ###jwc 23-0504-0700 TYJ     {'row_id':'Test_Row', 'bot_id':'Test_Bot', 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
 ###jwc 23-0504-0700 TYJ ]
+
+rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int = 0
+
 rowData_ArrayList_OfDictionaryPairs_ForAllBots = [
     ###jwc y {'row_id':'.Test_Row', 'bot_id':'Test_Bot', 'mission_status':'-', 'team_id':'-', 'light_lastdelta':100, 'light_total':1000, 'magnet_lastdelta':10000, 'magnet_total':100000},
     ###jwc y {'row_id':'.Test_Row_21', 'bot_id':'Test_Bot_21', 'mission_status':'-', 'team_id':'-', 'light_lastdelta':21, 'light_total':22, 'magnet_lastdelta':23, 'magnet_total':24},
     ###jwc y {'row_id':'.Test_Row_21', 'bot_id':'Test_Bot_21', 'mission_status':'-', 'team_id':'-', 'light_lastdelta':21, 'light_total':22, 'magnet_lastdelta':23, 'magnet_total':24},
-    {'row_id':'.Test_Row_20', 'bot_id':2, 'mission_status':'-', 'team_id':'-', 'light_lastdelta':21, 'light_total':22, 'magnet_lastdelta':23, 'magnet_total':24},
-    {'row_id':'.Test_Row_10', 'bot_id':1, 'mission_status':'-', 'team_id':'-', 'light_lastdelta':11, 'light_total':12, 'magnet_lastdelta':13, 'magnet_total':14},
     ###jwc y {'row_id':'.Test_Row', 'bot_id':'Test_Bot', 'mission_status':'-', 'team_id':'-', 'light_lastdelta':21, 'light_total':22, 'magnet_lastdelta':23, 'magnet_total':24},
+    ###jwc yy {'row_id':'.Test_Row_20', 'bot_id':2, 'mission_status':'-', 'team_id':'-', 'light_lastdelta':21, 'light_total':22, 'magnet_lastdelta':23, 'magnet_total':24},
+    ###jwc yy {'row_id':'.Test_Row_10', 'bot_id':1, 'mission_status':'-', 'team_id':'-', 'light_lastdelta':11, 'light_total':12, 'magnet_lastdelta':13, 'magnet_total':14},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+    {'row_id':'', 'bot_id':'', 'mission_status':'', 'team_id':'', 'light_lastdelta':'', 'light_total':'', 'magnet_lastdelta':'', 'magnet_total':''},
+
 ]
 
 ###jwc global inerferes with .append so move to local: rowData_OfDictionaryPairs_ForABot_Empty = {
@@ -99,6 +120,7 @@ def get_bot_id_fn(element):
 # receive_Microbit_Messages_Fn
 #
 def receive_Microbit_Messages_Fn() -> None:
+    global rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int
 
     now,network_DataMessage_Rcvd_Bytes,y1,y2 = 0, 0, 0, 0
 
@@ -196,58 +218,65 @@ def receive_Microbit_Messages_Fn() -> None:
                     print("  2:scoreboard_DataMessage_Recvd_Dict: "+ str(scoreboard_DataMessage_Rcvd_Dict) +"|")
                    
 
-        if True:
-            scoreboard_Bot_Found_Bool = False
+        scoreboard_Bot_Found_Bool = False
+        if _debug_Show_Priority_Lo_Bool:
+            print("* C")
+            print("  C1:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+
+        for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
             if _debug_Show_Priority_Lo_Bool:
-                print("* C")
-                print("  C1:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+                print("  C2:" + str(bot_dictionary))
+            ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
+            if scoreboard_DataMessage_Rcvd_Dict['#'] == bot_dictionary['bot_id']:
 
-            for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
-                if _debug_Show_Priority_Lo_Bool:
-                    print("  C2:" + str(bot_dictionary))
-                ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
-                if scoreboard_DataMessage_Rcvd_Dict['#'] == bot_dictionary['bot_id']:
-    
-                    scoreboard_Bot_Found_Bool = True    
-                    
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("  C3a:bot_dictionary: " + str(bot_dictionary))
-                    bot_dictionary['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
-                    bot_dictionary['light_total'] += scoreboard_DataMessage_Rcvd_Dict['L']
-                    bot_dictionary['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
-                    bot_dictionary['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
-                    if _debug_Show_Priority_Hi_Bool:
-                        print("  C3b:bot_dictionary: " + str(bot_dictionary))
-                    
+                scoreboard_Bot_Found_Bool = True    
+                
+                if _debug_Show_Priority_Hi_Bool:
+                    print("  C3a:bot_dictionary: " + str(bot_dictionary))
+                bot_dictionary['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
+                bot_dictionary['light_total'] += scoreboard_DataMessage_Rcvd_Dict['L']
+                bot_dictionary['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
+                bot_dictionary['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
+                if _debug_Show_Priority_Hi_Bool:
+                    print("  C3b:bot_dictionary: " + str(bot_dictionary))
+                
+        if _debug_Show_Priority_Lo_Bool:
+            print("* D")
+        if not (scoreboard_Bot_Found_Bool):
+            ##jwc o scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
+            ##jwc o if _debug_Show_Priority_Lo_Bool:
+            ##jwc o     print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
 
+            # base_0 needed for letter
+            ###jwc yy rowData_OfDictionaryPairs_ForABot_Empty_Local['row_id'] = chr( ord('A') + (len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) ) -1 )
+            ###jwc yy rowData_OfDictionaryPairs_ForABot_Empty_Local['bot_id'] = scoreboard_DataMessage_Rcvd_Dict['#']
+            ###jwc yy rowData_OfDictionaryPairs_ForABot_Empty_Local['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
+            ###jwc yy rowData_OfDictionaryPairs_ForABot_Empty_Local['light_total'] += scoreboard_DataMessage_Rcvd_Dict['L']
+            ###jwc yy rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
+            ###jwc yy rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
+
+            if _debug_Show_Priority_Hi_Bool:
+                ###jwc yy print("  D1aa:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+                print("  D1:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots[rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int]))
+                ###jwc y print("  D1ab:" + str(rowData_OfDictionaryPairs_ForABot_Empty_Local))
+            ###jwc yy rowData_ArrayList_OfDictionaryPairs_ForAllBots.append(rowData_OfDictionaryPairs_ForABot_Empty_Local)
+
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int]['row_id'] = chr( ord('A') + rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int)
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int]['bot_id'] = scoreboard_DataMessage_Rcvd_Dict['#']
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int]['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int]['light_total'] = scoreboard_DataMessage_Rcvd_Dict['L']
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int]['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int]['magnet_total'] = scoreboard_DataMessage_Rcvd_Dict['M']
             
-            if _debug_Show_Priority_Lo_Bool:
-                print("* D")
-            if not (scoreboard_Bot_Found_Bool):
-                ##jwc o scoreboard_BotsAll_ArrayList_2D.append(scoreboard_DataNumNew_ArrayList)
-                ##jwc o if _debug_Show_Priority_Lo_Bool:
-                ##jwc o     print("* NewBotAdd:" + str(scoreboard_BotsAll_ArrayList_2D[len(scoreboard_BotsAll_ArrayList_2D) - 1]) + " " + str(len(scoreboard_BotsAll_ArrayList_2D)))
+            if _debug_Show_Priority_Hi_Bool:
+                print("  D2:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots[rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int]))
+            ####jwc n rowData_ArrayList_OfDictionaryPairs_ForAllBots.sort(key=lambda x: x.get('bot_id'))
+            ###jwc n rowData_ArrayList_OfDictionaryPairs_ForAllBots.sort(key=lambda x: x.get('row_id'))
+            ###jwc y rowData_ArrayList_OfDictionaryPairs_ForAllBots.sort(key=get_bot_id_fn)
+            ###jwc y if _debug_Show_Priority_Hi_Bool:
+            ###jwc y     print("  D1c:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
 
-                # base_0 needed for letter
-                rowData_OfDictionaryPairs_ForABot_Empty_Local['row_id'] = chr( ord('A') + (len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) ) -1 )
-
-                rowData_OfDictionaryPairs_ForABot_Empty_Local['bot_id'] = scoreboard_DataMessage_Rcvd_Dict['#']
-                rowData_OfDictionaryPairs_ForABot_Empty_Local['light_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['L']
-                rowData_OfDictionaryPairs_ForABot_Empty_Local['light_total'] += scoreboard_DataMessage_Rcvd_Dict['L']
-                rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_lastdelta'] = scoreboard_DataMessage_Rcvd_Dict['M']
-                rowData_OfDictionaryPairs_ForABot_Empty_Local['magnet_total'] += scoreboard_DataMessage_Rcvd_Dict['M']
-
-                if _debug_Show_Priority_Hi_Bool:
-                    print("  D1aa:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
-                    print("  D1ab:" + str(rowData_OfDictionaryPairs_ForABot_Empty_Local))
-                rowData_ArrayList_OfDictionaryPairs_ForAllBots.append(rowData_OfDictionaryPairs_ForABot_Empty_Local)
-                if _debug_Show_Priority_Hi_Bool:
-                    print("  D1b:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
-                ####jwc n rowData_ArrayList_OfDictionaryPairs_ForAllBots.sort(key=lambda x: x.get('bot_id'))
-                ###jwc n rowData_ArrayList_OfDictionaryPairs_ForAllBots.sort(key=lambda x: x.get('row_id'))
-                rowData_ArrayList_OfDictionaryPairs_ForAllBots.sort(key=get_bot_id_fn)
-                if _debug_Show_Priority_Hi_Bool:
-                    print("  D1c:" + str(rowData_ArrayList_OfDictionaryPairs_ForAllBots))
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int += 1
     else:
         print("*** No Serial Read *** ")
 
@@ -291,16 +320,33 @@ def receive_Microbit_Messages_Fn() -> None:
 
 
 def clear_Stats_Fn():
+    global rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int
+    rowdata_arraylist_ofdictionarypairs_forallbots_index_int=0
+
+
+
     for bot_dictionary in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
-        print("  E1:" + str(bot_dictionary))
+        ###jwc y print("  E1:" + str(bot_dictionary))
         ###jwc y? if scoreboard_DataMessage_Rcvd_Dict['#'] in bot_dictionary.values():
           
-        print("  E2a:bot_dictionary: " + str(bot_dictionary))
-        bot_dictionary['light_lastdelta'] = 0
-        bot_dictionary['light_total'] = 0
-        bot_dictionary['magnet_lastdelta'] = 0
-        bot_dictionary['magnet_total'] = 0
-        print("  E2b:bot_dictionary: " + str(bot_dictionary))
+        print("* E1:bot_dictionary: " + str(bot_dictionary))
+        ###jwc y bot_dictionary['light_lastdelta'] = 0
+        ###jwc y bot_dictionary['light_total'] = 0
+        ###jwc y bot_dictionary['magnet_lastdelta'] = 0
+        ###jwc y bot_dictionary['magnet_total'] = 0
+        if rowdata_arraylist_ofdictionarypairs_forallbots_index_int < rowData_ArrayList_OfDictionaryPairs_ForAllBots_NextUnusedIndex_Int:
+            bot_dictionary['light_lastdelta'] = 0 # type: ignore
+            bot_dictionary['light_total'] = 0 # type: ignore
+            bot_dictionary['magnet_lastdelta'] = 0 # type: ignore
+            bot_dictionary['magnet_total'] = 0 # type: ignore
+        else:
+            bot_dictionary['light_lastdelta'] = ''
+            bot_dictionary['light_total'] = ''
+            bot_dictionary['magnet_lastdelta'] = ''
+            bot_dictionary['magnet_total'] = ''
+
+        print("  E2:bot_dictionary: " + str(bot_dictionary))
+        rowdata_arraylist_ofdictionarypairs_forallbots_index_int += 1
     scoreboardServer_WebGrid.update()
     ###jwc 23-0506-1700 y reduce to one scoreboardServer_WebGrid: grid2.update()
 #
@@ -480,10 +526,12 @@ ui.button('scoreboardServer_WebGrid_Update_Test_Fn', on_click=scoreboardServer_W
 scoreboardServer_WebGrid = ui.aggrid({
     'columnDefs': [
         ###jwc 23-0520 y {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true'},
-        {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true', 'sort': 'asc'},
+        ###jwc yy {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true', 'sort': 'asc'},
+        {'headerName': 'Row_Id', 'field': 'row_id', 'sortable':'true'},
         ###jwc y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true'},
         ###jwc 23-0520 y {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc', 'checkboxSelection': True},
-        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'checkboxSelection': True},
+        ###jwc yy {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'checkboxSelection': True},
+        {'headerName': 'Bot_Id', 'field': 'bot_id','sortable':'true', 'sort': 'asc', 'checkboxSelection': True},
         {'headerName': 'Mission_Status', 'field': 'mission_status'},
         {'headerName': 'Team_Id', 'field': 'team_id'},
         {'headerName': 'Light_LastDelta', 'field': 'light_lastdelta'},
@@ -500,7 +548,13 @@ scoreboardServer_WebGrid = ui.aggrid({
 # 1 rem = 16px, 2 rem = 1 full font height     
 ###jwc y }).classes('h-[128rem]')
 ###jwc y }).classes('h-64')
-}).classes('h-[128rem]')
+###jwc yy }).classes('h-[128rem]')
+###jwc y but cutoff vertical, thus annoying scroll region }).classes('w-full h-64')
+###jwc y but cutoff vertical }).classes('max-h-40')
+###jwc ? }).classes('h-64')
+###jwc y }).classes('h-[96rem]')
+###jwc y }).classes('h-[80rem]')
+}).classes('h-[32rem]')
 
 
 ###jwc y testOnly scoreboardServer_WebGrid_02 = ui.aggrid({
@@ -527,226 +581,236 @@ scoreboardServer_WebGrid = ui.aggrid({
 ###jwc y testOnly }).classes('h-64')
 
 
-###jwc 20 scoreboardServer_WebGrid_02 = ui.aggrid({
-###jwc 20     'columnDefs': [
-###jwc 20         {'headerName': 'Name', 'field': 'name', 'checkboxSelection': True},
-###jwc 20         {'headerName': 'Age', 'field': 'age'},
-###jwc 20     ],
-###jwc 20     'rowData': [
-###jwc 20         {'name': 'Alice', 'age': 18},
-###jwc 20         {'name': 'Bob', 'age': 21},
-###jwc 20         {'name': 'Carol', 'age': 42},
-###jwc 20     ],
-###jwc 20     'rowSelection': 'multiple',
-###jwc 20 }).classes('max-h-4
-
+###jwc o checkbox selection: scoreboardServer_WebGrid_02 = ui.aggrid({
+###jwc o checkbox selection:     'columnDefs': [
+###jwc o checkbox selection:         {'headerName': 'Name', 'field': 'name', 'checkboxSelection': True},
+###jwc o checkbox selection:         {'headerName': 'Age', 'field': 'age'},
+###jwc o checkbox selection:     ],
+###jwc o checkbox selection:     'rowData': [
+###jwc o checkbox selection:         {'name': 'Alice', 'age': 18},
+###jwc o checkbox selection:         {'name': 'Bob', 'age': 21},
+###jwc o checkbox selection:         {'name': 'Carol', 'age': 42},
+###jwc o checkbox selection:     ],
+###jwc o checkbox selection:     'rowSelection': 'multiple',
+###jwc o checkbox selection: }).classes('max-h-4
 
 
 #
-# ui.line_plot
+# 'HighChart' Bar
 #
 
-###jwc o linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
-###jwc o     .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
-
-### ### jwc yyy tyj: ###jwc every 1 sec
-### ### jwc yyy tyj:     ###jwc y .with_legend(['Light', 'Temp'], loc='upper center', ncol=2)
-### ### jwc yyy tyj: linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=40, figsize=(6, 4), update_every=1) \
-### ### jwc yyy tyj:     .with_legend(['Light', 'Magnet'], loc='upper center', ncol=2)
-
-
-###jwc o linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
-###jwc o     .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
-###jwc o linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5).with_legend(['sin', 'cos'], loc='upper center', ncol=2)
-
-### ### jwc yyy tyj: ###jwc every 1 sec
-### ### jwc yyy tyj:     ###jwc y .with_legend(['Light', 'Temp'], loc='upper center', ncol=2)
-### ### jwc yyy tyj: linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=40, figsize=(6, 4), update_every=1).with_legend(['Light', 'Magnet'], loc='upper center', ncol=2)
-### jwc y linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=2)
-###jwc linePlot_PyPlot_Obj = ui.line_plot(n=15, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O'], loc='upper center', ncol=2)
-###jwc linePlot_PyPlot_Obj = ui.line_plot(n=15, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O'], loc='upper center', ncol=2)
-###jwc n linePlot_PyPlot_Obj = ui.line_plot(n=5, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B', 'Row C', 'Row D', 'Row E'], loc='upper center', ncol=5)
-###jwc n linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B', 'Row C'], loc='upper center', ncol=3)
-###jwc y linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=2)
-###jwc y linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B','Row C'], loc='upper center', ncol=3)
-###jwc n NOT WORK SINCE [1] AND [2] UNDEFINED: linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend([rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id']], loc='upper center', ncol=3)
-###jwc y linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B','Row C'], loc='upper center', ncol=3)
-###jwc ? linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=3)
-#
-###jwc yy linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=2)
-###jwc yy: ncol=3 is ok: linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=3)
-###jwc IndexError: list index out of range, when only n=2 worked: linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=3)
-linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=3)
-
-
-### ### jwc yyy tyj: def linePlot_PyPlot_Update_Fn() -> None:
-### ### jwc yyy tyj:     ###jwc n receive_Microbit_Messages_Fn
-### ### jwc yyy tyj:     now = datetime.now()
-### ### jwc yyy tyj: 
-### ### jwc yyy tyj:     print(">>> >>> " + str(y2Value[1]) +" "+ str(y2Value[2]) +": "+str(y2Value))
-### ### jwc yyy tyj:     linePlot_PyPlot_Obj.push([now.timestamp()], [[y2Value[1]], [y2Value[2]]])  
-
-def linePlot_PyPlot_Update_Fn() -> None:
-    ###jwc n receive_Microbit_Messages_Fn
-    now = datetime.now()
-    temp_arraylist = []
-
-    for row_data_singlebot in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
-        temp_arraylist.append(row_data_singlebot['light_total'])
-
-    ###jwc o print(">>> >>> " + str(y2Value[1]) +" "+ str(y2Value[2]) +": "+str(y2Value))
-    ###jwc o linePlot_PyPlot_Obj.push([now.timestamp()], [[y2Value[1]], [y2Value[2]]])  
-    print(">>> " + 
-          ###jwc y str(temp_arraylist)
-          str(temp_arraylist[:])
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[:]])
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']]) +" "
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['light_total']]) +" "+
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['light_total']]) +" "+ 
-          ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[15]['light_total']]) +" " 
-          )
-    ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]])  
-    ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()],[[0],[1]])
-                                        ###jwc n [
-                                        ###jwc n    ###jwc n [temp_arraylist[0]],[temp_arraylist[1]]
-                                        ###jwc n     [0],[1]
-                                        ###jwc n ###jwc n     rowData_ArrayList_OfDictionaryPairs_ForAllBots[] 
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], 
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['light_total']],
-                                        ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[15]['light_total']],
-                                        ###jwc n ])  
-    x = now.timestamp()
-    y1 = np.sin(x)
-    y2 = np.cos(x)
-    ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[y1], [y2]])
-    ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()], [temp_arraylist[:]])
-    ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[temp_arraylist[1]], [temp_arraylist[2]]])
-    ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()], [temp_arraylist[:]])
-    ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()], [[temp_arraylist[0:2]]])
-    ###jwc yyy linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]])
-    ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[0:2]['light_total']]]) # type: ignore
-    ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]])
-    ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]])
-    linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']]])
-
-linePlot_PyPlot_Timer_Obj = ui.timer(4, linePlot_PyPlot_Update_Fn, active=True)
-
-
-
-chart_HighChart_Obj = ui.chart({
+chart_HighChart_LightTotal_Obj = ui.chart({
     'title': False,
     'chart': {'type': 'bar'},
     ###jwc o 'xAxis': {'categories': ['A', 'B']},
-    'xAxis': {'categories': ['Row A', 'Row B', 'Row C']},
+    ###jwc y 'xAxis': {'categories': ['Row A', 'Row B']},
+    ###jwc y 'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E']},
+    'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O']},
     'series': [
         ###jwc o {'name': 'Alpha', 'data': [0.1, 0.2]},
         ###jwc o {'name': 'Beta', 'data': [0.3, 0.4]},
         ###jwc y {'name': 'Light_Delta', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_lastdelta'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']]},
         ###jwc y {'name': 'Light_Total', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]},
         ###jwc y {'name': 'Light_Delta', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_lastdelta']]},
-        {'name': 'Light_Total', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']]]},
+        {'name': 'Light_Total', 'data': [
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'], 
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total'],
+
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['light_total'], 
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['light_total'],
+
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['light_total'], 
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['light_total'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['light_total'],
+        ]},
     ],
-}).classes('w-full h-64')
+###jwc y }).classes('w-full h-64')
+###jwc y }).classes('h-[80rem]')
+}).classes('h-[32rem]')
 
-def chart_HighChart_Update_Fn():
-    ###jwc y chart_HighChart_Obj.options['series'][0]['data'][:] = random_Numpy(2)
-    ###jwc n chart_HighChart_Obj.options['series'][:]['data'][:] += 1
-    ###jwc nn chart_HighChart_Obj.options['series'][1]['data'][:] = str(int(chart_HighChart_Obj.options['series'][1]['data'][:]) + 1)
-    ###jwc y chart_HighChart_Obj.options['series'][1]['data'][:] = random_Numpy(2)
+def chart_HighChart_Update_LightTotal_Fn():
+    ###jwc y chart_HighChart_LightTotal_Obj.options['series'][0]['data'][:] = random_Numpy(2)
+    ###jwc n chart_HighChart_LightTotal_Obj.options['series'][:]['data'][:] += 1
+    ###jwc nn chart_HighChart_LightTotal_Obj.options['series'][1]['data'][:] = str(int(chart_HighChart_LightTotal_Obj.options['series'][1]['data'][:]) + 1)
+    ###jwc y chart_HighChart_LightTotal_Obj.options['series'][1]['data'][:] = random_Numpy(2)
 
-    chart_HighChart_Obj.options['xAxis']['categories'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id']
-    chart_HighChart_Obj.options['xAxis']['categories'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['bot_id']
-    ###jwc ? chart_HighChart_Obj.options['series'][0]['data'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']
+    ###jwc y chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id']
+    ###jwc y chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['bot_id']
+    
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][3] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][4] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['bot_id']
 
-    ###jwc y chart_HighChart_Obj.options['series'][0]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_lastdelta']
-    ###jwc y chart_HighChart_Obj.options['series'][1]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']
-    ###jwc y chart_HighChart_Obj.options['series'][0]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_lastdelta']
-    ###jwc y chart_HighChart_Obj.options['series'][1]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']
-    chart_HighChart_Obj.options['series'][0]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']
-    chart_HighChart_Obj.options['series'][0]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']
-    ###jwc n chart_HighChart_Obj.options['xAxis'][0]['categories'][0] = 'Row A+'
-    ###jwc yn chart_HighChart_Obj.options['xAxis']['categories'] = 'Row A+'
-    ###jwc y chart_HighChart_Obj.options['xAxis']['categories'][0] = 'Row A+'
-    ###jwc ? chart_HighChart_Obj.options['xAxis']['categories'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][5] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][6] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][7] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][8] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][9] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['bot_id']
 
-    chart_HighChart_Obj.update()
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][10] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][11] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][12] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][13] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['bot_id']
+    chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][14] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['bot_id']
 
-###jwc n ui.button('chart_HighChart_Update_Fn', on_click=chart_HighChart_Update_Fn)
+    ###jwc ? chart_HighChart_LightTotal_Obj.options['series'][0]['data'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']
+
+    ###jwc y chart_HighChart_LightTotal_Obj.options['series'][0]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_lastdelta']
+    ###jwc y chart_HighChart_LightTotal_Obj.options['series'][1]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']
+    ###jwc y chart_HighChart_LightTotal_Obj.options['series'][0]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_lastdelta']
+    ###jwc y chart_HighChart_LightTotal_Obj.options['series'][1]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']
+
+    ###jwc n chart_HighChart_LightTotal_Obj.options['xAxis'][0]['categories'][0] = 'Row A+'
+    ###jwc yn chart_HighChart_LightTotal_Obj.options['xAxis']['categories'] = 'Row A+'
+    ###jwc y chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][0] = 'Row A+'
+    ###jwc ? chart_HighChart_LightTotal_Obj.options['xAxis']['categories'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']
+
+    ###jwc y chart_HighChart_LightTotal_Obj.options['series'][0]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']
+    ###jwc y chart_HighChart_LightTotal_Obj.options['series'][0]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']
+
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][3] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][4] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']
+
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][5] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][6] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][7] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][8] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][9] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['light_total']
+
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][10] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][11] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][12] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][13] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['light_total']
+    chart_HighChart_LightTotal_Obj.options['series'][0]['data'][14] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['light_total']
+
+    chart_HighChart_LightTotal_Obj.update()
+
+###jwc n ui.button('chart_HighChart_Update_LightTotal_Fn', on_click=chart_HighChart_Update_LightTotal_Fn)
           
-chart_HighChart_Update_Timer_Obj = ui.timer(4, chart_HighChart_Update_Fn, active=True)
+chart_HighChart_Update_LightTotal_Timer_Obj = ui.timer(4, chart_HighChart_Update_LightTotal_Fn, active=True)
 
 
 
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: #
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: # plotly
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: #
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: linePlot_Fig_Plotly_Dct = {
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     'data': [
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         {
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'type': 'scatter',
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'name': 'Trace 1',
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'x': [1, 2, 3, 4],
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'y': [1, 2, 3, 2.5],
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         },
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         {
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'type': 'scatter',
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'name': 'Trace 2',
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'x': [1, 2, 3, 4],
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             ###jwc o 'y': np.array([1.4, 1.8, 3.8, 3.2]),
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             ###jwc n 'y': [int(random_Numpy(2)),int(random_Numpy(5)),int(random_Numpy(10)),int(random_Numpy(20))],
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             ###jwc y 'y': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'],rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']],
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             ###jwc n 'y': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'],rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']],
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             # only initial setup but not real-time update
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'y': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'],rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']+1],
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'line': {'dash': 'dot', 'width': 3},
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         },
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     ],
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     'layout': {
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         'margin': {'l': 15, 'r': 0, 't': 0, 'b': 15},
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         'plot_bgcolor': '#E5ECF6',
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         'xaxis': {'gridcolor': 'white'},
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         'yaxis': {'gridcolor': 'white'},
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     },
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: }
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: linePlot_Fig_Plotly_Dct_Obj = ui.plotly(linePlot_Fig_Plotly_Dct).classes('w-full h-40')
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: 
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: def linePlot_Fig_Plotly_Update_Fn():
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     # NOT WORK FOR REAL-TIME UPDATE
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     #
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'] += 1
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total'] += 1
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     linePlot_Fig_Plotly_Dct_Obj.update()
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     ###jwc ? ui.update(plot)
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: 
-###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: linePlot_Fig_Plotly_Update_Timer_Obj = ui.timer(4, linePlot_Fig_Plotly_Update_Fn, active=True)
+chart_HighChart_LightDelta_Obj = ui.chart({
+    'title': False,
+    'chart': {'type': 'bar'},
+    ###jwc o 'xAxis': {'categories': ['A', 'B']},
+    ###jwc y 'xAxis': {'categories': ['Row A', 'Row B']},
+    ###jwc y 'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E']},
+    'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O']},
+    'series': [
+        ###jwc o {'name': 'Alpha', 'data': [0.1, 0.2]},
+        ###jwc o {'name': 'Beta', 'data': [0.3, 0.4]},
+        ###jwc y {'name': 'Light_Delta', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_lastdelta'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']]},
+        ###jwc y {'name': 'Light_Delta', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_lastdelta'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']]},
+        ###jwc y {'name': 'Light_Delta', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_lastdelta']]},
+        {'name': 'Light_Delta', 'data': [
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_lastdelta'], 
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_lastdelta'],
 
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['light_lastdelta'], 
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['light_lastdelta'],
+
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['light_lastdelta'], 
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['light_lastdelta'],
+            rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['light_lastdelta'],
+        ]},
+    ],
+###jwc y }).classes('w-full h-64')
+###jwc y }).classes('h-[80rem]')
+}).classes('h-[32rem]')
+
+def chart_HighChart_Update_LightDelta_Fn():
+    ###jwc y chart_HighChart_LightDelta_Obj.options['series'][0]['data'][:] = random_Numpy(2)
+    ###jwc n chart_HighChart_LightDelta_Obj.options['series'][:]['data'][:] += 1
+    ###jwc nn chart_HighChart_LightDelta_Obj.options['series'][1]['data'][:] = str(int(chart_HighChart_LightDelta_Obj.options['series'][1]['data'][:]) + 1)
+    ###jwc y chart_HighChart_LightDelta_Obj.options['series'][1]['data'][:] = random_Numpy(2)
+
+    ###jwc y chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id']
+    ###jwc y chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['bot_id']
+    
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][3] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][4] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['bot_id']
+
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][5] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][6] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][7] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][8] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][9] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['bot_id']
+
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][10] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][11] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][12] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][13] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['bot_id']
+    chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][14] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['bot_id']
+
+    ###jwc ? chart_HighChart_LightDelta_Obj.options['series'][0]['data'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']
+
+    ###jwc y chart_HighChart_LightDelta_Obj.options['series'][0]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_lastdelta']
+    ###jwc y chart_HighChart_LightDelta_Obj.options['series'][1]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_lastdelta']
+    ###jwc y chart_HighChart_LightDelta_Obj.options['series'][0]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_lastdelta']
+    ###jwc y chart_HighChart_LightDelta_Obj.options['series'][1]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_lastdelta']
+
+    ###jwc n chart_HighChart_LightDelta_Obj.options['xAxis'][0]['categories'][0] = 'Row A+'
+    ###jwc yn chart_HighChart_LightDelta_Obj.options['xAxis']['categories'] = 'Row A+'
+    ###jwc y chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][0] = 'Row A+'
+    ###jwc ? chart_HighChart_LightDelta_Obj.options['xAxis']['categories'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']
+
+    ###jwc y chart_HighChart_LightDelta_Obj.options['series'][0]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']
+    ###jwc y chart_HighChart_LightDelta_Obj.options['series'][0]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_lastdelta']
+
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][0] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][1] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][2] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][3] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][4] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_lastdelta']
+
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][5] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][6] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][7] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][8] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][9] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['light_lastdelta']
+
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][10] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][11] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][12] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][13] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['light_lastdelta']
+    chart_HighChart_LightDelta_Obj.options['series'][0]['data'][14] = rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['light_lastdelta']
+
+    chart_HighChart_LightDelta_Obj.update()
+
+###jwc n ui.button('chart_HighChart_Update_LightDelta_Fn', on_click=chart_HighChart_Update_LightDelta_Fn)
+          
+chart_HighChart_Update_LightDelta_Timer_Obj = ui.timer(4, chart_HighChart_Update_LightDelta_Fn, active=True)
 
 #
-# ARCHIVE
+# ARCHIVE: ACTIVE
 #
+
 
 ui.label('*** ARCHIVE ***')
 
@@ -885,7 +949,6 @@ if len(rowData_ArrayList_OfDictionaryPairs_ForAllBots) >= 2:
 
     with ui.button(rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], on_click=badge_fn4): 
         badge4 = ui.badge('-', color='red').props('floating')
-
 
 
 ###jwc test asyncio: not needed: import asyncio
@@ -1048,8 +1111,167 @@ ui.run()
 
 
 #
-# Archive
+# ARCHIVE: NON-ACTIVE
 #
+
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: #
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: # ui.line_plot (PyPlot)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: #
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc o linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc o     .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj: ###jwc every 1 sec
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj:     ###jwc y .with_legend(['Light', 'Temp'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj: linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=40, figsize=(6, 4), update_every=1) \
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj:     .with_legend(['Light', 'Magnet'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc o linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5) \
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc o     .with_legend(['sin', 'cos'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc o linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(3, 2), update_every=5).with_legend(['sin', 'cos'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj: ###jwc every 1 sec
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj:     ###jwc y .with_legend(['Light', 'Temp'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj: linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=40, figsize=(6, 4), update_every=1).with_legend(['Light', 'Magnet'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### jwc y linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc linePlot_PyPlot_Obj = ui.line_plot(n=15, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc linePlot_PyPlot_Obj = ui.line_plot(n=15, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc n linePlot_PyPlot_Obj = ui.line_plot(n=5, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B', 'Row C', 'Row D', 'Row E'], loc='upper center', ncol=5)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc n linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B', 'Row C'], loc='upper center', ncol=3)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc y linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc y linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B','Row C'], loc='upper center', ncol=3)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc n NOT WORK SINCE [1] AND [2] UNDEFINED: linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend([rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['bot_id'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['bot_id'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['bot_id']], loc='upper center', ncol=3)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc y linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B','Row C'], loc='upper center', ncol=3)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc ? linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=3)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: #
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc yy linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=2)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc yy: ncol=3 is ok: linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=3)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ###jwc IndexError: list index out of range, when only n=2 worked: linePlot_PyPlot_Obj = ui.line_plot(n=3, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=3)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: linePlot_PyPlot_Obj = ui.line_plot(n=2, limit=20, figsize=(6, 4), update_every=1).with_legend(['Row A', 'Row B'], loc='upper center', ncol=3)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj: def linePlot_PyPlot_Update_Fn() -> None:
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj:     ###jwc n receive_Microbit_Messages_Fn
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj:     now = datetime.now()
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj:     print(">>> >>> " + str(y2Value[1]) +" "+ str(y2Value[2]) +": "+str(y2Value))
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: ### ### jwc yyy tyj:     linePlot_PyPlot_Obj.push([now.timestamp()], [[y2Value[1]], [y2Value[2]]])  
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: def linePlot_PyPlot_Update_Fn() -> None:
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc n receive_Microbit_Messages_Fn
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     now = datetime.now()
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     temp_arraylist = []
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     for row_data_singlebot in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:         temp_arraylist.append(row_data_singlebot['light_total'])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc o print(">>> >>> " + str(y2Value[1]) +" "+ str(y2Value[2]) +": "+str(y2Value))
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc o linePlot_PyPlot_Obj.push([now.timestamp()], [[y2Value[1]], [y2Value[2]]])  
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     print(">>> " + 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc y str(temp_arraylist)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           str(temp_arraylist[:])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[:]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']]) +" "
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['light_total']]) +" "+
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['light_total']]) +" "+ 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           ###jwc ? str([rowData_ArrayList_OfDictionaryPairs_ForAllBots[15]['light_total']]) +" " 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:           )
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]])  
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()],[[0],[1]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n [
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n    ###jwc n [temp_arraylist[0]],[temp_arraylist[1]]
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n     [0],[1]
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc n     rowData_ArrayList_OfDictionaryPairs_ForAllBots[] 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[5]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[6]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[7]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[8]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[9]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[10]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[11]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[12]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[13]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[14]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ###jwc ? [rowData_ArrayList_OfDictionaryPairs_ForAllBots[15]['light_total']],
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:                                         ###jwc n ])  
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     x = now.timestamp()
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     y1 = np.sin(x)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     y2 = np.cos(x)
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[y1], [y2]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()], [temp_arraylist[:]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[temp_arraylist[1]], [temp_arraylist[2]]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()], [temp_arraylist[:]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()], [[temp_arraylist[0:2]]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc y linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[3]['light_total']]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: 
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc yyy linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']], [rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_total']]])
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data:     ###jwc n linePlot_PyPlot_Obj.push([now.timestamp()], [[rowData_ArrayList_OfDictionaryPairs_ForAllBots[0:2]['light_total']]]) # type: ignore
+###jwc y realtime updates, yet cannot change labels and no mouse-over-data: linePlot_PyPlot_Timer_Obj = ui.timer(4, linePlot_PyPlot_Update_Fn, active=True)
+
+
+
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: #
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: # plotly
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: #
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: linePlot_Fig_Plotly_Dct = {
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     'data': [
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         {
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'type': 'scatter',
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'name': 'Trace 1',
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'x': [1, 2, 3, 4],
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'y': [1, 2, 3, 2.5],
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         },
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         {
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'type': 'scatter',
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'name': 'Trace 2',
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'x': [1, 2, 3, 4],
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             ###jwc o 'y': np.array([1.4, 1.8, 3.8, 3.2]),
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             ###jwc n 'y': [int(random_Numpy(2)),int(random_Numpy(5)),int(random_Numpy(10)),int(random_Numpy(20))],
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             ###jwc y 'y': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'],rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']],
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             ###jwc n 'y': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'],rowData_ArrayList_OfDictionaryPairs_ForAllBots[4]['light_total']],
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             # only initial setup but not real-time update
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'y': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'],rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total']+1],
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:             'line': {'dash': 'dot', 'width': 3},
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         },
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     ],
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     'layout': {
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         'margin': {'l': 15, 'r': 0, 't': 0, 'b': 15},
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         'plot_bgcolor': '#E5ECF6',
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         'xaxis': {'gridcolor': 'white'},
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:         'yaxis': {'gridcolor': 'white'},
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     },
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: }
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: linePlot_Fig_Plotly_Dct_Obj = ui.plotly(linePlot_Fig_Plotly_Dct).classes('w-full h-40')
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: 
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: def linePlot_Fig_Plotly_Update_Fn():
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     # NOT WORK FOR REAL-TIME UPDATE
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     #
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_total'] += 1
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_total'] += 1
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     linePlot_Fig_Plotly_Dct_Obj.update()
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin:     ###jwc ? ui.update(plot)
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: 
+###jwc linePlot (Plotly) not real-time update, but nice legend on right margin: linePlot_Fig_Plotly_Update_Timer_Obj = ui.timer(4, linePlot_Fig_Plotly_Update_Fn, active=True)
+
+
 
 ###jwc n will not work, no returned selected rows: def selectedRows_Fn5():
 ###jwc n will not work, no returned selected rows:         ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
