@@ -597,13 +597,40 @@ scoreboardServer_WebGrid = ui.aggrid({
 # 'HighChart' Bar
 #
 
+ui.html('''
+    <style>
+    .cell-fail { background-color: #f6695e; }
+    .cell-pass { background-color: #70bf73; }
+   </style>
+''')
+
 chart_HighChart_LightTotal_Obj = ui.chart({
-    'title': False,
-    'chart': {'type': 'bar'},
+    ###jwc n 'title': False,
+    'title': {
+        'text': 'Light_Total',
+        'align': 'left'
+    },
+    'chart': {
+        'type': 'bar',
+        ###jwc y 'backgroundColor': '#FCFFC5',
+        ###jwc y 'backgroundColor': 'Yellow',
+        'backgroundColor': 'Gold',
+    },
     ###jwc o 'xAxis': {'categories': ['A', 'B']},
     ###jwc y 'xAxis': {'categories': ['Row A', 'Row B']},
     ###jwc y 'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E']},
-    'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O']},
+    'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O']}, 
+    'plotOptions': {
+        'bar': {
+            ###jwc n too curvy'borderRadius': '50%',
+            ###jwc n worst 'borderRadius': '90%',
+            'borderRadius': '1%',
+            'dataLabels': {
+                'enabled': 'true'
+            },
+            'groupPadding': '0.1'
+        }
+    },    
     'series': [
         ###jwc o {'name': 'Alpha', 'data': [0.1, 0.2]},
         ###jwc o {'name': 'Beta', 'data': [0.3, 0.4]},
@@ -632,7 +659,7 @@ chart_HighChart_LightTotal_Obj = ui.chart({
     ],
 ###jwc y }).classes('w-full h-64')
 ###jwc y }).classes('h-[80rem]')
-}).classes('h-[32rem]')
+}).classes('h-[32rem] cell-pass')
 
 def chart_HighChart_Update_LightTotal_Fn():
     ###jwc y chart_HighChart_LightTotal_Obj.options['series'][0]['data'][:] = random_Numpy(2)
@@ -700,23 +727,44 @@ def chart_HighChart_Update_LightTotal_Fn():
           
 ###jwc y try /2: chart_HighChart_Update_LightTotal_Timer_Obj = ui.timer(4, chart_HighChart_Update_LightTotal_Fn, active=True)
 ###jwc n worst: try 8: chart_HighChart_Update_LightTotal_Timer_Obj = ui.timer(2, chart_HighChart_Update_LightTotal_Fn, active=True)
+###jwc yy chart_HighChart_Update_LightTotal_Timer_Obj = ui.timer(8, chart_HighChart_Update_LightTotal_Fn, active=True)
+###jwc n very sporadic, long lag at chart_HighChart_Update_LightTotal_Timer_Obj = ui.timer(0, chart_HighChart_Update_LightTotal_Fn, active=True)
 chart_HighChart_Update_LightTotal_Timer_Obj = ui.timer(8, chart_HighChart_Update_LightTotal_Fn, active=True)
 
 
 chart_HighChart_LightDelta_Obj = ui.chart({
-    'title': False,
-    'chart': {'type': 'bar'},
+    ###jwc n 'title': False,
+    'title': {
+        'text': 'Light_LastDelta',
+        'align': 'left'
+    },
+    'chart': {
+        'type': 'bar',
+        ###jwc y 'backgroundColor': '#FCFFC5',
+        'backgroundColor': 'PaleGoldenRod',
+    },
     ###jwc o 'xAxis': {'categories': ['A', 'B']},
     ###jwc y 'xAxis': {'categories': ['Row A', 'Row B']},
     ###jwc y 'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E']},
     'xAxis': {'categories': ['Row A', 'Row B', 'Row C', 'Row D', 'Row E', 'Row F', 'Row G', 'Row H', 'Row I', 'Row J', 'Row K', 'Row L', 'Row M', 'Row N', 'Row O']},
+    'plotOptions': {
+        'bar': {
+            ###jwc n too curvy'borderRadius': '50%',
+            ###jwc n worst 'borderRadius': '90%',
+            'borderRadius': '1%',
+            'dataLabels': {
+                'enabled': 'true'
+            },
+            'groupPadding': '0.1'
+        }
+    },    
     'series': [
         ###jwc o {'name': 'Alpha', 'data': [0.1, 0.2]},
         ###jwc o {'name': 'Beta', 'data': [0.3, 0.4]},
         ###jwc y {'name': 'Light_Delta', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_lastdelta'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']]},
         ###jwc y {'name': 'Light_Delta', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_lastdelta'], rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta']]},
         ###jwc y {'name': 'Light_Delta', 'data': [rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_lastdelta']]},
-        {'name': 'Light_Delta', 'data': [
+        {'name': 'Light_LastDelta', 'data': [
             rowData_ArrayList_OfDictionaryPairs_ForAllBots[0]['light_lastdelta'], 
             rowData_ArrayList_OfDictionaryPairs_ForAllBots[1]['light_lastdelta'],
             rowData_ArrayList_OfDictionaryPairs_ForAllBots[2]['light_lastdelta'],
