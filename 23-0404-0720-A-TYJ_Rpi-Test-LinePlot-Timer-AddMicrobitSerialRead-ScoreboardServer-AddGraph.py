@@ -434,6 +434,10 @@ def update_WebGrid_UiTimer_Timer_Toggle_Fn(event: ValueChangeEventArguments):
 update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec[Default]', 5: '5sec', 60: '60sec'}, value=4).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
 
 
+
+#
+# !!! TYJ Seems reliable click_once on checkbox, after let stabilize after 1 AgGrid update after 60sec
+#
 async def selectedRows_TeamBlue_Fn():
         global rowData_ArrayList_OfDictionaryPairs_ForAllBots
         
