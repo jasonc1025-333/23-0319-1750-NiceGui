@@ -389,8 +389,8 @@ def scoreboardServer_WebGrid_Update_Fn():
 ###jwc yyy update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int, scoreboardServer_WebGrid_Update_Fn, active = update_WebGrid_UiTimer_Initialization_Object.active_Bool)
 ###jwc n 'interval' error: update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(interval=update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int, scoreboardServer_WebGrid_Update_Fn, active=update_WebGrid_UiTimer_Initialization_Object.active_Bool)
 
-# 1st Paramater: Initial Value Only 
-# 3rd Paramater: Initial Value Only
+# 1st Paramater 'interval': Initial Value Only 
+# 3rd Paramater 'active': Initial Value Only
 update_WebGrid__UiTimer_Active_n_Interval__Object = ui.timer(update_WebGrid_UiTimer_Initialization_Object.timer_Sec_Int, scoreboardServer_WebGrid_Update_Fn, active = update_WebGrid_UiTimer_Initialization_Object.active_Bool)
 
 
@@ -425,8 +425,13 @@ def update_WebGrid_UiTimer_Timer_Toggle_Fn(event: ValueChangeEventArguments):
 ###jwc n update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}, value=1).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
 ###jwc n update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}, value='4sec').on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
 ### !!!TODO jwc ? set default toggle highlight button NOT WORKING YET
-update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'},value=3).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
+###jwc y update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}, value=4).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
     
+### !!! jwc y but when add '.on' and '.bind_value', then default is lost: 
+###jwc y  update_WebGrid_UiTimer_Timer_Toggle02_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}, value=4)
+###jwc n update_WebGrid_UiTimer_Timer_Toggle04_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}, value=4).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
+###jwc though no default_highlighting still works
+update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec[Default]', 5: '5sec', 60: '60sec'}, value=4).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
 
 
 async def selectedRows_TeamBlue_Fn():
