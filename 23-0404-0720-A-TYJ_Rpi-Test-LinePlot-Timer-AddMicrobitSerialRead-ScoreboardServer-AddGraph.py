@@ -468,7 +468,7 @@ async def selectedRows_TeamBlue_Fn():
         scoreboardServer_WebGrid.update()
 ###jwc n selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
 ###jwc y ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
-selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue: Set "WEBGRID_UPDATE:ON=60SEC"', on_click=selectedRows_TeamBlue_Fn)
+selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue: Set "WEBGRID_UPDATE:[OFF|ON=60SEC+]"', on_click=selectedRows_TeamBlue_Fn)
 
 ###jwc n def selectedRows_TeamBlue02_Fn():
 ###jwc n         ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
