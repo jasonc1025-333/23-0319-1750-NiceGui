@@ -420,14 +420,22 @@ def update_WebGrid_UiTimer_Timer_Toggle_Fn(event: ValueChangeEventArguments):
 #
 ###jwc n update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({1: 'F', 2: 'G', 3: 'H'}).on('click', update_WebGrid_UiTimer_Active_Toggle_Fn).bind_value_from(bool,'update_WebGrid_UiTimer_Active_Bool')
 ###jwc ? update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid_UiTimer_Initialization_Object, 'timer_Sec_Int')
-update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
+###jwc y update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
+###jwc n update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}, value=4).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
+###jwc n update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}, value=1).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
+###jwc n update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'}, value='4sec').on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
+### !!!TODO jwc ? set default toggle highlight button NOT WORKING YET
+update_WebGrid_UiTimer_Timer_Toggle_Object = ui.toggle({3: '3sec', 4: '4sec', 5: '5sec', 60: '60sec'},value=3).on('click', update_WebGrid_UiTimer_Timer_Toggle_Fn).bind_value(update_WebGrid__UiTimer_Active_n_Interval__Object, 'interval')
     
 
 
 async def selectedRows_TeamBlue_Fn():
+        global rowData_ArrayList_OfDictionaryPairs_ForAllBots
+        
         ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
         ###jwc y rows = await grid2.get_selected_rows()
         rows = await scoreboardServer_WebGrid.get_selected_rows()
+        
 
         ###jwc ? rows.forEach(function( selectedRow, index){
         ###jwc y  ui.notify("Notify")
@@ -437,16 +445,21 @@ async def selectedRows_TeamBlue_Fn():
         if rows:
             for row in rows:
                 row['team_id'] = 'Blue'
+                for row_global in rowData_ArrayList_OfDictionaryPairs_ForAllBots:
+                    if row['bot_id'] == row_global['bot_id']:
+                        row_global['team_id'] = 'Blue'
+                        print("*** AA1 " + str(row_global))
+
                 ui.notify(f"{row['bot_id']}, {row['team_id']}")
-                print( "*** *** selectedRows_Fn:" + str(row))
-                print(f"*** *** {row['bot_id']}, {row['team_id']}, {row['row_id']}")
+                print( "*** AA2 selectedRows_Fn:" + str(row))
+                print(f"*** AA3 {row['bot_id']}, {row['team_id']}, {row['row_id']}")
         else:
             ui.notify("No Data Selected")
             return
         scoreboardServer_WebGrid.update()
 ###jwc n selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
 ###jwc y ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
-selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue', on_click=selectedRows_TeamBlue_Fn)
+selectedRows_TeamBlue_Object = ui.button('selectedRows_TeamBlue: Set "WEBGRID_UPDATE:ON=60SEC"', on_click=selectedRows_TeamBlue_Fn)
 
 ###jwc n def selectedRows_TeamBlue02_Fn():
 ###jwc n         ###jwc n rows = await scoreboardServer_WebGrid.get_selected_rows()
@@ -892,7 +905,8 @@ def toggle_value_fn(bot_id_in:int):
 def toggle_value_fn2():
     bot_TeamAssigned_Base0_Int[0] += 1
     print("****** bot_TeamAssigned_Base0_Int[0]: " + str(bot_TeamAssigned_Base0_Int[0]))
-toggle5 = ui.toggle({1: 'F', 2: 'G', 3: 'H'}).on('click', toggle_value_fn2)
+###jwc y toggle5 = ui.toggle({1: 'F', 2: 'G', 3: 'H'}).on('click', toggle_value_fn2)
+toggle5 = ui.toggle({1: 'F', 2: 'G', 3: 'H'},value=3).on('click', toggle_value_fn2)
 
 
 async def toggle_value_fn2A():
@@ -927,9 +941,10 @@ def badge_fn3():
 
     
 with ui.row():
-    toggle1 = ui.toggle([1, 2, 3], value=1)
+    toggle1 = ui.toggle([1, 2, 3], value=2)
 
-    toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value')
+    ###jwc y toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'}).bind_value(toggle1, 'value')
+    toggle2 = ui.toggle({1: 'A', 2: 'B', 3: 'C'},value=2).bind_value(toggle1, 'value')
 
     ###jwc n toggle3 = ui.toggle({1: 'C', 2: 'D', 3: 'E'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(1)', 'value')
     ###jwc n toggle3 = ui.toggle({1: 'C', 2: 'D', 3: 'E'}).bind_value(toggle1, 'value').run_method('toggle_value_fn(value)', 'value')
